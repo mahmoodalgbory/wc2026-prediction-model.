@@ -1,0 +1,21 @@
+{
+  "_note": "Official FIFA WC 2026 R32 bracket (confirmed). Run: python scripts/simulate_tournament.py --from-bracket data/wc_actual_bracket.json",
+  "r32": [
+    {"match": 73, "slot1": "",  "slot2": "",  "team1": "South Africa",       "team2": "Canada"},
+    {"match": 74, "slot1": "",  "slot2": "",  "team1": "Germany",             "team2": "Paraguay"},
+    {"match": 75, "slot1": "",  "slot2": "",  "team1": "Colombia",            "team2": "Croatia"},
+    {"match": 76, "slot1": "",  "slot2": "",  "team1": "France",              "team2": "Sweden"},
+    {"match": 77, "slot1": "",  "slot2": "",  "team1": "Ivory Coast",         "team2": "Norway"},
+    {"match": 78, "slot1": "",  "slot2": "",  "team1": "Brazil",              "team2": "Japan"},
+    {"match": 79, "slot1": "",  "slot2": "",  "team1": "Mexico",              "team2": "Ecuador"},
+    {"match": 80, "slot1": "",  "slot2": "",  "team1": "England",             "team2": "Congo DR"},
+    {"match": 81, "slot1": "",  "slot2": "",  "team1": "Belgium",             "team2": "Senegal"},
+    {"match": 82, "slot1": "",  "slot2": "",  "team1": "Netherlands",         "team2": "Morocco"},
+    {"match": 83, "slot1": "",  "slot2": "",  "team1": "Spain",               "team2": "Austria"},
+    {"match": 84, "slot1": "",  "slot2": "",  "team1": "Argentina",           "team2": "Cape Verde"},
+    {"match": 85, "slot1": "",  "slot2": "",  "team1": "Switzerland",         "team2": "Algeria"},
+    {"match": 86, "slot1": "",  "slot2": "",  "team1": "United States",       "team2": "Bosnia-Herzegovina"},
+    {"match": 87, "slot1": "",  "slot2": "",  "team1": "Portugal",            "team2": "Ghana"},
+    {"match": 88, "slot1": "",  "slot2": "",  "team1": "Australia",           "team2": "Egypt"}
+  ]
+}

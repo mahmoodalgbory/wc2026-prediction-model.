@@ -1,0 +1,702 @@
+{
+  "England": {
+    "total_value_eur_millions": 1229.4,
+    "starting_xi_value": 870.0,
+    "bench_value": 359.4,
+    "positional_values": {
+      "goalkeeper": 61.0,
+      "defense": 241.4,
+      "midfield": 487.0,
+      "attack": 440.0
+    },
+    "avg_age": 27.1,
+    "top5_league_pct": 0.0,
+    "star_concentration": 0.44
+  },
+  "France": {
+    "total_value_eur_millions": 1338.0,
+    "starting_xi_value": 920.0,
+    "bench_value": 418.0,
+    "positional_values": {
+      "goalkeeper": 58.0,
+      "defense": 408.0,
+      "midfield": 327.0,
+      "attack": 545.0
+    },
+    "avg_age": 27.0,
+    "top5_league_pct": 0.0,
+    "star_concentration": 0.45
+  },
+  "Brazil": {
+    "total_value_eur_millions": 707.0,
+    "starting_xi_value": 638.0,
+    "bench_value": 69.0,
+    "positional_values": {
+      "goalkeeper": 35.9,
+      "defense": 104.4,
+      "midfield": 131.1,
+      "attack": 435.7
+    },
+    "avg_age": 29.4,
+    "top5_league_pct": 0.0,
+    "star_concentration": 0.5
+  },
+  "Argentina": {
+    "total_value_eur_millions": 719.5,
+    "starting_xi_value": 590.0,
+    "bench_value": 129.5,
+    "positional_values": {
+      "goalkeeper": 23.0,
+      "defense": 178.5,
+      "midfield": 178.0,
+      "attack": 340.0
+    },
+    "avg_age": 29.1,
+    "top5_league_pct": 0.0,
+    "star_concentration": 0.43
+  },
+  "Spain": {
+    "total_value_eur_millions": 1111.0,
+    "starting_xi_value": 790.0,
+    "bench_value": 321.0,
+    "positional_values": {
+      "goalkeeper": 95.0,
+      "defense": 191.0,
+      "midfield": 460.0,
+      "attack": 365.0
+    },
+    "avg_age": 26.7,
+    "top5_league_pct": 0.0,
+    "star_concentration": 0.44
+  },
+  "Portugal": {
+    "total_value_eur_millions": 963.8,
+    "starting_xi_value": 693.0,
+    "bench_value": 270.8,
+    "positional_values": {
+      "goalkeeper": 55.3,
+      "defense": 318.5,
+      "midfield": 317.0,
+      "attack": 273.0
+    },
+    "avg_age": 28.0,
+    "top5_league_pct": 0.0,
+    "star_concentration": 0.4
+  },
+  "Germany": {
+    "total_value_eur_millions": 930.5,
+    "starting_xi_value": 680.0,
+    "bench_value": 250.5,
+    "positional_values": {
+      "goalkeeper": 19.0,
+      "defense": 248.0,
+      "midfield": 483.5,
+      "attack": 180.0
+    },
+    "avg_age": 28.0,
+    "top5_league_pct": 0.0,
+    "star_concentration": 0.46
+  },
+  "Netherlands": {
+    "total_value_eur_millions": 620.6,
+    "starting_xi_value": 465.0,
+    "bench_value": 155.6,
+    "positional_values": {
+      "goalkeeper": 43.6,
+      "defense": 133.5,
+      "midfield": 268.0,
+      "attack": 175.5
+    },
+    "avg_age": 27.8,
+    "top5_league_pct": 0.0,
+    "star_concentration": 0.48
+  },
+  "Belgium": {
+    "total_value_eur_millions": 405.8,
+    "starting_xi_value": 337.0,
+    "bench_value": 68.8,
+    "positional_values": {
+      "goalkeeper": 54.0,
+      "defense": 82.9,
+      "midfield": 125.9,
+      "attack": 143.0
+    },
+    "avg_age": 27.6,
+    "top5_league_pct": 0.0,
+    "star_concentration": 0.47
+  },
+  "Colombia": {
+    "total_value_eur_millions": 248.8,
+    "starting_xi_value": 193.0,
+    "bench_value": 55.9,
+    "positional_values": {
+      "goalkeeper": 13.0,
+      "defense": 81.3,
+      "midfield": 43.0,
+      "attack": 111.5
+    },
+    "avg_age": 30.1,
+    "top5_league_pct": 0.0,
+    "star_concentration": 0.6
+  },
+  "Croatia": {
+    "total_value_eur_millions": 295.6,
+    "starting_xi_value": 228.5,
+    "bench_value": 67.0,
+    "positional_values": {
+      "goalkeeper": 19.0,
+      "defense": 183.5,
+      "midfield": 71.5,
+      "attack": 21.6
+    },
+    "avg_age": 28.3,
+    "top5_league_pct": 0.0,
+    "star_concentration": 0.62
+  },
+  "Austria": {
+    "total_value_eur_millions": 277.6,
+    "starting_xi_value": 221.0,
+    "bench_value": 56.5,
+    "positional_values": {
+      "goalkeeper": 3.4,
+      "defense": 87.4,
+      "midfield": 165.8,
+      "attack": 21.0
+    },
+    "avg_age": 28.5,
+    "top5_league_pct": 0.0,
+    "star_concentration": 0.38
+  },
+  "Switzerland": {
+    "total_value_eur_millions": 320.8,
+    "starting_xi_value": 248.0,
+    "bench_value": 72.8,
+    "positional_values": {
+      "goalkeeper": 43.5,
+      "defense": 57.3,
+      "midfield": 122.5,
+      "attack": 97.5
+    },
+    "avg_age": 28.3,
+    "top5_league_pct": 0.0,
+    "star_concentration": 0.45
+  },
+  "Morocco": {
+    "total_value_eur_millions": 405.6,
+    "starting_xi_value": 330.0,
+    "bench_value": 75.6,
+    "positional_values": {
+      "goalkeeper": 19.0,
+      "defense": 146.1,
+      "midfield": 169.0,
+      "attack": 71.5
+    },
+    "avg_age": 26.4,
+    "top5_league_pct": 0.0,
+    "star_concentration": 0.44
+  },
+  "Sweden": {
+    "total_value_eur_millions": 462.1,
+    "starting_xi_value": 405.5,
+    "bench_value": 56.5,
+    "positional_values": {
+      "goalkeeper": 10.3,
+      "defense": 107.2,
+      "midfield": 100.0,
+      "attack": 244.5
+    },
+    "avg_age": 27.6,
+    "top5_league_pct": 0.0,
+    "star_concentration": 0.59
+  },
+  "Uruguay": {
+    "total_value_eur_millions": 498.8,
+    "starting_xi_value": 436.0,
+    "bench_value": 62.8,
+    "positional_values": {
+      "goalkeeper": 44.2,
+      "defense": 115.0,
+      "midfield": 253.0,
+      "attack": 86.5
+    },
+    "avg_age": 28.7,
+    "top5_league_pct": 0.0,
+    "star_concentration": 0.6
+  },
+  "Turkey": {
+    "total_value_eur_millions": 354.4,
+    "starting_xi_value": 294.5,
+    "bench_value": 59.9,
+    "positional_values": {
+      "goalkeeper": 12.5,
+      "defense": 87.7,
+      "midfield": 47.2,
+      "attack": 207.0
+    },
+    "avg_age": 27.7,
+    "top5_league_pct": 0.0,
+    "star_concentration": 0.56
+  },
+  "Japan": {
+    "total_value_eur_millions": 252.1,
+    "starting_xi_value": 184.0,
+    "bench_value": 68.1,
+    "positional_values": {
+      "goalkeeper": 30.0,
+      "defense": 68.6,
+      "midfield": 135.5,
+      "attack": 18.0
+    },
+    "avg_age": 27.8,
+    "top5_league_pct": 0.0,
+    "star_concentration": 0.41
+  },
+  "Scotland": {
+    "total_value_eur_millions": 209.5,
+    "starting_xi_value": 180.0,
+    "bench_value": 29.5,
+    "positional_values": {
+      "goalkeeper": 2.8,
+      "defense": 69.6,
+      "midfield": 95.2,
+      "attack": 42.0
+    },
+    "avg_age": 29.2,
+    "top5_league_pct": 0.0,
+    "star_concentration": 0.52
+  },
+  "Canada": {
+    "total_value_eur_millions": 196.4,
+    "starting_xi_value": 153.0,
+    "bench_value": 43.5,
+    "positional_values": {
+      "goalkeeper": 10.2,
+      "defense": 82.9,
+      "midfield": 33.9,
+      "attack": 69.5
+    },
+    "avg_age": 26.9,
+    "top5_league_pct": 0.0,
+    "star_concentration": 0.64
+  },
+  "Mexico": {
+    "total_value_eur_millions": 175.1,
+    "starting_xi_value": 122.0,
+    "bench_value": 53.0,
+    "positional_values": {
+      "goalkeeper": 5.3,
+      "defense": 57.5,
+      "midfield": 43.0,
+      "attack": 69.2
+    },
+    "avg_age": 27.9,
+    "top5_league_pct": 0.0,
+    "star_concentration": 0.59
+  },
+  "Czech Republic": {
+    "total_value_eur_millions": 145.0,
+    "starting_xi_value": 96.5,
+    "bench_value": 48.5,
+    "positional_values": {
+      "goalkeeper": 20.5,
+      "defense": 35.0,
+      "midfield": 28.7,
+      "attack": 60.8
+    },
+    "avg_age": 27.6,
+    "top5_league_pct": 0.0,
+    "star_concentration": 0.52
+  },
+  "Australia": {
+    "total_value_eur_millions": 78.7,
+    "starting_xi_value": 57.0,
+    "bench_value": 21.6,
+    "positional_values": {
+      "goalkeeper": 7.6,
+      "defense": 32.9,
+      "midfield": 18.0,
+      "attack": 20.2
+    },
+    "avg_age": 27.4,
+    "top5_league_pct": 0.0,
+    "star_concentration": 0.3
+  },
+  "Senegal": {
+    "total_value_eur_millions": 370.8,
+    "starting_xi_value": 302.0,
+    "bench_value": 68.8,
+    "positional_values": {
+      "goalkeeper": 19.8,
+      "defense": 75.5,
+      "midfield": 81.0,
+      "attack": 194.5
+    },
+    "avg_age": 27.1,
+    "top5_league_pct": 0.0,
+    "star_concentration": 0.41
+  },
+  "South Korea": {
+    "total_value_eur_millions": 101.2,
+    "starting_xi_value": 80.0,
+    "bench_value": 21.2,
+    "positional_values": {
+      "goalkeeper": 6.0,
+      "defense": 23.4,
+      "midfield": 64.5,
+      "attack": 7.3
+    },
+    "avg_age": 28.1,
+    "top5_league_pct": 0.0,
+    "star_concentration": 0.5
+  },
+  "Algeria": {
+    "total_value_eur_millions": 226.9,
+    "starting_xi_value": 183.0,
+    "bench_value": 43.9,
+    "positional_values": {
+      "goalkeeper": 12.0,
+      "defense": 69.1,
+      "midfield": 56.6,
+      "attack": 89.2
+    },
+    "avg_age": 26.9,
+    "top5_league_pct": 0.0,
+    "star_concentration": 0.55
+  },
+  "Ecuador": {
+    "total_value_eur_millions": 333.2,
+    "starting_xi_value": 282.5,
+    "bench_value": 50.8,
+    "positional_values": {
+      "goalkeeper": 10.3,
+      "defense": 157.3,
+      "midfield": 134.8,
+      "attack": 30.8
+    },
+    "avg_age": 26.1,
+    "top5_league_pct": 0.0,
+    "star_concentration": 0.81
+  },
+  "Ghana": {
+    "total_value_eur_millions": 200.1,
+    "starting_xi_value": 166.0,
+    "bench_value": 34.1,
+    "positional_values": {
+      "goalkeeper": 25.3,
+      "defense": 33.2,
+      "midfield": 80.3,
+      "attack": 61.3
+    },
+    "avg_age": 27.0,
+    "top5_league_pct": 0.0,
+    "star_concentration": 0.63
+  },
+  "Paraguay": {
+    "total_value_eur_millions": 140.4,
+    "starting_xi_value": 97.5,
+    "bench_value": 43.0,
+    "positional_values": {
+      "goalkeeper": 5.5,
+      "defense": 50.0,
+      "midfield": 42.9,
+      "attack": 42.0
+    },
+    "avg_age": 29.0,
+    "top5_league_pct": 0.0,
+    "star_concentration": 0.44
+  },
+  "Egypt": {
+    "total_value_eur_millions": 218.8,
+    "starting_xi_value": 175.0,
+    "bench_value": 43.8,
+    "positional_values": {
+      "goalkeeper": 48.5,
+      "defense": 27.0,
+      "midfield": 32.0,
+      "attack": 111.3
+    },
+    "avg_age": 29.1,
+    "top5_league_pct": 0.0,
+    "star_concentration": 0.77
+  },
+  "Iran": {
+    "total_value_eur_millions": 70.3,
+    "starting_xi_value": 53.5,
+    "bench_value": 16.8,
+    "positional_values": {
+      "goalkeeper": 7.0,
+      "defense": 27.1,
+      "midfield": 21.2,
+      "attack": 15.1
+    },
+    "avg_age": 30.3,
+    "top5_league_pct": 0.0,
+    "star_concentration": 0.28
+  },
+  "Tunisia": {
+    "total_value_eur_millions": 109.7,
+    "starting_xi_value": 60.0,
+    "bench_value": 49.7,
+    "positional_values": {
+      "goalkeeper": 15.0,
+      "defense": 38.4,
+      "midfield": 32.8,
+      "attack": 23.5
+    },
+    "avg_age": 26.6,
+    "top5_league_pct": 0.0,
+    "star_concentration": 0.33
+  },
+  "Saudi Arabia": {
+    "total_value_eur_millions": 116.0,
+    "starting_xi_value": 60.0,
+    "bench_value": 56.0,
+    "positional_values": {
+      "goalkeeper": 20.0,
+      "defense": 48.0,
+      "midfield": 25.4,
+      "attack": 22.7
+    },
+    "avg_age": 28.5,
+    "top5_league_pct": 0.0,
+    "star_concentration": 0.33
+  },
+  "New Zealand": {
+    "total_value_eur_millions": 73.1,
+    "starting_xi_value": 58.0,
+    "bench_value": 15.1,
+    "positional_values": {
+      "goalkeeper": 10.2,
+      "defense": 25.2,
+      "midfield": 19.1,
+      "attack": 18.5
+    },
+    "avg_age": 28.1,
+    "top5_league_pct": 0.0,
+    "star_concentration": 0.31
+  },
+  "Congo DR": {
+    "total_value_eur_millions": 170.8,
+    "starting_xi_value": 138.0,
+    "bench_value": 32.8,
+    "positional_values": {
+      "goalkeeper": 40.8,
+      "defense": 43.7,
+      "midfield": 32.9,
+      "attack": 53.4
+    },
+    "avg_age": 29.1,
+    "top5_league_pct": 0.0,
+    "star_concentration": 0.62
+  },
+  "Uzbekistan": {
+    "total_value_eur_millions": 137.9,
+    "starting_xi_value": 87.0,
+    "bench_value": 50.9,
+    "positional_values": {
+      "goalkeeper": 15.0,
+      "defense": 70.9,
+      "midfield": 37.0,
+      "attack": 15.0
+    },
+    "avg_age": 28.5,
+    "top5_league_pct": 0.0,
+    "star_concentration": 0.54
+  },
+  "Jordan": {
+    "total_value_eur_millions": 121.6,
+    "starting_xi_value": 56.0,
+    "bench_value": 65.6,
+    "positional_values": {
+      "goalkeeper": 15.0,
+      "defense": 40.0,
+      "midfield": 35.6,
+      "attack": 31.0
+    },
+    "avg_age": 28.5,
+    "top5_league_pct": 0.0,
+    "star_concentration": 0.29
+  },
+  "Iraq": {
+    "total_value_eur_millions": 113.0,
+    "starting_xi_value": 75.0,
+    "bench_value": 38.0,
+    "positional_values": {
+      "goalkeeper": 15.0,
+      "defense": 35.8,
+      "midfield": 39.7,
+      "attack": 22.4
+    },
+    "avg_age": 26.9,
+    "top5_league_pct": 0.0,
+    "star_concentration": 0.47
+  },
+  "South Africa": {
+    "total_value_eur_millions": 147.5,
+    "starting_xi_value": 78.0,
+    "bench_value": 69.5,
+    "positional_values": {
+      "goalkeeper": 9.5,
+      "defense": 50.0,
+      "midfield": 40.0,
+      "attack": 48.0
+    },
+    "avg_age": 26.8,
+    "top5_league_pct": 0.0,
+    "star_concentration": 0.49
+  },
+  "Cape Verde": {
+    "total_value_eur_millions": 83.2,
+    "starting_xi_value": 70.0,
+    "bench_value": 13.2,
+    "positional_values": {
+      "goalkeeper": 10.3,
+      "defense": 42.6,
+      "midfield": 19.6,
+      "attack": 10.7
+    },
+    "avg_age": 29.7,
+    "top5_league_pct": 0.0,
+    "star_concentration": 0.43
+  },
+  "Qatar": {
+    "total_value_eur_millions": 105.1,
+    "starting_xi_value": 55.0,
+    "bench_value": 50.1,
+    "positional_values": {
+      "goalkeeper": 15.0,
+      "defense": 37.0,
+      "midfield": 20.3,
+      "attack": 32.8
+    },
+    "avg_age": 29.5,
+    "top5_league_pct": 0.0,
+    "star_concentration": 0.27
+  },
+  "Curaçao": {
+    "total_value_eur_millions": 59.0,
+    "starting_xi_value": 47.8,
+    "bench_value": 11.2,
+    "positional_values": {
+      "goalkeeper": 5.3,
+      "defense": 22.6,
+      "midfield": 14.2,
+      "attack": 17.1
+    },
+    "avg_age": 28.0,
+    "top5_league_pct": 0.0,
+    "star_concentration": 0.33
+  },
+  "Panama": {
+    "total_value_eur_millions": 98.2,
+    "starting_xi_value": 60.0,
+    "bench_value": 38.1,
+    "positional_values": {
+      "goalkeeper": 15.0,
+      "defense": 37.9,
+      "midfield": 30.0,
+      "attack": 15.2
+    },
+    "avg_age": 30.4,
+    "top5_league_pct": 0.0,
+    "star_concentration": 0.33
+  },
+  "Haiti": {
+    "total_value_eur_millions": 107.5,
+    "starting_xi_value": 78.0,
+    "bench_value": 29.6,
+    "positional_values": {
+      "goalkeeper": 5.3,
+      "defense": 28.7,
+      "midfield": 40.0,
+      "attack": 33.5
+    },
+    "avg_age": 27.6,
+    "top5_league_pct": 0.0,
+    "star_concentration": 0.49
+  },
+  "Norway": {
+    "total_value_eur_millions": 533.5,
+    "starting_xi_value": 469.0,
+    "bench_value": 64.5,
+    "positional_values": {
+      "goalkeeper": 7.2,
+      "defense": 52.8,
+      "midfield": 196.5,
+      "attack": 277.0
+    },
+    "avg_age": 26.8,
+    "top5_league_pct": 0.0,
+    "star_concentration": 0.69
+  },
+  "Ivory Coast": {
+    "total_value_eur_millions": 435.1,
+    "starting_xi_value": 348.0,
+    "bench_value": 87.1,
+    "positional_values": {
+      "goalkeeper": 6.3,
+      "defense": 149.5,
+      "midfield": 52.3,
+      "attack": 227.0
+    },
+    "avg_age": 25.8,
+    "top5_league_pct": 0.0,
+    "star_concentration": 0.4
+  },
+  "United States": {
+    "total_value_eur_millions": 348.8,
+    "starting_xi_value": 284.0,
+    "bench_value": 64.8,
+    "positional_values": {
+      "goalkeeper": 12.1,
+      "defense": 97.7,
+      "midfield": 98.0,
+      "attack": 141.0
+    },
+    "avg_age": 26.9,
+    "top5_league_pct": 0.0,
+    "star_concentration": 0.44
+  },
+  "Bosnia-Herzegovina": {
+    "total_value_eur_millions": 117.3,
+    "starting_xi_value": 80.0,
+    "bench_value": 37.4,
+    "positional_values": {
+      "goalkeeper": 14.5,
+      "defense": 28.4,
+      "midfield": 23.8,
+      "attack": 50.7
+    },
+    "avg_age": 26.4,
+    "top5_league_pct": 0.0,
+    "star_concentration": 0.5
+  },
+  "DR Congo": {
+    "total_value_eur_millions": 170.8,
+    "starting_xi_value": 138.0,
+    "bench_value": 32.8,
+    "positional_values": {
+      "goalkeeper": 40.8,
+      "defense": 43.7,
+      "midfield": 32.9,
+      "attack": 53.4
+    },
+    "avg_age": 29.1,
+    "top5_league_pct": 0.0,
+    "star_concentration": 0.62
+  },
+  "Bosnia and Herzegovina": {
+    "total_value_eur_millions": 117.3,
+    "starting_xi_value": 80.0,
+    "bench_value": 37.4,
+    "positional_values": {
+      "goalkeeper": 14.5,
+      "defense": 28.4,
+      "midfield": 23.8,
+      "attack": 50.7
+    },
+    "avg_age": 26.4,
+    "top5_league_pct": 0.0,
+    "star_concentration": 0.5
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "_note": "User-provided R16 project scenario for the start of July 5, 2026. Results dated July 4 are locked; later matches are simulated. Quarterfinal pairings follow the supplied sequential match slots. This input has not been independently verified against an official bracket.",
+  "r16": [
+    {
+      "match": 89,
+      "team1": "Canada",
+      "team2": "Morocco",
+      "winner": "Morocco",
+      "score": "0-3",
+      "date": "2026-07-04"
+    },
+    {
+      "match": 90,
+      "team1": "Paraguay",
+      "team2": "France",
+      "winner": "France",
+      "score": "0-1",
+      "date": "2026-07-04"
+    },
+    {
+      "match": 91,
+      "team1": "Brazil",
+      "team2": "Norway",
+      "winner": null,
+      "date": "2026-07-05"
+    },
+    {
+      "match": 92,
+      "team1": "Mexico",
+      "team2": "England",
+      "winner": null,
+      "date": "2026-07-05"
+    },
+    {
+      "match": 93,
+      "team1": "Portugal",
+      "team2": "Spain",
+      "winner": null,
+      "date": "2026-07-06"
+    },
+    {
+      "match": 94,
+      "team1": "United States",
+      "team2": "Belgium",
+      "winner": null,
+      "date": "2026-07-06"
+    },
+    {
+      "match": 95,
+      "team1": "Argentina",
+      "team2": "Egypt",
+      "winner": null,
+      "date": "2026-07-06"
+    },
+    {
+      "match": 96,
+      "team1": "Switzerland",
+      "team2": "Colombia",
+      "winner": null,
+      "date": "2026-07-06"
+    }
+  ]
+}

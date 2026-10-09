@@ -1,0 +1,12 @@
+{
+  "snapshot_date": "2026-07-05",
+  "cutoff_convention": "exclusive: match date < snapshot_date",
+  "results_rows": 49495,
+  "latest_results_date": "2026-07-04",
+  "results_source": "https://github.com/martj42/international_results",
+  "results_license": "CC0-1.0",
+  "bracket_source": "User-provided project input; not independently verified",
+  "squad_values_source": "User-provided estimates; original collection date not recorded",
+  "seed": 42,
+  "runs": 10000
+}

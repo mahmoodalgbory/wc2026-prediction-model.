@@ -1,0 +1,324 @@
+{
+  "runs": 10000,
+  "simulation_type": "ko_only_from_r16_bracket",
+  "snapshot_date": "2026-07-05",
+  "seed": 42,
+  "cutoff_convention": "match date < snapshot_date",
+  "bracket_source": "data/wc_actual_bracket_r16.json",
+  "group_advancement": {
+    "Argentina": {
+      "rate": 1.0,
+      "as_winner": 0.0,
+      "as_runner_up": 0.0,
+      "as_third": 0.0
+    },
+    "Belgium": {
+      "rate": 1.0,
+      "as_winner": 0.0,
+      "as_runner_up": 0.0,
+      "as_third": 0.0
+    },
+    "Brazil": {
+      "rate": 1.0,
+      "as_winner": 0.0,
+      "as_runner_up": 0.0,
+      "as_third": 0.0
+    },
+    "Canada": {
+      "rate": 1.0,
+      "as_winner": 0.0,
+      "as_runner_up": 0.0,
+      "as_third": 0.0
+    },
+    "Colombia": {
+      "rate": 1.0,
+      "as_winner": 0.0,
+      "as_runner_up": 0.0,
+      "as_third": 0.0
+    },
+    "Egypt": {
+      "rate": 1.0,
+      "as_winner": 0.0,
+      "as_runner_up": 0.0,
+      "as_third": 0.0
+    },
+    "England": {
+      "rate": 1.0,
+      "as_winner": 0.0,
+      "as_runner_up": 0.0,
+      "as_third": 0.0
+    },
+    "France": {
+      "rate": 1.0,
+      "as_winner": 0.0,
+      "as_runner_up": 0.0,
+      "as_third": 0.0
+    },
+    "Mexico": {
+      "rate": 1.0,
+      "as_winner": 0.0,
+      "as_runner_up": 0.0,
+      "as_third": 0.0
+    },
+    "Morocco": {
+      "rate": 1.0,
+      "as_winner": 0.0,
+      "as_runner_up": 0.0,
+      "as_third": 0.0
+    },
+    "Norway": {
+      "rate": 1.0,
+      "as_winner": 0.0,
+      "as_runner_up": 0.0,
+      "as_third": 0.0
+    },
+    "Paraguay": {
+      "rate": 1.0,
+      "as_winner": 0.0,
+      "as_runner_up": 0.0,
+      "as_third": 0.0
+    },
+    "Portugal": {
+      "rate": 1.0,
+      "as_winner": 0.0,
+      "as_runner_up": 0.0,
+      "as_third": 0.0
+    },
+    "Spain": {
+      "rate": 1.0,
+      "as_winner": 0.0,
+      "as_runner_up": 0.0,
+      "as_third": 0.0
+    },
+    "Switzerland": {
+      "rate": 1.0,
+      "as_winner": 0.0,
+      "as_runner_up": 0.0,
+      "as_third": 0.0
+    },
+    "United States": {
+      "rate": 1.0,
+      "as_winner": 0.0,
+      "as_runner_up": 0.0,
+      "as_third": 0.0
+    }
+  },
+  "knockout_progression": {
+    "Argentina": {
+      "r32": 1.0,
+      "r16": 1.0,
+      "qf": 0.7902,
+      "sf": 0.5925,
+      "final": 0.4083,
+      "champion": 0.2605
+    },
+    "Belgium": {
+      "r32": 1.0,
+      "r16": 1.0,
+      "qf": 0.6883,
+      "sf": 0.3648,
+      "final": 0.1573,
+      "champion": 0.0797
+    },
+    "Brazil": {
+      "r32": 1.0,
+      "r16": 1.0,
+      "qf": 0.6732,
+      "sf": 0.3607,
+      "final": 0.1818,
+      "champion": 0.081
+    },
+    "Canada": {
+      "r32": 1.0,
+      "r16": 1.0,
+      "qf": 0.0,
+      "sf": 0.0,
+      "final": 0.0,
+      "champion": 0.0
+    },
+    "Colombia": {
+      "r32": 1.0,
+      "r16": 1.0,
+      "qf": 0.5831,
+      "sf": 0.205,
+      "final": 0.0903,
+      "champion": 0.032
+    },
+    "Egypt": {
+      "r32": 1.0,
+      "r16": 1.0,
+      "qf": 0.2098,
+      "sf": 0.0673,
+      "final": 0.0182,
+      "champion": 0.0037
+    },
+    "England": {
+      "r32": 1.0,
+      "r16": 1.0,
+      "qf": 0.6909,
+      "sf": 0.4065,
+      "final": 0.2253,
+      "champion": 0.1235
+    },
+    "France": {
+      "r32": 1.0,
+      "r16": 1.0,
+      "qf": 1.0,
+      "sf": 0.7546,
+      "final": 0.4374,
+      "champion": 0.2379
+    },
+    "Mexico": {
+      "r32": 1.0,
+      "r16": 1.0,
+      "qf": 0.3091,
+      "sf": 0.1419,
+      "final": 0.0495,
+      "champion": 0.0193
+    },
+    "Morocco": {
+      "r32": 1.0,
+      "r16": 1.0,
+      "qf": 1.0,
+      "sf": 0.2454,
+      "final": 0.0797,
+      "champion": 0.0286
+    },
+    "Norway": {
+      "r32": 1.0,
+      "r16": 1.0,
+      "qf": 0.3268,
+      "sf": 0.0909,
+      "final": 0.0263,
+      "champion": 0.0084
+    },
+    "Paraguay": {
+      "r32": 1.0,
+      "r16": 1.0,
+      "qf": 0.0,
+      "sf": 0.0,
+      "final": 0.0,
+      "champion": 0.0
+    },
+    "Portugal": {
+      "r32": 1.0,
+      "r16": 1.0,
+      "qf": 0.5231,
+      "sf": 0.2664,
+      "final": 0.1225,
+      "champion": 0.0465
+    },
+    "Spain": {
+      "r32": 1.0,
+      "r16": 1.0,
+      "qf": 0.4769,
+      "sf": 0.275,
+      "final": 0.1306,
+      "champion": 0.0574
+    },
+    "Switzerland": {
+      "r32": 1.0,
+      "r16": 1.0,
+      "qf": 0.4169,
+      "sf": 0.1352,
+      "final": 0.044,
+      "champion": 0.0127
+    },
+    "United States": {
+      "r32": 1.0,
+      "r16": 1.0,
+      "qf": 0.3117,
+      "sf": 0.0938,
+      "final": 0.0288,
+      "champion": 0.0088
+    }
+  },
+  "most_likely_final": [
+    "Argentina",
+    "France"
+  ],
+  "champion_probabilities": [
+    {
+      "team": "Argentina",
+      "probability": 0.2605
+    },
+    {
+      "team": "France",
+      "probability": 0.2379
+    },
+    {
+      "team": "England",
+      "probability": 0.1235
+    },
+    {
+      "team": "Brazil",
+      "probability": 0.081
+    },
+    {
+      "team": "Belgium",
+      "probability": 0.0797
+    },
+    {
+      "team": "Spain",
+      "probability": 0.0574
+    },
+    {
+      "team": "Portugal",
+      "probability": 0.0465
+    },
+    {
+      "team": "Colombia",
+      "probability": 0.032
+    },
+    {
+      "team": "Morocco",
+      "probability": 0.0286
+    },
+    {
+      "team": "Mexico",
+      "probability": 0.0193
+    },
+    {
+      "team": "Switzerland",
+      "probability": 0.0127
+    },
+    {
+      "team": "United States",
+      "probability": 0.0088
+    },
+    {
+      "team": "Norway",
+      "probability": 0.0084
+    },
+    {
+      "team": "Egypt",
+      "probability": 0.0037
+    },
+    {
+      "team": "Canada",
+      "probability": 0.0
+    },
+    {
+      "team": "Paraguay",
+      "probability": 0.0
+    }
+  ],
+  "argentina_path": {
+    "won_group": 1.0,
+    "runner_up": 0.0,
+    "eliminated": 0.0,
+    "r32_opponents": {}
+  },
+  "most_common_sf_pairs": {
+    "sf1": [
+      "England",
+      "France",
+      0.3064
+    ],
+    "sf2": [
+      "Argentina",
+      "Belgium",
+      0.2173
+    ]
+  }
+}

@@ -1,0 +1,3972 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WC 2026 — Prediction Model</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:            #0d1117;
+      --surface:       #161b22;
+      --surface2:      #21262d;
+      --surface3:      #2d333b;
+      --border:        #30363d;
+      --border-sub:    #21262d;
+      --text:          #e6edf3;
+      --muted:         #8b949e;
+      --dim:           #6e7681;
+      --blue:          #1f6feb;
+      --blue-bright:   #58a6ff;
+      --blue-dim:      #0d2a5e;
+      --blue-dark:     #0a1832;
+      --orange:        #da3633;
+      --orange-bright: #f0883e;
+      --orange-dim:    #2e1010;
+      --green:         #238636;
+      --green-bright:  #3fb950;
+      --green-dim:     #0d2016;
+      --amber:         #9e6a03;
+      --amber-bright:  #e3b341;
+      --amber-dim:     #241a03;
+      --draw-col:      #484f58;
+      --gold:          #f0c040;
+      --r:             6px;
+      --r-sm:          4px;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    /* ─── Header ──────────────────────────────────────────── */
+    .header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 22px 32px 18px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-inner { max-width: 1360px; margin: 0 auto; }
+    .header-row1 { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+
+    .header h1 {
+      font-size: 18px; font-weight: 700; letter-spacing: -.3px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .h-tag {
+      font-size: 10px; font-weight: 600;
+      background: var(--blue-dim); color: var(--blue-bright);
+      border: 1px solid var(--blue); border-radius: 3px;
+      padding: 2px 7px; letter-spacing: .6px; text-transform: uppercase;
+    }
+    .header-sub { color: var(--muted); font-size: 12px; margin-top: 3px; }
+
+    /* search */
+    .search-wrap { position: relative; flex-shrink: 0; min-width: 210px; }
+    .search-wrap svg { position: absolute; left: 9px; top: 50%; transform: translateY(-50%); color: var(--dim); pointer-events: none; }
+    .search-input {
+      width: 100%; background: var(--surface2); border: 1px solid var(--border);
+      border-radius: var(--r); color: var(--text); font-family: inherit;
+      font-size: 13px; padding: 7px 12px 7px 31px; outline: none;
+      transition: border-color .15s;
+    }
+    .search-input:focus { border-color: var(--blue-bright); }
+    .search-input::placeholder { color: var(--dim); }
+    .search-drop {
+      display: none; position: absolute; top: calc(100% + 5px);
+      left: 0; right: 0; background: var(--surface2);
+      border: 1px solid var(--border); border-radius: var(--r);
+      z-index: 300; overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0,0,0,.5);
+    }
+    .search-drop.open { display: block; }
+    .s-item {
+      padding: 8px 12px; cursor: pointer; font-size: 13px;
+      display: flex; align-items: center; gap: 9px; transition: background .1s;
+    }
+    .s-item:hover { background: var(--surface3); }
+    .s-grp { font-size: 10px; font-weight: 600; color: var(--muted); background: var(--surface); border: 1px solid var(--border); border-radius: 3px; padding: 1px 5px; margin-left: auto; }
+
+    /* metrics */
+    .metrics { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+    .metric-tile {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 11px 16px; min-width: 100px;
+    }
+    .metric-tile .val { font-size: 26px; font-weight: 700; color: var(--blue-bright); line-height: 1; }
+    .metric-tile .lbl { font-size: 10px; color: var(--muted); margin-top: 3px; text-transform: uppercase; letter-spacing: .5px; }
+    .metric-tile.wide { min-width: 190px; }
+    .final-teams { font-size: 15px; font-weight: 700; margin-top: 3px; }
+    .final-vs { color: var(--muted); font-weight: 400; margin: 0 4px; }
+
+    /* ─── Main ────────────────────────────────────────────── */
+    .main { max-width: 1360px; margin: 0 auto; padding: 22px 32px; }
+
+    /* nav */
+    .nav-tabs { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 20px; }
+    .nav-tab {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 20px; padding: 5px 13px;
+      font-size: 12px; font-weight: 500; color: var(--muted);
+      cursor: pointer; transition: all .12s; white-space: nowrap; font-family: inherit;
+    }
+    .nav-tab:hover { border-color: var(--blue-bright); color: var(--blue-bright); }
+    .nav-tab.active { background: var(--blue); border-color: var(--blue); color: #fff; }
+    .nav-tab.special.active { background: var(--surface2); border-color: var(--blue-bright); color: var(--blue-bright); }
+
+    /* sub-tabs */
+    .sub-tabs { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 18px; }
+    .sub-tab {
+      background: transparent; border: none; border-bottom: 2px solid transparent;
+      padding: 8px 18px; font-size: 13px; font-weight: 500; color: var(--muted);
+      cursor: pointer; margin-bottom: -1px; transition: all .12s; font-family: inherit;
+    }
+    .sub-tab:hover { color: var(--text); }
+    .sub-tab.active { color: var(--blue-bright); border-bottom-color: var(--blue-bright); }
+
+    /* ─── Standings ───────────────────────────────────────── */
+    .standings-grid { display: flex; flex-direction: column; gap: 7px; }
+    .standing-row {
+      background: var(--surface); border: 1px solid var(--border);
+      border-left: 3px solid var(--border);
+      border-radius: var(--r); padding: 13px 16px;
+      display: grid;
+      grid-template-columns: 28px 1fr 160px 70px 110px 90px;
+      align-items: center; gap: 12px;
+      transition: background .12s;
+    }
+    .standing-row:hover { background: var(--surface2); }
+    .standing-row.t-adv  { border-left-color: var(--green); }
+    .standing-row.t-pos  { border-left-color: var(--amber); }
+    .standing-row.t-elim { border-left-color: var(--border); }
+    .s-rank { font-size: 14px; font-weight: 700; color: var(--dim); }
+    .s-name { font-weight: 600; font-size: 14px; }
+    .s-bar-bg { background: var(--surface2); border-radius: 3px; height: 5px; overflow: hidden; }
+    .s-bar-fill { height: 100%; border-radius: 3px; }
+    .s-num { font-size: 13px; font-weight: 600; text-align: right; }
+    .s-sub { font-size: 10px; color: var(--dim); display: block; margin-top: 1px; }
+    .s-champ { font-size: 13px; font-weight: 700; color: var(--gold); text-align: right; }
+
+    .badge { display: inline-block; padding: 2px 7px; border-radius: 3px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .4px; white-space: nowrap; }
+    .b-adv  { background: var(--green-dim); color: var(--green-bright); border: 1px solid var(--green); }
+    .b-pos  { background: var(--amber-dim); color: var(--amber-bright); border: 1px solid var(--amber); }
+    .b-elim { background: var(--surface2); color: var(--dim); border: 1px solid var(--border); }
+
+    /* ─── Match grid ──────────────────────────────────────── */
+    .matches-grid { display: flex; flex-direction: column; gap: 8px; }
+    @media (min-width: 980px) {
+      .matches-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    }
+
+    .match-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r); overflow: hidden;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    .match-card:hover { border-color: var(--surface3); }
+    .match-card.uncertain { border-color: var(--amber); }
+    .match-card.uncertain .mc-head { background: #1c1500; }
+
+    /* card head */
+    .mc-head { padding: 13px 15px 9px; cursor: pointer; user-select: none; }
+    .mc-row1 { display: grid; grid-template-columns: 1fr auto 1fr; align-items: flex-start; gap: 8px; }
+
+    .m-side { }
+    .m-side.right { text-align: right; }
+    .m-name { font-weight: 600; font-size: 14px; line-height: 1.3; }
+    .m-flag { font-size: 15px; }
+
+    .m-mid { display: flex; flex-direction: column; align-items: center; gap: 4px; padding-top: 2px; }
+    .m-vs { font-size: 10px; font-weight: 600; color: var(--dim); letter-spacing: .3px; }
+
+    /* consensus badge */
+    .cons-badge {
+      display: inline-block; padding: 2px 6px; border-radius: 3px;
+      font-size: 10px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase;
+    }
+    .c-strong   { background: var(--green-dim); color: var(--green-bright); border: 1px solid var(--green); }
+    .c-moderate { background: var(--blue-dim);  color: var(--blue-bright);  border: 1px solid var(--blue); }
+    .c-split    { background: var(--amber-dim); color: var(--amber-bright); border: 1px solid var(--amber); }
+
+    /* model dots */
+    .model-dots { display: flex; gap: 3px; justify-content: center; margin-top: 5px; }
+    .mdot {
+      font-size: 8px; font-weight: 700; padding: 2px 3px;
+      border-radius: 2px; letter-spacing: 0; line-height: 1.3; cursor: default;
+    }
+    .md-t1   { background: var(--blue-dark); color: var(--blue-bright); border: 1px solid #1a4a9a; }
+    .md-t2   { background: var(--orange-dim); color: var(--orange-bright); border: 1px solid #7a2020; }
+    .md-even { background: var(--surface2); color: var(--dim); border: 1px solid var(--border); }
+
+    /* verdict + unc */
+    .mc-verdict { padding: 2px 15px 6px; font-size: 12px; color: var(--muted); font-style: italic; line-height: 1.4; }
+    .mc-unc { padding: 0 15px 6px; }
+    .unc-flag {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 10px; font-weight: 700;
+      color: var(--amber-bright); background: var(--amber-dim);
+      border: 1px solid var(--amber); border-radius: 3px; padding: 2px 7px;
+    }
+
+    /* prob bar */
+    .mc-probs { padding: 2px 15px 12px; }
+    .prob-nums { display: flex; justify-content: space-between; font-weight: 700; font-size: 12px; margin-bottom: 5px; }
+    .pn1 { color: var(--blue-bright); }
+    .pnd { color: var(--dim); font-weight: 500; font-size: 11px; }
+    .pn2 { color: var(--orange-bright); }
+    .prob-bar { height: 9px; border-radius: 5px; overflow: hidden; display: flex; }
+    .pb1 { background: linear-gradient(90deg, #0a2a6e 0%, var(--blue) 100%); }
+    .pbd { background: var(--draw-col); }
+    .pb2 { background: linear-gradient(90deg, var(--orange) 0%, #b52320 100%); }
+    .prob-foot { display: flex; justify-content: space-between; font-size: 11px; color: var(--dim); margin-top: 5px; align-items: center; }
+    .conf-chip {
+      font-size: 10px; font-weight: 600; color: var(--dim);
+      background: var(--surface2); border: 1px solid var(--border-sub);
+      border-radius: 3px; padding: 1px 6px;
+    }
+
+    /* expand toggle */
+    .mc-toggle {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 7px 15px; border-top: 1px solid var(--border);
+      font-size: 11px; color: var(--muted); cursor: pointer; user-select: none;
+      transition: background .12s, color .12s;
+    }
+    .mc-toggle:hover { background: var(--surface2); color: var(--text); }
+    .mc-arr { font-size: 9px; transition: transform .2s; }
+    .match-card.expanded .mc-arr { transform: rotate(180deg); }
+    .mc-vote-preview { display: flex; align-items: center; gap: 5px; }
+    .vp-score { font-weight: 700; font-size: 11px; }
+    .vp-t1 { color: var(--blue-bright); }
+    .vp-t2 { color: var(--orange-bright); }
+    .vp-sep { color: var(--dim); }
+
+    /* expand content */
+    .mc-expand { display: none; }
+    .match-card.expanded .mc-expand { display: block; }
+    .mc-expand-inner { padding: 15px; border-top: 1px solid var(--border); background: var(--surface2); }
+
+    .analytical-note { font-size: 13px; color: #c9d1d9; line-height: 1.75; margin-bottom: 14px; }
+
+    .detail-row { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 14px; }
+    .detail-chip {
+      font-size: 12px; color: var(--muted);
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r-sm); padding: 4px 10px;
+      display: inline-flex; align-items: baseline; gap: 5px;
+    }
+    .dc-lbl { font-size: 10px; color: var(--dim); text-transform: uppercase; letter-spacing: .3px; }
+    .dc-val { color: var(--text); font-weight: 600; }
+
+    .vote-section { }
+    .vote-lbl { font-size: 10px; font-weight: 600; color: var(--dim); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 7px; display: block; }
+    .vote-rows { display: flex; flex-direction: column; gap: 6px; }
+    .vote-row { display: flex; align-items: flex-start; gap: 8px; }
+    .vr-team { font-size: 11px; color: var(--muted); min-width: 105px; flex-shrink: 0; padding-top: 2px; }
+    .votes { display: flex; flex-wrap: wrap; gap: 4px; }
+    .vote { display: inline-block; padding: 2px 7px; border-radius: 3px; font-size: 11px; font-weight: 600; }
+    .v-t1   { background: var(--blue-dark); color: var(--blue-bright); border: 1px solid #1a4a9a; }
+    .v-t2   { background: var(--orange-dim); color: var(--orange-bright); border: 1px solid #7a2020; }
+    .v-even { background: var(--surface); color: var(--dim); border: 1px solid var(--border); }
+
+    /* ─── Insights tab ────────────────────────────────────── */
+    .insight-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 22px; }
+    .insight-card h3 { font-size: 11px; font-weight: 700; color: var(--blue-bright); text-transform: uppercase; letter-spacing: .6px; margin-bottom: 12px; }
+    .narrative { color: #c9d1d9; line-height: 1.8; font-size: 14px; }
+
+    .stats-tbl { width: 100%; border-collapse: collapse; margin-top: 22px; }
+    .stats-tbl th {
+      font-size: 10px; font-weight: 700; color: var(--dim); text-transform: uppercase;
+      letter-spacing: .5px; padding: 8px 10px; border-bottom: 1px solid var(--border);
+      text-align: right; white-space: nowrap;
+    }
+    .stats-tbl th:first-child { text-align: left; }
+    .stats-tbl td { padding: 9px 10px; border-bottom: 1px solid var(--border-sub); font-size: 13px; text-align: right; }
+    .stats-tbl tr:last-child td { border-bottom: none; }
+    .stats-tbl td:first-child { text-align: left; font-weight: 600; }
+    .hi-adv  { color: var(--blue-bright); font-weight: 700; }
+    .hi-champ { color: var(--gold); font-weight: 700; }
+
+    /* ─── Page header (champion / heatmap) ───────────────── */
+    .pg-head { margin-bottom: 18px; }
+    .pg-head h2 { font-size: 20px; font-weight: 700; }
+    .pg-head p { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+    /* ─── Champion table ──────────────────────────────────── */
+    .champ-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; }
+    .champ-tbl { width: 100%; border-collapse: collapse; min-width: 700px; }
+    .champ-tbl th {
+      background: var(--surface); padding: 9px 12px;
+      font-size: 10px; font-weight: 700; color: var(--dim);
+      text-transform: uppercase; letter-spacing: .5px;
+      border-bottom: 1px solid var(--border); text-align: right; white-space: nowrap;
+    }
+    .champ-tbl th:first-child { text-align: left; width: 40px; }
+    .champ-tbl th:nth-child(2) { text-align: left; min-width: 170px; }
+    .champ-tbl th:nth-child(3) { min-width: 110px; }
+    .champ-tbl td { padding: 8px 12px; border-bottom: 1px solid var(--border-sub); font-size: 12px; text-align: right; transition: background .1s; }
+    .champ-tbl tr:hover td { background: rgba(255,255,255,.03); }
+    .champ-tbl tr:last-child td { border-bottom: none; }
+    .champ-tbl td:first-child { text-align: right; color: var(--dim); font-weight: 700; }
+    .champ-tbl td:nth-child(2) { text-align: left; font-weight: 600; }
+    .ct-name { display: flex; align-items: center; gap: 7px; }
+    .ct-grp { background: var(--surface2); border: 1px solid var(--border); border-radius: 3px; padding: 1px 5px; font-size: 10px; color: var(--muted); font-weight: 500; }
+    .ct-bar-bg { background: var(--surface2); border-radius: 3px; height: 7px; overflow: hidden; }
+    .ct-bar-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--blue) 0%, var(--blue-bright) 100%); }
+    .ct-pct { color: var(--blue-bright); font-weight: 700; font-size: 13px; }
+    .hide-sm { }
+
+    /* ─── Heatmap ─────────────────────────────────────────── */
+    .ko-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; }
+    .ko-tbl { width: 100%; border-collapse: collapse; min-width: 680px; }
+    .ko-tbl th {
+      background: var(--surface); padding: 9px 12px;
+      font-size: 10px; font-weight: 700; color: var(--dim);
+      text-transform: uppercase; letter-spacing: .5px;
+      border-bottom: 1px solid var(--border);
+      text-align: center; white-space: nowrap;
+    }
+    .ko-tbl th:first-child { text-align: left; min-width: 170px; }
+    .ko-tbl td {
+      padding: 6px 10px; border-bottom: 1px solid rgba(48,54,61,.4);
+      font-size: 12px; font-weight: 600; text-align: center;
+    }
+    .ko-tbl td:first-child {
+      background: var(--surface); text-align: left;
+      border-right: 1px solid var(--border); font-weight: 600; white-space: nowrap;
+    }
+    .ko-tbl tr:last-child td { border-bottom: none; }
+    .ko-tbl tr:hover td:not(:first-child) { filter: brightness(1.12); }
+    .ko-grp { font-size: 10px; color: var(--dim); margin-left: 5px; font-weight: 400; }
+
+    /* ─── Responsive ──────────────────────────────────────── */
+    @media (max-width: 960px) {
+      .matches-grid { grid-template-columns: 1fr !important; }
+    }
+    @media (max-width: 860px) {
+      .header { padding: 14px 18px 12px; }
+      .main { padding: 16px 18px; }
+      .standing-row { grid-template-columns: 26px 1fr 120px 70px 80px; }
+      .standing-row > *:nth-child(3) { display: none; }
+      .hide-sm { display: none; }
+    }
+    @media (max-width: 600px) {
+      .header h1 { font-size: 15px; }
+      .metrics { gap: 7px; }
+      .metric-tile { min-width: 80px; padding: 9px 12px; }
+      .metric-tile .val { font-size: 22px; }
+      .search-wrap { min-width: 140px; }
+      .standing-row { grid-template-columns: 24px 1fr 70px 80px; }
+      .standing-row > *:nth-child(5) { display: none; }
+    }
+
+    /* ─── Chart containers ────────────────────────────────────── */
+    .chart-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 16px; margin-bottom: 14px; }
+    .chart-box h4 { font-size: 10px; font-weight: 700; color: var(--dim); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 12px; }
+    .chart-canvas-wrap { position: relative; }
+
+    /* ─── Matchup Tool ────────────────────────────────────────── */
+    .tool-section { max-width: 900px; }
+    .tool-row { display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; margin-bottom: 20px; }
+    .tool-field { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 180px; }
+    .tool-field label { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .4px; }
+    .tool-select, .tool-input {
+      background: var(--surface2); border: 1px solid var(--border); border-radius: var(--r);
+      color: var(--text); font-family: inherit; font-size: 13px;
+      padding: 8px 12px; outline: none; transition: border-color .15s; width: 100%;
+    }
+    .tool-select:focus, .tool-input:focus { border-color: var(--blue-bright); }
+    .tool-btn {
+      background: var(--blue); border: 1px solid var(--blue); border-radius: var(--r);
+      color: #fff; font-family: inherit; font-size: 13px; font-weight: 600;
+      padding: 8px 20px; cursor: pointer; transition: all .12s; white-space: nowrap;
+    }
+    .tool-btn:hover { background: #1a5fcf; }
+    .tool-btn:disabled { opacity: .5; cursor: not-allowed; }
+
+    .api-offline {
+      background: var(--surface2); border: 1px solid var(--border); border-radius: var(--r);
+      padding: 24px; font-family: 'Courier New', monospace; font-size: 13px;
+      color: var(--muted); line-height: 1.8; display: none;
+    }
+    .api-offline code { color: var(--amber-bright); }
+    .api-offline.visible { display: block; }
+
+    .matchup-result { display: none; }
+    .matchup-result.visible { display: block; }
+    .mr-probs { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 18px; margin-bottom: 14px; }
+    .mr-title { font-size: 16px; font-weight: 700; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
+    .mr-conf { font-size: 11px; font-weight: 600; color: var(--dim); background: var(--surface2); border: 1px solid var(--border); border-radius: 3px; padding: 2px 8px; }
+    .mr-note { font-size: 13px; color: #c9d1d9; line-height: 1.75; margin-bottom: 14px; background: var(--surface2); border: 1px solid var(--border); border-radius: var(--r); padding: 14px; }
+
+    .comparisons-list { margin-top: 14px; }
+    .comp-item { display: flex; align-items: center; justify-content: space-between; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 10px 14px; margin-bottom: 6px; font-size: 13px; }
+    .comp-del { background: none; border: 1px solid var(--border); color: var(--dim); border-radius: 3px; padding: 2px 8px; cursor: pointer; font-size: 11px; }
+    .comp-del:hover { border-color: var(--orange); color: var(--orange-bright); }
+
+    /* ─── Live Updates ────────────────────────────────────────── */
+    .live-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    @media (max-width: 860px) { .live-grid { grid-template-columns: 1fr; } }
+    .live-section-title { font-size: 13px; font-weight: 700; color: var(--blue-bright); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+    .score-row { display: flex; gap: 8px; align-items: center; }
+    .score-input { width: 56px; text-align: center; background: var(--surface2); border: 1px solid var(--border); border-radius: var(--r-sm); color: var(--text); font-size: 15px; font-weight: 700; padding: 6px 8px; font-family: inherit; outline: none; }
+    .score-sep { font-size: 18px; font-weight: 700; color: var(--dim); }
+    .results-tbl { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .results-tbl th { font-size: 10px; font-weight: 700; color: var(--dim); text-transform: uppercase; letter-spacing: .4px; padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: left; }
+    .results-tbl td { padding: 8px 8px; border-bottom: 1px solid var(--border-sub); vertical-align: middle; }
+    .results-tbl tr:last-child td { border-bottom: none; }
+    .refresh-log { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--r); padding: 12px; font-family: 'Courier New', monospace; font-size: 11px; color: var(--muted); min-height: 80px; max-height: 200px; overflow-y: auto; margin-top: 12px; display: none; }
+    .refresh-log.visible { display: block; }
+    .log-line { margin-bottom: 3px; }
+    .log-line.ok { color: var(--green-bright); }
+    .log-line.err { color: var(--orange-bright); }
+    .diff-chip { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 3px; }
+    .diff-pos { background: var(--green-dim); color: var(--green-bright); border: 1px solid var(--green); }
+    .diff-neg { background: var(--orange-dim); color: var(--orange-bright); border: 1px solid var(--orange); }
+    .diff-neu { background: var(--surface2); color: var(--dim); border: 1px solid var(--border); }
+
+    /* ─── Schedule ────────────────────────────────────────────── */
+    .schedule-group { margin-bottom: 22px; }
+    .schedule-group-title { font-size: 12px; font-weight: 700; color: var(--blue-bright); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+    .schedule-match { display: flex; align-items: center; gap: 10px; padding: 8px 12px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-sm); margin-bottom: 4px; font-size: 12px; transition: background .1s; }
+    .schedule-match:hover { background: var(--surface2); }
+    .sc-date { color: var(--muted); min-width: 72px; font-size: 11px; }
+    .sc-time { color: var(--dim); min-width: 80px; font-size: 11px; }
+    .sc-teams { flex: 1; font-weight: 600; }
+    .sc-venue { color: var(--dim); font-size: 11px; text-align: right; }
+    .sc-badge { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .4px; padding: 2px 5px; border-radius: 2px; flex-shrink: 0; }
+    .sc-today { background: var(--gold); color: #000; }
+    .sc-past { background: var(--surface2); color: var(--dim); border: 1px solid var(--border); }
+    .sc-upcoming { background: var(--blue-dim); color: var(--blue-bright); border: 1px solid var(--blue); }
+    .sc-live { background: #e74c3c; color: #fff; animation: pulse 1.4s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.6} }
+    .r32-match { display:flex; align-items:center; gap:10px; padding:10px 14px; background:var(--surface); border:1px solid var(--border); border-radius:var(--r-sm); margin-bottom:6px; font-size:12px; transition:background .1s; }
+    .r32-match:hover { background:var(--surface2); }
+    .r32-match-id { font-size:10px; color:var(--dim); width:30px; flex-shrink:0; }
+    .r32-analyse-btn { margin-left:auto; padding:3px 10px; font-size:11px; font-weight:600; background:var(--blue); color:#fff; border:none; border-radius:3px; cursor:pointer; flex-shrink:0; }
+    .r32-analyse-btn:hover { background:var(--blue-bright); }
+
+    /* ─── Radar chart overlay ─────────────────────────────────── */
+    .radar-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+    @media (max-width: 700px) { .radar-wrap { grid-template-columns: 1fr; } }
+    .radar-box { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--r); padding: 12px; }
+    .radar-title { font-size: 11px; font-weight: 600; color: var(--muted); margin-bottom: 8px; text-align: center; }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <div class="header-row1">
+      <div>
+        <h1>World Cup 2026 — Prediction Model <span class="h-tag">Round of 16</span></h1>
+        <div class="header-sub">July 5, 2026 snapshot · 16-team knockout field · 6 heuristic models · 10,000 simulations</div>
+      </div>
+      <div class="search-wrap">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398l3.85 3.85a1 1 0 0 0 1.415-1.415l-3.868-3.833zm-5.242 1.43a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/>
+        </svg>
+        <input id="searchInput" type="text" class="search-input" placeholder="Search team…" autocomplete="off">
+        <div id="searchDrop" class="search-drop"></div>
+      </div>
+    </div>
+    <div class="metrics">
+      <div class="metric-tile"><div class="val">72</div><div class="lbl">Team comparisons</div></div>
+      <div class="metric-tile"><div class="val">48</div><div class="lbl">Teams available</div></div>
+      <div class="metric-tile"><div class="val">6</div><div class="lbl">Models</div></div>
+      <div class="metric-tile"><div class="val">10K</div><div class="lbl">Simulations</div></div>
+      <div class="metric-tile wide">
+        <div class="lbl">Most Likely Final</div>
+        <div class="final-teams">Argentina <span class="final-vs">vs</span> France</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+  <div style="padding:16px 0;color:var(--muted);font-size:12px;line-height:1.65">Frozen at the start of July 5, 2026; match results dated July 5 or later are excluded. Knockout odds use the supplied 16-team bracket and its locked July 4 results. Group tabs show retrospective team comparisons at this cutoff. Probabilities are heuristic estimates; model confidence is an internal weighting score.</div>
+  <div class="nav-tabs" id="navTabs"></div>
+  <div id="mainContent"></div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// MATCH INSIGHTS  (injected by scripts/generate_insights.py)
+// ═══════════════════════════════════════════════════════════════
+const MATCH_INSIGHTS = {
+  "Mexico vs South Africa": {
+    "verdict": "Mexico favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Mexico (attack-dominant+midfield_control) vs South Africa (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Mexico favoured across 6 of 6 models. Primary driver [TACTICAL]: Mexico (attack-dominant+midfield_control) vs South Africa (attack-dominant) \u2014 neutral stylistic matchup. Clear analytical advantage for Mexico \u2014 margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 27.6,
+    "team1": "Mexico",
+    "team2": "South Africa"
+  },
+  "Mexico vs South Korea": {
+    "verdict": "Mexico favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Mexico (attack-dominant+midfield_control) vs South Korea (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Mexico favoured across 6 of 6 models. Primary driver [TACTICAL]: Mexico (attack-dominant+midfield_control) vs South Korea (attack-dominant) \u2014 neutral stylistic matchup. Clear analytical advantage for Mexico \u2014 margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 73.9,
+    "team1": "Mexico",
+    "team2": "South Korea"
+  },
+  "Mexico vs Czech Republic": {
+    "verdict": "Mexico favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Mexico (attack-dominant+midfield_control) vs Czech Republic (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Mexico favoured across 6 of 6 models. Primary driver [TACTICAL]: Mexico (attack-dominant+midfield_control) vs Czech Republic (attack-dominant) \u2014 neutral stylistic matchup. Clear analytical advantage for Mexico \u2014 margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 30.1,
+    "team1": "Mexico",
+    "team2": "Czech Republic"
+  },
+  "South Africa vs South Korea": {
+    "verdict": "South Korea favoured across 5 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [],
+    "models_for_team2": [
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_even": [
+      "value"
+    ],
+    "key_driver": "South Africa (attack-dominant) vs South Korea (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": true,
+    "analytical_note": "South Korea favoured across 5 of 6 models. Primary driver [TACTICAL]: South Africa (attack-dominant) vs South Korea (attack-dominant) \u2014 neutral stylistic matchup. High draw probability (23%) \u2014 evenly matched across most dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 46.3,
+    "team1": "South Africa",
+    "team2": "South Korea"
+  },
+  "South Africa vs Czech Republic": {
+    "verdict": "Czech Republic backed by 2 of 6 models with South Africa competitive",
+    "model_consensus": "split",
+    "models_for_team1": [
+      "quality_form"
+    ],
+    "models_for_team2": [
+      "tactical",
+      "form_results"
+    ],
+    "models_even": [
+      "value",
+      "momentum",
+      "h2h"
+    ],
+    "key_driver": "South Africa (attack-dominant) vs Czech Republic (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": true,
+    "analytical_note": "Czech Republic backed by 2 of 6 models with South Africa competitive. Primary driver [TACTICAL]: South Africa (attack-dominant) vs Czech Republic (attack-dominant) \u2014 neutral stylistic matchup. High draw probability (26%) \u2014 evenly matched across most dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 2.5,
+    "team1": "South Africa",
+    "team2": "Czech Republic"
+  },
+  "South Korea vs Czech Republic": {
+    "verdict": "South Korea favoured across 5 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [
+      "value"
+    ],
+    "key_driver": "South Korea (attack-dominant) vs Czech Republic (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": true,
+    "analytical_note": "South Korea favoured across 5 of 6 models. Primary driver [TACTICAL]: South Korea (attack-dominant) vs Czech Republic (attack-dominant) \u2014 neutral stylistic matchup. High draw probability (23%) \u2014 evenly matched across most dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": -43.8,
+    "team1": "South Korea",
+    "team2": "Czech Republic"
+  },
+  "Canada vs Bosnia-Herzegovina": {
+    "verdict": "Canada favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Canada (attack-dominant) vs Bosnia-Herzegovina (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Canada favoured across 6 of 6 models. Primary driver [TACTICAL]: Canada (attack-dominant) vs Bosnia-Herzegovina (attack-dominant) \u2014 neutral stylistic matchup. Clear analytical advantage for Canada \u2014 margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 79.1,
+    "team1": "Canada",
+    "team2": "Bosnia-Herzegovina"
+  },
+  "Canada vs Qatar": {
+    "verdict": "Canada favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Canada (attack-dominant) vs Qatar (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Canada favoured across 6 of 6 models. Primary driver [TACTICAL]: Canada (attack-dominant) vs Qatar (attack-dominant) \u2014 neutral stylistic matchup. Clear analytical advantage for Canada \u2014 margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 91.3,
+    "team1": "Canada",
+    "team2": "Qatar"
+  },
+  "Canada vs Switzerland": {
+    "verdict": "Switzerland backed by 2 of 6 models with Canada competitive",
+    "model_consensus": "split",
+    "models_for_team1": [
+      "quality_form"
+    ],
+    "models_for_team2": [
+      "tactical",
+      "momentum"
+    ],
+    "models_even": [
+      "value",
+      "form_results",
+      "h2h"
+    ],
+    "key_driver": "Canada (attack-dominant) vs Switzerland (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": true,
+    "analytical_note": "Switzerland backed by 2 of 6 models with Canada competitive. Primary driver [TACTICAL]: Canada (attack-dominant) vs Switzerland (attack-dominant) \u2014 neutral stylistic matchup. High draw probability (23%) \u2014 evenly matched across most dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": -124.4,
+    "team1": "Canada",
+    "team2": "Switzerland"
+  },
+  "Bosnia-Herzegovina vs Qatar": {
+    "verdict": "Bosnia-Herzegovina backed by 3 of 6 models with Qatar competitive",
+    "model_consensus": "split",
+    "models_for_team1": [
+      "form_results",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [
+      "quality_form"
+    ],
+    "models_even": [
+      "value",
+      "tactical"
+    ],
+    "key_driver": "Bosnia-Herzegovina (attack-dominant) vs Qatar (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": true,
+    "analytical_note": "Bosnia-Herzegovina backed by 3 of 6 models with Qatar competitive. Primary driver [TACTICAL]: Bosnia-Herzegovina (attack-dominant) vs Qatar (attack-dominant) \u2014 neutral stylistic matchup. High draw probability (24%) \u2014 evenly matched across most dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 12.2,
+    "team1": "Bosnia-Herzegovina",
+    "team2": "Qatar"
+  },
+  "Bosnia-Herzegovina vs Switzerland": {
+    "verdict": "Switzerland favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [],
+    "models_for_team2": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_even": [],
+    "key_driver": "Bosnia-Herzegovina (attack-dominant) vs Switzerland (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Switzerland favoured across 6 of 6 models. Primary driver [TACTICAL]: Bosnia-Herzegovina (attack-dominant) vs Switzerland (attack-dominant) \u2014 neutral stylistic matchup. Clear analytical advantage for Switzerland \u2014 margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": -203.5,
+    "team1": "Bosnia-Herzegovina",
+    "team2": "Switzerland"
+  },
+  "Qatar vs Switzerland": {
+    "verdict": "Switzerland favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [],
+    "models_for_team2": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_even": [],
+    "key_driver": "Qatar (attack-dominant) vs Switzerland (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Switzerland favoured across 6 of 6 models. Primary driver [TACTICAL]: Qatar (attack-dominant) vs Switzerland (attack-dominant) \u2014 neutral stylistic matchup. Clear analytical advantage for Switzerland \u2014 margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": -215.7,
+    "team1": "Qatar",
+    "team2": "Switzerland"
+  },
+  "Brazil vs Morocco": {
+    "verdict": "Brazil favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Brazil (attack-dominant+midfield_control) vs Morocco (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Brazil favoured across 6 of 6 models. Primary driver [TACTICAL]: Brazil (attack-dominant+midfield_control) vs Morocco (attack-dominant) \u2014 neutral stylistic matchup. Clear analytical advantage for Brazil \u2014 margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 301.4,
+    "team1": "Brazil",
+    "team2": "Morocco"
+  },
+  "Brazil vs Haiti": {
+    "verdict": "Brazil favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Brazil (attack-dominant+midfield_control) vs Haiti (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Brazil favoured across 6 of 6 models. Primary driver [TACTICAL]: Brazil (attack-dominant+midfield_control) vs Haiti (attack-dominant) \u2014 neutral stylistic matchup. Clear analytical advantage for Brazil \u2014 margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 599.5,
+    "team1": "Brazil",
+    "team2": "Haiti"
+  },
+  "Brazil vs Scotland": {
+    "verdict": "Brazil favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Brazil (attack-dominant+midfield_control) vs Scotland (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Brazil favoured across 6 of 6 models. Primary driver [TACTICAL]: Brazil (attack-dominant+midfield_control) vs Scotland (attack-dominant) \u2014 neutral stylistic matchup. Clear analytical advantage for Brazil \u2014 margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 497.5,
+    "team1": "Brazil",
+    "team2": "Scotland"
+  },
+  "Morocco vs Haiti": {
+    "verdict": "Morocco favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Morocco (attack-dominant) vs Haiti (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Morocco favoured across 6 of 6 models. Primary driver [TACTICAL]: Morocco (attack-dominant) vs Haiti (attack-dominant) \u2014 neutral stylistic matchup. Clear analytical advantage for Morocco \u2014 margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 298.1,
+    "team1": "Morocco",
+    "team2": "Haiti"
+  },
+  "Morocco vs Scotland": {
+    "verdict": "Morocco favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Morocco (attack-dominant) vs Scotland (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Morocco favoured across 6 of 6 models. Primary driver [TACTICAL]: Morocco (attack-dominant) vs Scotland (attack-dominant) \u2014 neutral stylistic matchup. Clear analytical advantage for Morocco \u2014 margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 196.1,
+    "team1": "Morocco",
+    "team2": "Scotland"
+  },
+  "Haiti vs Scotland": {
+    "verdict": "Scotland backed by 4 of 6 models with Haiti competitive",
+    "model_consensus": "split",
+    "models_for_team1": [],
+    "models_for_team2": [
+      "value",
+      "tactical",
+      "quality_form",
+      "momentum"
+    ],
+    "models_even": [
+      "form_results",
+      "h2h"
+    ],
+    "key_driver": "Haiti (attack-dominant) vs Scotland (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Scotland backed by 4 of 6 models with Haiti competitive. Primary driver [TACTICAL]: Haiti (attack-dominant) vs Scotland (attack-dominant) \u2014 neutral stylistic matchup. Moderate confidence \u2014 data supports the favourite but upset window remains meaningful.",
+    "style_clash": null,
+    "value_gap_eur_m": -102.0,
+    "team1": "Haiti",
+    "team2": "Scotland"
+  },
+  "United States vs Paraguay": {
+    "verdict": "United States favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "United States (attack-dominant) vs Paraguay (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "United States favoured across 6 of 6 models. Primary driver [TACTICAL]: United States (attack-dominant) vs Paraguay (attack-dominant) \u2014 neutral stylistic matchup. Clear analytical advantage for United States \u2014 margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 208.4,
+    "team1": "United States",
+    "team2": "Paraguay"
+  },
+  "United States vs Australia": {
+    "verdict": "United States favoured across 5 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [
+      "form_results"
+    ],
+    "key_driver": "United States (attack-dominant) vs Australia (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "United States favoured across 5 of 6 models. Primary driver [TACTICAL]: United States (attack-dominant) vs Australia (attack-dominant) \u2014 neutral stylistic matchup. Clear analytical advantage for United States \u2014 margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 270.1,
+    "team1": "United States",
+    "team2": "Australia"
+  },
+  "United States vs Turkey": {
+    "verdict": "United States backed by 3 of 6 models with Turkey competitive",
+    "model_consensus": "split",
+    "models_for_team1": [
+      "tactical",
+      "quality_form",
+      "momentum"
+    ],
+    "models_for_team2": [
+      "form_results",
+      "h2h"
+    ],
+    "models_even": [
+      "value"
+    ],
+    "key_driver": "United States (attack-dominant) vs Turkey (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": true,
+    "analytical_note": "United States backed by 3 of 6 models with Turkey competitive. Primary driver [TACTICAL]: United States (attack-dominant) vs Turkey (attack-dominant) \u2014 neutral stylistic matchup. High draw probability (22%) \u2014 evenly matched across most dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": -5.6,
+    "team1": "United States",
+    "team2": "Turkey"
+  },
+  "Paraguay vs Australia": {
+    "verdict": "Australia backed by 3 of 6 models with Paraguay competitive",
+    "model_consensus": "split",
+    "models_for_team1": [],
+    "models_for_team2": [
+      "tactical",
+      "quality_form",
+      "momentum"
+    ],
+    "models_even": [
+      "value",
+      "form_results",
+      "h2h"
+    ],
+    "key_driver": "Paraguay (attack-dominant) vs Australia (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": true,
+    "analytical_note": "Australia backed by 3 of 6 models with Paraguay competitive. Primary driver [TACTICAL]: Paraguay (attack-dominant) vs Australia (attack-dominant) \u2014 neutral stylistic matchup. High draw probability (24%) \u2014 evenly matched across most dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 61.7,
+    "team1": "Paraguay",
+    "team2": "Australia"
+  },
+  "Paraguay vs Turkey": {
+    "verdict": "Turkey favoured across 5 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "quality_form"
+    ],
+    "models_for_team2": [
+      "value",
+      "tactical",
+      "form_results",
+      "momentum",
+      "h2h"
+    ],
+    "models_even": [],
+    "key_driver": "Paraguay (attack-dominant) vs Turkey (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Turkey favoured across 5 of 6 models. Primary driver [TACTICAL]: Paraguay (attack-dominant) vs Turkey (attack-dominant) \u2014 neutral stylistic matchup. Moderate confidence \u2014 data supports the favourite but upset window remains meaningful.",
+    "style_clash": null,
+    "value_gap_eur_m": -214.0,
+    "team1": "Paraguay",
+    "team2": "Turkey"
+  },
+  "Australia vs Turkey": {
+    "verdict": "Turkey backed by 3 of 6 models with Australia competitive",
+    "model_consensus": "split",
+    "models_for_team1": [
+      "quality_form",
+      "h2h"
+    ],
+    "models_for_team2": [
+      "value",
+      "form_results",
+      "momentum"
+    ],
+    "models_even": [
+      "tactical"
+    ],
+    "key_driver": "Australia (attack-dominant) vs Turkey (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": true,
+    "analytical_note": "Turkey backed by 3 of 6 models with Australia competitive. Primary driver [TACTICAL]: Australia (attack-dominant) vs Turkey (attack-dominant) \u2014 neutral stylistic matchup. Narrow margin (3pp) \u2014 outcome sensitive to match-day variables.",
+    "style_clash": null,
+    "value_gap_eur_m": -275.7,
+    "team1": "Australia",
+    "team2": "Turkey"
+  },
+  "Germany vs Cura\u00e7ao": {
+    "verdict": "Germany favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Germany (attack-dominant) vs Cura\u00e7ao (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Germany favoured across 6 of 6 models. Primary driver [TACTICAL]: Germany (attack-dominant) vs Cura\u00e7ao (attack-dominant) \u2014 neutral stylistic matchup. Clear analytical advantage for Germany \u2014 margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 871.5,
+    "team1": "Germany",
+    "team2": "Cura\u00e7ao"
+  },
+  "Germany vs Ivory Coast": {
+    "verdict": "Germany favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Germany (attack-dominant) vs Ivory Coast (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Germany favoured across 6 of 6 models. Primary driver [TACTICAL]: Germany (attack-dominant) vs Ivory Coast (attack-dominant) \u2014 neutral stylistic matchup. Clear analytical advantage for Germany \u2014 margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 495.4,
+    "team1": "Germany",
+    "team2": "Ivory Coast"
+  },
+  "Germany vs Ecuador": {
+    "verdict": "Germany favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Germany (attack-dominant) vs Ecuador (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Germany favoured across 6 of 6 models. Primary driver [TACTICAL]: Germany (attack-dominant) vs Ecuador (attack-dominant) \u2014 neutral stylistic matchup. Clear analytical advantage for Germany \u2014 margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 597.3,
+    "team1": "Germany",
+    "team2": "Ecuador"
+  },
+  "Cura\u00e7ao vs Ivory Coast": {
+    "verdict": "Ivory Coast backed by 4 of 6 models with Cura\u00e7ao competitive",
+    "model_consensus": "split",
+    "models_for_team1": [],
+    "models_for_team2": [
+      "value",
+      "form_results",
+      "quality_form",
+      "momentum"
+    ],
+    "models_even": [
+      "tactical",
+      "h2h"
+    ],
+    "key_driver": "Cura\u00e7ao (attack-dominant) vs Ivory Coast (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Ivory Coast backed by 4 of 6 models with Cura\u00e7ao competitive. Primary driver [TACTICAL]: Cura\u00e7ao (attack-dominant) vs Ivory Coast (attack-dominant) \u2014 neutral stylistic matchup. Clear analytical advantage for Ivory Coast \u2014 margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": -376.1,
+    "team1": "Cura\u00e7ao",
+    "team2": "Ivory Coast"
+  },
+  "Cura\u00e7ao vs Ecuador": {
+    "verdict": "Ecuador favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [],
+    "models_for_team2": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_even": [],
+    "key_driver": "Cura\u00e7ao (attack-dominant) vs Ecuador (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Ecuador favoured across 6 of 6 models. Primary driver [TACTICAL]: Cura\u00e7ao (attack-dominant) vs Ecuador (attack-dominant) \u2014 neutral stylistic matchup. Clear analytical advantage for Ecuador \u2014 margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": -274.2,
+    "team1": "Cura\u00e7ao",
+    "team2": "Ecuador"
+  },
+  "Ivory Coast vs Ecuador": {
+    "verdict": "Ecuador backed by 3 of 6 models with Ivory Coast competitive",
+    "model_consensus": "split",
+    "models_for_team1": [
+      "value",
+      "quality_form"
+    ],
+    "models_for_team2": [
+      "tactical",
+      "momentum",
+      "h2h"
+    ],
+    "models_even": [
+      "form_results"
+    ],
+    "key_driver": "Ivory Coast (attack-dominant) vs Ecuador (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": true,
+    "analytical_note": "Ecuador backed by 3 of 6 models with Ivory Coast competitive. Primary driver [TACTICAL]: Ivory Coast (attack-dominant) vs Ecuador (attack-dominant) \u2014 neutral stylistic matchup. High draw probability (24%) \u2014 evenly matched across most dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 101.9,
+    "team1": "Ivory Coast",
+    "team2": "Ecuador"
+  },
+  "Netherlands vs Japan": {
+    "verdict": "Netherlands favoured across 5 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [
+      "form_results"
+    ],
+    "models_even": [],
+    "key_driver": "Netherlands (attack-dominant) vs Japan (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Netherlands favoured across 5 of 6 models. Primary driver [TACTICAL]: Netherlands (attack-dominant) vs Japan (attack-dominant) \u2014 neutral stylistic matchup. Moderate confidence \u2014 data supports the favourite but upset window remains meaningful.",
+    "style_clash": null,
+    "value_gap_eur_m": 368.5,
+    "team1": "Netherlands",
+    "team2": "Japan"
+  },
+  "Netherlands vs Sweden": {
+    "verdict": "Netherlands favoured across 5 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [
+      "value"
+    ],
+    "key_driver": "Netherlands (attack-dominant) vs Sweden (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Netherlands favoured across 5 of 6 models. Primary driver [TACTICAL]: Netherlands (attack-dominant) vs Sweden (attack-dominant) \u2014 neutral stylistic matchup. Clear analytical advantage for Netherlands \u2014 margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 158.5,
+    "team1": "Netherlands",
+    "team2": "Sweden"
+  },
+  "Netherlands vs Tunisia": {
+    "verdict": "Netherlands favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Netherlands (attack-dominant) vs Tunisia (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Netherlands favoured across 6 of 6 models. Primary driver [TACTICAL]: Netherlands (attack-dominant) vs Tunisia (attack-dominant) \u2014 neutral stylistic matchup. Clear analytical advantage for Netherlands \u2014 margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 510.9,
+    "team1": "Netherlands",
+    "team2": "Tunisia"
+  },
+  "Japan vs Sweden": {
+    "verdict": "Japan backed by 4 of 6 models with Sweden competitive",
+    "model_consensus": "moderate",
+    "models_for_team1": [
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum"
+    ],
+    "models_for_team2": [
+      "value"
+    ],
+    "models_even": [
+      "h2h"
+    ],
+    "key_driver": "Japan (attack-dominant) vs Sweden (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Japan backed by 4 of 6 models with Sweden competitive. Primary driver [TACTICAL]: Japan (attack-dominant) vs Sweden (attack-dominant) \u2014 neutral stylistic matchup. Clear analytical advantage for Japan \u2014 margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": -210.0,
+    "team1": "Japan",
+    "team2": "Sweden"
+  },
+  "Japan vs Tunisia": {
+    "verdict": "Japan favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Japan (attack-dominant) vs Tunisia (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Japan favoured across 6 of 6 models. Primary driver [TACTICAL]: Japan (attack-dominant) vs Tunisia (attack-dominant) \u2014 neutral stylistic matchup. Clear analytical advantage for Japan \u2014 margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 142.4,
+    "team1": "Japan",
+    "team2": "Tunisia"
+  },
+  "Sweden vs Tunisia": {
+    "verdict": "Sweden backed by 4 of 6 models with Tunisia competitive",
+    "model_consensus": "moderate",
+    "models_for_team1": [
+      "value",
+      "form_results",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [
+      "quality_form"
+    ],
+    "models_even": [
+      "tactical"
+    ],
+    "key_driver": "Sweden (attack-dominant) vs Tunisia (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": true,
+    "analytical_note": "Sweden backed by 4 of 6 models with Tunisia competitive. Primary driver [TACTICAL]: Sweden (attack-dominant) vs Tunisia (attack-dominant) \u2014 neutral stylistic matchup. Narrow margin (2pp) \u2014 outcome sensitive to match-day variables.",
+    "style_clash": null,
+    "value_gap_eur_m": 352.4,
+    "team1": "Sweden",
+    "team2": "Tunisia"
+  },
+  "Belgium vs Egypt": {
+    "verdict": "Belgium favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Belgium (attack-dominant) vs Egypt (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Belgium favoured across 6 of 6 models. Primary driver [TACTICAL]: Belgium (attack-dominant) vs Egypt (attack-dominant) \u2014 neutral stylistic matchup. Clear analytical advantage for Belgium \u2014 margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 187.0,
+    "team1": "Belgium",
+    "team2": "Egypt"
+  },
+  "Belgium vs Iran": {
+    "verdict": "Belgium favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Belgium (attack-dominant) vs Iran (balanced) \u2014 stylistic edge in matchup (style clash: +0.05)",
+    "uncertainty_flag": false,
+    "analytical_note": "Belgium favoured across 6 of 6 models. Primary driver [TACTICAL]: Belgium (attack-dominant) vs Iran (balanced) \u2014 stylistic edge in matchup (style clash: +0.05). Clear analytical advantage for Belgium \u2014 margin consistent across model dimensions.",
+    "style_clash": "attack-dominant vs balanced",
+    "value_gap_eur_m": 335.5,
+    "team1": "Belgium",
+    "team2": "Iran"
+  },
+  "Belgium vs New Zealand": {
+    "verdict": "Belgium favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Belgium (attack-dominant) vs New Zealand (balanced) \u2014 stylistic edge in matchup (style clash: +0.05)",
+    "uncertainty_flag": false,
+    "analytical_note": "Belgium favoured across 6 of 6 models. Primary driver [TACTICAL]: Belgium (attack-dominant) vs New Zealand (balanced) \u2014 stylistic edge in matchup (style clash: +0.05). Clear analytical advantage for Belgium \u2014 margin consistent across model dimensions.",
+    "style_clash": "attack-dominant vs balanced",
+    "value_gap_eur_m": 332.7,
+    "team1": "Belgium",
+    "team2": "New Zealand"
+  },
+  "Egypt vs Iran": {
+    "verdict": "Iran backed by 4 of 6 models with Egypt competitive",
+    "model_consensus": "moderate",
+    "models_for_team1": [
+      "value"
+    ],
+    "models_for_team2": [
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_even": [
+      "tactical"
+    ],
+    "key_driver": "Egypt (attack-dominant) vs Iran (balanced) \u2014 stylistic edge in matchup (style clash: +0.05)",
+    "uncertainty_flag": true,
+    "analytical_note": "Iran backed by 4 of 6 models with Egypt competitive. Primary driver [TACTICAL]: Egypt (attack-dominant) vs Iran (balanced) \u2014 stylistic edge in matchup (style clash: +0.05). High draw probability (23%) \u2014 evenly matched across most dimensions.",
+    "style_clash": "attack-dominant vs balanced",
+    "value_gap_eur_m": 148.5,
+    "team1": "Egypt",
+    "team2": "Iran"
+  },
+  "Egypt vs New Zealand": {
+    "verdict": "Egypt favoured across 5 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [
+      "quality_form"
+    ],
+    "key_driver": "Egypt (attack-dominant) vs New Zealand (balanced) \u2014 stylistic edge in matchup (style clash: +0.05)",
+    "uncertainty_flag": true,
+    "analytical_note": "Egypt favoured across 5 of 6 models. Primary driver [TACTICAL]: Egypt (attack-dominant) vs New Zealand (balanced) \u2014 stylistic edge in matchup (style clash: +0.05). High draw probability (23%) \u2014 evenly matched across most dimensions.",
+    "style_clash": "attack-dominant vs balanced",
+    "value_gap_eur_m": 145.7,
+    "team1": "Egypt",
+    "team2": "New Zealand"
+  },
+  "Iran vs New Zealand": {
+    "verdict": "Iran favoured across 5 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [
+      "value"
+    ],
+    "key_driver": "Iran (balanced) vs New Zealand (balanced) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": true,
+    "analytical_note": "Iran favoured across 5 of 6 models. Primary driver [TACTICAL]: Iran (balanced) vs New Zealand (balanced) \u2014 neutral stylistic matchup. High draw probability (23%) \u2014 evenly matched across most dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": -2.8,
+    "team1": "Iran",
+    "team2": "New Zealand"
+  },
+  "Spain vs Cape Verde": {
+    "verdict": "Spain favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Spain (attack-dominant) vs Cape Verde (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Spain favoured across 6 of 6 models. Primary driver [TACTICAL]: Spain (attack-dominant) vs Cape Verde (attack-dominant) \u2014 neutral stylistic matchup. Clear analytical advantage for Spain \u2014 margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 1027.8,
+    "team1": "Spain",
+    "team2": "Cape Verde"
+  },
+  "Spain vs Saudi Arabia": {
+    "verdict": "Spain favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Spain (attack-dominant) vs Saudi Arabia (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Spain favoured across 6 of 6 models. Primary driver [TACTICAL]: Spain (attack-dominant) vs Saudi Arabia (attack-dominant) \u2014 neutral stylistic matchup. Clear analytical advantage for Spain \u2014 margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 995.0,
+    "team1": "Spain",
+    "team2": "Saudi Arabia"
+  },
+  "Spain vs Uruguay": {
+    "verdict": "Spain favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Spain (attack-dominant) vs Uruguay (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Spain favoured across 6 of 6 models. Primary driver [TACTICAL]: Spain (attack-dominant) vs Uruguay (attack-dominant) \u2014 neutral stylistic matchup. Clear analytical advantage for Spain \u2014 margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 612.2,
+    "team1": "Spain",
+    "team2": "Uruguay"
+  },
+  "Cape Verde vs Saudi Arabia": {
+    "verdict": "Saudi Arabia backed by 4 of 6 models with Cape Verde competitive",
+    "model_consensus": "split",
+    "models_for_team1": [],
+    "models_for_team2": [
+      "tactical",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_even": [
+      "value",
+      "form_results"
+    ],
+    "key_driver": "Cape Verde (attack-dominant) vs Saudi Arabia (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": true,
+    "analytical_note": "Saudi Arabia backed by 4 of 6 models with Cape Verde competitive. Primary driver [TACTICAL]: Cape Verde (attack-dominant) vs Saudi Arabia (attack-dominant) \u2014 neutral stylistic matchup. High draw probability (25%) \u2014 evenly matched across most dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": -32.8,
+    "team1": "Cape Verde",
+    "team2": "Saudi Arabia"
+  },
+  "Cape Verde vs Uruguay": {
+    "verdict": "Uruguay favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [],
+    "models_for_team2": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_even": [],
+    "key_driver": "Cape Verde (attack-dominant) vs Uruguay (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Uruguay favoured across 6 of 6 models. Primary driver [TACTICAL]: Cape Verde (attack-dominant) vs Uruguay (attack-dominant) \u2014 neutral stylistic matchup. Clear analytical advantage for Uruguay \u2014 margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": -415.6,
+    "team1": "Cape Verde",
+    "team2": "Uruguay"
+  },
+  "Saudi Arabia vs Uruguay": {
+    "verdict": "Uruguay favoured across 5 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [],
+    "models_for_team2": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum"
+    ],
+    "models_even": [
+      "h2h"
+    ],
+    "key_driver": "Saudi Arabia (attack-dominant) vs Uruguay (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Uruguay favoured across 5 of 6 models. Primary driver [TACTICAL]: Saudi Arabia (attack-dominant) vs Uruguay (attack-dominant) \u2014 neutral stylistic matchup. Clear analytical advantage for Uruguay \u2014 margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": -382.8,
+    "team1": "Saudi Arabia",
+    "team2": "Uruguay"
+  },
+  "France vs Senegal": {
+    "verdict": "France favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "France (attack-dominant+midfield_control) vs Senegal (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "France favoured across 6 of 6 models. Primary driver [TACTICAL]: France (attack-dominant+midfield_control) vs Senegal (attack-dominant) \u2014 neutral stylistic matchup. Clear analytical advantage for France \u2014 margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 967.2,
+    "team1": "France",
+    "team2": "Senegal"
+  },
+  "France vs Norway": {
+    "verdict": "France favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "France (attack-dominant+midfield_control) vs Norway (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "France favoured across 6 of 6 models. Primary driver [TACTICAL]: France (attack-dominant+midfield_control) vs Norway (attack-dominant) \u2014 neutral stylistic matchup. Clear analytical advantage for France \u2014 margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 804.5,
+    "team1": "France",
+    "team2": "Norway"
+  },
+  "France vs Iraq": {
+    "verdict": "France favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "France (attack-dominant+midfield_control) vs Iraq (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "France favoured across 6 of 6 models. Primary driver [TACTICAL]: France (attack-dominant+midfield_control) vs Iraq (attack-dominant) \u2014 neutral stylistic matchup. Clear analytical advantage for France \u2014 margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 1225.0,
+    "team1": "France",
+    "team2": "Iraq"
+  },
+  "Senegal vs Norway": {
+    "verdict": "Model split \u2014 2 models back Senegal, 2 back Norway",
+    "model_consensus": "split",
+    "models_for_team1": [
+      "form_results",
+      "quality_form"
+    ],
+    "models_for_team2": [
+      "value",
+      "momentum"
+    ],
+    "models_even": [
+      "tactical",
+      "h2h"
+    ],
+    "key_driver": "Senegal (attack-dominant) vs Norway (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": true,
+    "analytical_note": "Model split \u2014 2 models back Senegal, 2 back Norway. Primary driver [TACTICAL]: Senegal (attack-dominant) vs Norway (attack-dominant) \u2014 neutral stylistic matchup. High draw probability (22%) \u2014 evenly matched across most dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": -162.7,
+    "team1": "Senegal",
+    "team2": "Norway"
+  },
+  "Senegal vs Iraq": {
+    "verdict": "Senegal favoured across 5 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [
+      "quality_form"
+    ],
+    "models_even": [],
+    "key_driver": "Senegal (attack-dominant) vs Iraq (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Senegal favoured across 5 of 6 models. Primary driver [TACTICAL]: Senegal (attack-dominant) vs Iraq (attack-dominant) \u2014 neutral stylistic matchup. Moderate confidence \u2014 data supports the favourite but upset window remains meaningful.",
+    "style_clash": null,
+    "value_gap_eur_m": 257.8,
+    "team1": "Senegal",
+    "team2": "Iraq"
+  },
+  "Norway vs Iraq": {
+    "verdict": "Norway favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Norway (attack-dominant) vs Iraq (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Norway favoured across 6 of 6 models. Primary driver [TACTICAL]: Norway (attack-dominant) vs Iraq (attack-dominant) \u2014 neutral stylistic matchup. Clear analytical advantage for Norway \u2014 margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 420.5,
+    "team1": "Norway",
+    "team2": "Iraq"
+  },
+  "Argentina vs Algeria": {
+    "verdict": "Argentina favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Argentina (attack-dominant+midfield_control) vs Algeria (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Argentina favoured across 6 of 6 models. Primary driver [TACTICAL]: Argentina (attack-dominant+midfield_control) vs Algeria (attack-dominant) \u2014 neutral stylistic matchup. Clear analytical advantage for Argentina \u2014 margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 492.6,
+    "team1": "Argentina",
+    "team2": "Algeria"
+  },
+  "Argentina vs Austria": {
+    "verdict": "Argentina favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Argentina (attack-dominant+midfield_control) vs Austria (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Argentina favoured across 6 of 6 models. Primary driver [TACTICAL]: Argentina (attack-dominant+midfield_control) vs Austria (attack-dominant) \u2014 neutral stylistic matchup. Clear analytical advantage for Argentina \u2014 margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 441.9,
+    "team1": "Argentina",
+    "team2": "Austria"
+  },
+  "Argentina vs Jordan": {
+    "verdict": "Argentina favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Argentina (attack-dominant+midfield_control) vs Jordan (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Argentina favoured across 6 of 6 models. Primary driver [TACTICAL]: Argentina (attack-dominant+midfield_control) vs Jordan (attack-dominant) \u2014 neutral stylistic matchup. Clear analytical advantage for Argentina \u2014 margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 597.9,
+    "team1": "Argentina",
+    "team2": "Jordan"
+  },
+  "Algeria vs Austria": {
+    "verdict": "Austria favoured across 5 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [],
+    "models_for_team2": [
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_even": [
+      "value"
+    ],
+    "key_driver": "Algeria (attack-dominant) vs Austria (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": true,
+    "analytical_note": "Austria favoured across 5 of 6 models. Primary driver [TACTICAL]: Algeria (attack-dominant) vs Austria (attack-dominant) \u2014 neutral stylistic matchup. High draw probability (24%) \u2014 evenly matched across most dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": -50.7,
+    "team1": "Algeria",
+    "team2": "Austria"
+  },
+  "Algeria vs Jordan": {
+    "verdict": "Algeria favoured across 5 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [
+      "quality_form"
+    ],
+    "models_even": [],
+    "key_driver": "Algeria (attack-dominant) vs Jordan (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": true,
+    "analytical_note": "Algeria favoured across 5 of 6 models. Primary driver [TACTICAL]: Algeria (attack-dominant) vs Jordan (attack-dominant) \u2014 neutral stylistic matchup. High draw probability (23%) \u2014 evenly matched across most dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 105.3,
+    "team1": "Algeria",
+    "team2": "Jordan"
+  },
+  "Austria vs Jordan": {
+    "verdict": "Austria favoured across 5 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [
+      "quality_form"
+    ],
+    "models_even": [],
+    "key_driver": "Austria (attack-dominant) vs Jordan (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Austria favoured across 5 of 6 models. Primary driver [TACTICAL]: Austria (attack-dominant) vs Jordan (attack-dominant) \u2014 neutral stylistic matchup. Moderate confidence \u2014 data supports the favourite but upset window remains meaningful.",
+    "style_clash": null,
+    "value_gap_eur_m": 156.0,
+    "team1": "Austria",
+    "team2": "Jordan"
+  },
+  "Portugal vs Congo DR": {
+    "verdict": "Portugal favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Portugal (attack-dominant) vs Congo DR (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Portugal favoured across 6 of 6 models. Primary driver [TACTICAL]: Portugal (attack-dominant) vs Congo DR (attack-dominant) \u2014 neutral stylistic matchup. Clear analytical advantage for Portugal \u2014 margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 793.0,
+    "team1": "Portugal",
+    "team2": "Congo DR"
+  },
+  "Portugal vs Uzbekistan": {
+    "verdict": "Portugal favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Portugal (attack-dominant) vs Uzbekistan (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Portugal favoured across 6 of 6 models. Primary driver [TACTICAL]: Portugal (attack-dominant) vs Uzbekistan (attack-dominant) \u2014 neutral stylistic matchup. Clear analytical advantage for Portugal \u2014 margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 825.9,
+    "team1": "Portugal",
+    "team2": "Uzbekistan"
+  },
+  "Portugal vs Colombia": {
+    "verdict": "Portugal favoured across 5 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum"
+    ],
+    "models_for_team2": [],
+    "models_even": [
+      "h2h"
+    ],
+    "key_driver": "Portugal (attack-dominant) vs Colombia (attack-dominant+midfield_control) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Portugal favoured across 5 of 6 models. Primary driver [TACTICAL]: Portugal (attack-dominant) vs Colombia (attack-dominant+midfield_control) \u2014 neutral stylistic matchup. Clear analytical advantage for Portugal \u2014 margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 715.0,
+    "team1": "Portugal",
+    "team2": "Colombia"
+  },
+  "Congo DR vs Uzbekistan": {
+    "verdict": "Congo DR backed by 2 of 6 models with Uzbekistan competitive",
+    "model_consensus": "split",
+    "models_for_team1": [
+      "form_results",
+      "momentum"
+    ],
+    "models_for_team2": [
+      "quality_form"
+    ],
+    "models_even": [
+      "value",
+      "tactical",
+      "h2h"
+    ],
+    "key_driver": "Congo DR (attack-dominant) vs Uzbekistan (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": true,
+    "analytical_note": "Congo DR backed by 2 of 6 models with Uzbekistan competitive. Primary driver [TACTICAL]: Congo DR (attack-dominant) vs Uzbekistan (attack-dominant) \u2014 neutral stylistic matchup. High draw probability (26%) \u2014 evenly matched across most dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 32.9,
+    "team1": "Congo DR",
+    "team2": "Uzbekistan"
+  },
+  "Congo DR vs Colombia": {
+    "verdict": "Colombia favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [],
+    "models_for_team2": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_even": [],
+    "key_driver": "Congo DR (attack-dominant) vs Colombia (attack-dominant+midfield_control) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Colombia favoured across 6 of 6 models. Primary driver [TACTICAL]: Congo DR (attack-dominant) vs Colombia (attack-dominant+midfield_control) \u2014 neutral stylistic matchup. Clear analytical advantage for Colombia \u2014 margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": -78.0,
+    "team1": "Congo DR",
+    "team2": "Colombia"
+  },
+  "Uzbekistan vs Colombia": {
+    "verdict": "Colombia favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [],
+    "models_for_team2": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_even": [],
+    "key_driver": "Uzbekistan (attack-dominant) vs Colombia (attack-dominant+midfield_control) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Colombia favoured across 6 of 6 models. Primary driver [TACTICAL]: Uzbekistan (attack-dominant) vs Colombia (attack-dominant+midfield_control) \u2014 neutral stylistic matchup. Clear analytical advantage for Colombia \u2014 margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": -110.9,
+    "team1": "Uzbekistan",
+    "team2": "Colombia"
+  },
+  "England vs Croatia": {
+    "verdict": "England favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "England (attack-dominant+midfield_control) vs Croatia (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "England favoured across 6 of 6 models. Primary driver [TACTICAL]: England (attack-dominant+midfield_control) vs Croatia (attack-dominant) \u2014 neutral stylistic matchup. Clear analytical advantage for England \u2014 margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 933.8,
+    "team1": "England",
+    "team2": "Croatia"
+  },
+  "England vs Ghana": {
+    "verdict": "England favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "England (attack-dominant+midfield_control) vs Ghana (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "England favoured across 6 of 6 models. Primary driver [TACTICAL]: England (attack-dominant+midfield_control) vs Ghana (attack-dominant) \u2014 neutral stylistic matchup. Clear analytical advantage for England \u2014 margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 1029.3,
+    "team1": "England",
+    "team2": "Ghana"
+  },
+  "England vs Panama": {
+    "verdict": "England favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "England (attack-dominant+midfield_control) vs Panama (balanced) \u2014 stylistic edge in matchup (style clash: +0.05)",
+    "uncertainty_flag": false,
+    "analytical_note": "England favoured across 6 of 6 models. Primary driver [TACTICAL]: England (attack-dominant+midfield_control) vs Panama (balanced) \u2014 stylistic edge in matchup (style clash: +0.05). Clear analytical advantage for England \u2014 margin consistent across model dimensions.",
+    "style_clash": "attack-dominant+midfield_control vs balanced",
+    "value_gap_eur_m": 1131.2,
+    "team1": "England",
+    "team2": "Panama"
+  },
+  "Croatia vs Ghana": {
+    "verdict": "Croatia backed by 4 of 6 models with Ghana competitive",
+    "model_consensus": "moderate",
+    "models_for_team1": [
+      "tactical",
+      "form_results",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [
+      "quality_form"
+    ],
+    "models_even": [
+      "value"
+    ],
+    "key_driver": "Croatia (attack-dominant) vs Ghana (attack-dominant) \u2014 neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Croatia backed by 4 of 6 models with Ghana competitive. Primary driver [TACTICAL]: Croatia (attack-dominant) vs Ghana (attack-dominant) \u2014 neutral stylistic matchup. Moderate confidence \u2014 data supports the favourite but upset window remains meaningful.",
+    "style_clash": null,
+    "value_gap_eur_m": 95.5,
+    "team1": "Croatia",
+    "team2": "Ghana"
+  },
+  "Croatia vs Panama": {
+    "verdict": "Croatia favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Croatia (attack-dominant) vs Panama (balanced) \u2014 stylistic edge in matchup (style clash: +0.05)",
+    "uncertainty_flag": false,
+    "analytical_note": "Croatia favoured across 6 of 6 models. Primary driver [TACTICAL]: Croatia (attack-dominant) vs Panama (balanced) \u2014 stylistic edge in matchup (style clash: +0.05). Clear analytical advantage for Croatia \u2014 margin consistent across model dimensions.",
+    "style_clash": "attack-dominant vs balanced",
+    "value_gap_eur_m": 197.4,
+    "team1": "Croatia",
+    "team2": "Panama"
+  },
+  "Ghana vs Panama": {
+    "verdict": "Ghana backed by 4 of 6 models with Panama competitive",
+    "model_consensus": "moderate",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [
+      "quality_form"
+    ],
+    "models_even": [
+      "form_results"
+    ],
+    "key_driver": "Ghana (attack-dominant) vs Panama (balanced) \u2014 stylistic edge in matchup (style clash: +0.05)",
+    "uncertainty_flag": true,
+    "analytical_note": "Ghana backed by 4 of 6 models with Panama competitive. Primary driver [TACTICAL]: Ghana (attack-dominant) vs Panama (balanced) \u2014 stylistic edge in matchup (style clash: +0.05). High draw probability (25%) \u2014 evenly matched across most dimensions.",
+    "style_clash": "attack-dominant vs balanced",
+    "value_gap_eur_m": 101.9,
+    "team1": "Ghana",
+    "team2": "Panama"
+  }
+};
+
+// ═══════════════════════════════════════════════════════════════
+// PER-MODEL PROBABILITIES  [team1_win, draw, team2_win]
+// ═══════════════════════════════════════════════════════════════
+const MODEL_OUTPUTS_DATA = {"Mexico vs South Africa":{"value":[0.467,0.208,0.324],"tactical":[0.539,0.218,0.242],"form_results":[0.648,0.172,0.18],"quality_form":[0.724,0.116,0.16],"momentum":[0.705,0.115,0.18],"h2h":[0.587,0.205,0.208]},"Mexico vs South Korea":{"value":[0.417,0.254,0.329],"tactical":[0.445,0.245,0.31],"form_results":[0.441,0.246,0.313],"quality_form":[0.683,0.149,0.167],"momentum":[0.442,0.246,0.312],"h2h":[0.625,0.194,0.181]},"Mexico vs Czech Republic":{"value":[0.402,0.264,0.334],"tactical":[0.496,0.23,0.274],"form_results":[0.572,0.209,0.219],"quality_form":[0.694,0.141,0.165],"momentum":[0.585,0.205,0.21],"h2h":[0.578,0.207,0.215]},"South Africa vs South Korea":{"value":[0.365,0.22,0.415],"tactical":[0.298,0.24,0.461],"form_results":[0.21,0.205,0.585],"quality_form":[0.305,0.243,0.452],"momentum":[0.18,0.17,0.65],"h2h":[0.233,0.214,0.553]},"South Africa vs Czech Republic":{"value":[0.363,0.203,0.434],"tactical":[0.334,0.256,0.41],"form_results":[0.303,0.242,0.455],"quality_form":[0.459,0.241,0.3],"momentum":[0.257,0.224,0.52],"h2h":[0.365,0.27,0.365]},"South Korea vs Czech Republic":{"value":[0.366,0.243,0.391],"tactical":[0.416,0.254,0.33],"form_results":[0.501,0.229,0.27],"quality_form":[0.608,0.199,0.193],"momentum":[0.514,0.225,0.261],"h2h":[0.579,0.207,0.214]},"Canada vs Bosnia-Herzegovina":{"value":[0.441,0.232,0.327],"tactical":[0.523,0.223,0.255],"form_results":[0.82,0.0,0.18],"quality_form":[0.703,0.134,0.164],"momentum":[0.82,0.0,0.18],"h2h":[0.551,0.215,0.234]},"Canada vs Qatar":{"value":[0.479,0.199,0.322],"tactical":[0.471,0.237,0.291],"form_results":[0.632,0.188,0.18],"quality_form":[0.623,0.195,0.183],"momentum":[0.674,0.146,0.18],"h2h":[0.551,0.215,0.234]},"Canada vs Switzerland":{"value":[0.402,0.192,0.406],"tactical":[0.353,0.264,0.383],"form_results":[0.273,0.23,0.497],"quality_form":[0.688,0.146,0.167],"momentum":[0.342,0.259,0.399],"h2h":[0.352,0.264,0.385]},"Bosnia-Herzegovina vs Qatar":{"value":[0.399,0.235,0.366],"tactical":[0.334,0.255,0.411],"form_results":[0.365,0.27,0.365],"quality_form":[0.19,0.198,0.612],"momentum":[0.365,0.27,0.365],"h2h":[0.365,0.27,0.365]},"Bosnia-Herzegovina vs Switzerland":{"value":[0.353,0.162,0.485],"tactical":[0.247,0.22,0.533],"form_results":[0.18,0.0,0.82],"quality_form":[0.161,0.124,0.715],"momentum":[0.18,0.0,0.82],"h2h":[0.221,0.21,0.569]},"Qatar vs Switzerland":{"value":[0.343,0.141,0.516],"tactical":[0.279,0.232,0.489],"form_results":[0.18,0.095,0.726],"quality_form":[0.179,0.189,0.632],"momentum":[0.18,0.122,0.698],"h2h":[0.221,0.21,0.569]},"Brazil vs Morocco":{"value":[0.612,0.087,0.301],"tactical":[0.438,0.247,0.315],"form_results":[0.424,0.251,0.324],"quality_form":[0.652,0.174,0.174],"momentum":[0.362,0.269,0.369],"h2h":[0.509,0.227,0.264]},"Brazil vs Haiti":{"value":[0.716,0.046,0.238],"tactical":[0.64,0.183,0.177],"form_results":[0.681,0.139,0.18],"quality_form":[0.693,0.141,0.165],"momentum":[0.626,0.194,0.18],"h2h":[0.82,0.0,0.18]},"Brazil vs Scotland":{"value":[0.651,0.07,0.279],"tactical":[0.582,0.206,0.212],"form_results":[0.692,0.128,0.18],"quality_form":[0.708,0.129,0.163],"momentum":[0.686,0.134,0.18],"h2h":[0.793,0.027,0.18]},"Morocco vs Haiti":{"value":[0.498,0.153,0.349],"tactical":[0.526,0.222,0.252],"form_results":[0.636,0.184,0.18],"quality_form":[0.75,0.085,0.165],"momentum":[0.629,0.191,0.18],"h2h":[0.565,0.211,0.224]},"Morocco vs Scotland":{"value":[0.405,0.23,0.366],"tactical":[0.444,0.245,0.311],"form_results":[0.649,0.171,0.18],"quality_form":[0.754,0.081,0.165],"momentum":[0.689,0.132,0.18],"h2h":[0.565,0.211,0.224]},"Haiti vs Scotland":{"value":[0.358,0.18,0.462],"tactical":[0.307,0.244,0.449],"form_results":[0.38,0.265,0.355],"quality_form":[0.476,0.236,0.288],"momentum":[0.445,0.245,0.31],"h2h":[0.365,0.27,0.365]},"United States vs Paraguay":{"value":[0.482,0.196,0.322],"tactical":[0.512,0.226,0.262],"form_results":[0.561,0.212,0.227],"quality_form":[0.28,0.233,0.487],"momentum":[0.586,0.205,0.209],"h2h":[0.737,0.083,0.18]},"United States vs Australia":{"value":[0.442,0.231,0.327],"tactical":[0.413,0.255,0.332],"form_results":[0.452,0.243,0.305],"quality_form":[0.336,0.257,0.407],"momentum":[0.545,0.217,0.238],"h2h":[0.693,0.127,0.18]},"United States vs Turkey":{"value":[0.402,0.262,0.336],"tactical":[0.458,0.241,0.301],"form_results":[0.363,0.269,0.367],"quality_form":[0.197,0.2,0.603],"momentum":[0.395,0.26,0.345],"h2h":[0.362,0.268,0.37]},"Paraguay vs Australia":{"value":[0.365,0.227,0.408],"tactical":[0.296,0.239,0.464],"form_results":[0.287,0.236,0.477],"quality_form":[0.519,0.224,0.257],"momentum":[0.334,0.256,0.41],"h2h":[0.258,0.224,0.518]},"Paraguay vs Turkey":{"value":[0.36,0.188,0.452],"tactical":[0.328,0.253,0.419],"form_results":[0.226,0.212,0.563],"quality_form":[0.524,0.222,0.253],"momentum":[0.228,0.213,0.559],"h2h":[0.244,0.219,0.537]},"Australia vs Turkey":{"value":[0.365,0.218,0.417],"tactical":[0.393,0.261,0.346],"form_results":[0.303,0.242,0.455],"quality_form":[0.651,0.174,0.174],"momentum":[0.259,0.225,0.516],"h2h":[0.367,0.269,0.363]},"Germany vs Curaçao":{"value":[0.634,0.077,0.289],"tactical":[0.562,0.212,0.226],"form_results":[0.662,0.158,0.18],"quality_form":[0.728,0.112,0.16],"momentum":[0.768,0.052,0.18],"h2h":[0.585,0.205,0.21]},"Germany vs Ivory Coast":{"value":[0.579,0.103,0.318],"tactical":[0.558,0.213,0.229],"form_results":[0.568,0.21,0.222],"quality_form":[0.714,0.124,0.162],"momentum":[0.646,0.174,0.18],"h2h":[0.585,0.205,0.21]},"Germany vs Ecuador":{"value":[0.599,0.093,0.308],"tactical":[0.461,0.241,0.299],"form_results":[0.555,0.214,0.231],"quality_form":[0.57,0.209,0.22],"momentum":[0.551,0.215,0.234],"h2h":[0.397,0.26,0.343]},"Curaçao vs Ivory Coast":{"value":[0.363,0.201,0.436],"tactical":[0.362,0.269,0.37],"form_results":[0.286,0.235,0.478],"quality_form":[0.275,0.231,0.494],"momentum":[0.232,0.214,0.554],"h2h":[0.365,0.27,0.365]},"Curaçao vs Ecuador":{"value":[0.365,0.223,0.412],"tactical":[0.296,0.239,0.465],"form_results":[0.276,0.232,0.492],"quality_form":[0.172,0.167,0.661],"momentum":[0.18,0.172,0.648],"h2h":[0.231,0.214,0.555]},"Ivory Coast vs Ecuador":{"value":[0.383,0.251,0.366],"tactical":[0.299,0.241,0.46],"form_results":[0.355,0.265,0.379],"quality_form":[0.466,0.239,0.295],"momentum":[0.288,0.236,0.476],"h2h":[0.231,0.214,0.555]},"Netherlands vs Japan":{"value":[0.507,0.147,0.346],"tactical":[0.492,0.232,0.277],"form_results":[0.503,0.228,0.268],"quality_form":[0.737,0.101,0.162],"momentum":[0.303,0.242,0.455],"h2h":[0.628,0.192,0.18]},"Netherlands vs Sweden":{"value":[0.5,0.152,0.348],"tactical":[0.55,0.215,0.235],"form_results":[0.777,0.043,0.18],"quality_form":[0.734,0.104,0.161],"momentum":[0.701,0.119,0.18],"h2h":[0.711,0.109,0.18]},"Netherlands vs Tunisia":{"value":[0.574,0.106,0.32],"tactical":[0.56,0.212,0.228],"form_results":[0.746,0.074,0.18],"quality_form":[0.748,0.087,0.164],"momentum":[0.707,0.113,0.18],"h2h":[0.551,0.215,0.234]},"Japan vs Sweden":{"value":[0.366,0.251,0.383],"tactical":[0.448,0.244,0.308],"form_results":[0.697,0.123,0.18],"quality_form":[0.697,0.139,0.165],"momentum":[0.755,0.065,0.18],"h2h":[0.356,0.266,0.379]},"Japan vs Tunisia":{"value":[0.434,0.203,0.363],"tactical":[0.459,0.241,0.3],"form_results":[0.655,0.165,0.18],"quality_form":[0.728,0.112,0.16],"momentum":[0.76,0.06,0.18],"h2h":[0.434,0.248,0.317]},"Sweden vs Tunisia":{"value":[0.441,0.197,0.362],"tactical":[0.376,0.266,0.357],"form_results":[0.324,0.251,0.424],"quality_form":[0.176,0.18,0.644],"momentum":[0.375,0.267,0.358],"h2h":[0.379,0.266,0.356]},"Belgium vs Egypt":{"value":[0.52,0.138,0.342],"tactical":[0.585,0.205,0.21],"form_results":[0.75,0.07,0.18],"quality_form":[0.75,0.086,0.165],"momentum":[0.709,0.111,0.18],"h2h":[0.375,0.267,0.358]},"Belgium vs Iran":{"value":[0.521,0.137,0.341],"tactical":[0.612,0.198,0.19],"form_results":[0.689,0.132,0.18],"quality_form":[0.749,0.087,0.164],"momentum":[0.656,0.164,0.18],"h2h":[0.455,0.242,0.303]},"Belgium vs New Zealand":{"value":[0.529,0.133,0.339],"tactical":[0.644,0.18,0.176],"form_results":[0.82,0.0,0.18],"quality_form":[0.755,0.079,0.166],"momentum":[0.776,0.044,0.18],"h2h":[0.595,0.202,0.202]},"Egypt vs Iran":{"value":[0.365,0.269,0.366],"tactical":[0.377,0.266,0.357],"form_results":[0.295,0.239,0.466],"quality_form":[0.562,0.212,0.226],"momentum":[0.313,0.247,0.44],"h2h":[0.261,0.226,0.513]},"Egypt vs New Zealand":{"value":[0.372,0.262,0.365],"tactical":[0.435,0.248,0.317],"form_results":[0.555,0.214,0.231],"quality_form":[0.593,0.203,0.204],"momentum":[0.484,0.234,0.282],"h2h":[0.728,0.092,0.18]},"Iran vs New Zealand":{"value":[0.37,0.264,0.365],"tactical":[0.423,0.252,0.325],"form_results":[0.641,0.179,0.18],"quality_form":[0.602,0.201,0.198],"momentum":[0.556,0.213,0.231],"h2h":[0.513,0.226,0.261]},"Spain vs Cape Verde":{"value":[0.657,0.067,0.276],"tactical":[0.604,0.2,0.196],"form_results":[0.685,0.135,0.18],"quality_form":[0.733,0.107,0.161],"momentum":[0.712,0.108,0.18],"h2h":[0.587,0.205,0.208]},"Spain vs Saudi Arabia":{"value":[0.644,0.072,0.283],"tactical":[0.568,0.21,0.222],"form_results":[0.761,0.059,0.18],"quality_form":[0.744,0.093,0.163],"momentum":[0.732,0.088,0.18],"h2h":[0.82,0.0,0.18]},"Spain vs Uruguay":{"value":[0.563,0.112,0.325],"tactical":[0.467,0.239,0.295],"form_results":[0.608,0.199,0.193],"quality_form":[0.677,0.154,0.169],"momentum":[0.574,0.208,0.218],"h2h":[0.683,0.137,0.18]},"Cape Verde vs Saudi Arabia":{"value":[0.366,0.25,0.384],"tactical":[0.338,0.257,0.405],"form_results":[0.489,0.232,0.279],"quality_form":[0.616,0.197,0.188],"momentum":[0.397,0.26,0.343],"h2h":[0.27,0.229,0.501]},"Cape Verde vs Uruguay":{"value":[0.353,0.162,0.485],"tactical":[0.263,0.226,0.511],"form_results":[0.296,0.239,0.465],"quality_form":[0.351,0.264,0.385],"momentum":[0.241,0.217,0.542],"h2h":[0.218,0.209,0.574]},"Saudi Arabia vs Uruguay":{"value":[0.356,0.173,0.471],"tactical":[0.291,0.237,0.471],"form_results":[0.211,0.206,0.583],"quality_form":[0.164,0.137,0.698],"momentum":[0.22,0.209,0.571],"h2h":[0.284,0.235,0.481]},"France vs Senegal":{"value":[0.708,0.049,0.243],"tactical":[0.61,0.198,0.192],"form_results":[0.605,0.2,0.195],"quality_form":[0.731,0.108,0.161],"momentum":[0.645,0.175,0.18],"h2h":[0.407,0.257,0.336]},"France vs Norway":{"value":[0.637,0.076,0.287],"tactical":[0.592,0.203,0.205],"form_results":[0.594,0.203,0.203],"quality_form":[0.764,0.068,0.168],"momentum":[0.636,0.184,0.18],"h2h":[0.684,0.136,0.18]},"France vs Iraq":{"value":[0.74,0.039,0.221],"tactical":[0.676,0.155,0.169],"form_results":[0.763,0.057,0.18],"quality_form":[0.734,0.105,0.161],"momentum":[0.705,0.115,0.18],"h2h":[0.532,0.22,0.248]},"Senegal vs Norway":{"value":[0.355,0.17,0.475],"tactical":[0.385,0.264,0.352],"form_results":[0.356,0.266,0.378],"quality_form":[0.714,0.124,0.161],"momentum":[0.358,0.266,0.376],"h2h":[0.38,0.265,0.355]},"Senegal vs Iraq":{"value":[0.414,0.221,0.365],"tactical":[0.508,0.227,0.265],"form_results":[0.59,0.204,0.206],"quality_form":[0.516,0.225,0.259],"momentum":[0.45,0.244,0.307],"h2h":[0.491,0.232,0.277]},"Norway vs Iraq":{"value":[0.498,0.153,0.349],"tactical":[0.534,0.22,0.246],"form_results":[0.601,0.201,0.198],"quality_form":[0.731,0.108,0.161],"momentum":[0.461,0.241,0.299],"h2h":[0.477,0.236,0.287]},"Argentina vs Algeria":{"value":[0.667,0.064,0.27],"tactical":[0.676,0.155,0.169],"form_results":[0.752,0.068,0.18],"quality_form":[0.748,0.088,0.164],"momentum":[0.807,0.013,0.18],"h2h":[0.602,0.201,0.198]},"Argentina vs Austria":{"value":[0.597,0.094,0.309],"tactical":[0.587,0.205,0.208],"form_results":[0.624,0.194,0.182],"quality_form":[0.752,0.083,0.165],"momentum":[0.705,0.115,0.18],"h2h":[0.415,0.254,0.331]},"Argentina vs Jordan":{"value":[0.691,0.054,0.254],"tactical":[0.689,0.144,0.166],"form_results":[0.774,0.046,0.18],"quality_form":[0.758,0.075,0.167],"momentum":[0.82,0.0,0.18],"h2h":[0.602,0.201,0.198]},"Algeria vs Austria":{"value":[0.358,0.179,0.463],"tactical":[0.322,0.25,0.428],"form_results":[0.234,0.215,0.551],"quality_form":[0.729,0.111,0.16],"momentum":[0.228,0.213,0.559],"h2h":[0.229,0.213,0.558]},"Algeria vs Jordan":{"value":[0.398,0.236,0.366],"tactical":[0.432,0.249,0.319],"form_results":[0.409,0.256,0.335],"quality_form":[0.735,0.104,0.161],"momentum":[0.526,0.222,0.252],"h2h":[0.365,0.27,0.365]},"Austria vs Jordan":{"value":[0.481,0.165,0.354],"tactical":[0.504,0.228,0.268],"form_results":[0.59,0.204,0.206],"quality_form":[0.752,0.083,0.165],"momentum":[0.69,0.13,0.18],"h2h":[0.558,0.213,0.229]},"Portugal vs Congo DR":{"value":[0.633,0.077,0.29],"tactical":[0.527,0.222,0.251],"form_results":[0.597,0.202,0.201],"quality_form":[0.665,0.164,0.171],"momentum":[0.571,0.209,0.22],"h2h":[0.591,0.204,0.205]},"Portugal vs Uzbekistan":{"value":[0.634,0.077,0.289],"tactical":[0.544,0.217,0.239],"form_results":[0.667,0.153,0.18],"quality_form":[0.685,0.148,0.167],"momentum":[0.667,0.153,0.18],"h2h":[0.591,0.204,0.205]},"Portugal vs Colombia":{"value":[0.483,0.164,0.353],"tactical":[0.437,0.248,0.316],"form_results":[0.424,0.252,0.325],"quality_form":[0.71,0.127,0.162],"momentum":[0.384,0.264,0.352],"h2h":[0.382,0.264,0.353]},"Congo DR vs Uzbekistan":{"value":[0.365,0.27,0.365],"tactical":[0.383,0.264,0.353],"form_results":[0.453,0.243,0.304],"quality_form":[0.649,0.176,0.175],"momentum":[0.481,0.235,0.284],"h2h":[0.365,0.27,0.365]},"Congo DR vs Colombia":{"value":[0.335,0.127,0.538],"tactical":[0.301,0.242,0.457],"form_results":[0.239,0.217,0.544],"quality_form":[0.685,0.148,0.167],"momentum":[0.232,0.214,0.554],"h2h":[0.216,0.208,0.576]},"Uzbekistan vs Colombia":{"value":[0.335,0.126,0.54],"tactical":[0.289,0.237,0.474],"form_results":[0.184,0.195,0.621],"quality_form":[0.674,0.157,0.169],"momentum":[0.18,0.167,0.653],"h2h":[0.216,0.208,0.576]},"England vs Croatia":{"value":[0.641,0.074,0.285],"tactical":[0.435,0.248,0.317],"form_results":[0.598,0.202,0.2],"quality_form":[0.755,0.079,0.166],"momentum":[0.51,0.226,0.263],"h2h":[0.741,0.079,0.18]},"England vs Ghana":{"value":[0.73,0.042,0.228],"tactical":[0.629,0.192,0.179],"form_results":[0.75,0.07,0.18],"quality_form":[0.747,0.089,0.164],"momentum":[0.765,0.055,0.18],"h2h":[0.482,0.234,0.284]},"England vs Panama":{"value":[0.747,0.037,0.216],"tactical":[0.645,0.179,0.176],"form_results":[0.746,0.074,0.18],"quality_form":[0.757,0.077,0.166],"momentum":[0.741,0.079,0.18],"h2h":[0.541,0.217,0.241]},"Croatia vs Ghana":{"value":[0.482,0.164,0.353],"tactical":[0.502,0.229,0.269],"form_results":[0.574,0.208,0.217],"quality_form":[0.713,0.125,0.162],"momentum":[0.676,0.144,0.18],"h2h":[0.452,0.243,0.305]},"Croatia vs Panama":{"value":[0.51,0.144,0.345],"tactical":[0.538,0.219,0.243],"form_results":[0.569,0.21,0.221],"quality_form":[0.734,0.105,0.161],"momentum":[0.642,0.178,0.18],"h2h":[0.513,0.226,0.261]},"Ghana vs Panama":{"value":[0.393,0.241,0.366],"tactical":[0.403,0.258,0.34],"form_results":[0.361,0.268,0.371],"quality_form":[0.433,0.249,0.318],"momentum":[0.334,0.256,0.41],"h2h":[0.427,0.251,0.322]}};
+
+// ═══════════════════════════════════════════════════════════════
+// FLAGS
+// ═══════════════════════════════════════════════════════════════
+const FLAGS = {
+  'Mexico':'🇲🇽','South Africa':'🇿🇦','South Korea':'🇰🇷','Czech Republic':'🇨🇿',
+  'Canada':'🇨🇦','Bosnia-Herzegovina':'🇧🇦','Qatar':'🇶🇦','Switzerland':'🇨🇭',
+  'Brazil':'🇧🇷','Morocco':'🇲🇦','Haiti':'🇭🇹','Scotland':'🏴󠁧󠁢󠁳󠁣󠁴󠁿',
+  'United States':'🇺🇸','Paraguay':'🇵🇾','Australia':'🇦🇺','Turkey':'🇹🇷',
+  'Germany':'🇩🇪','Curaçao':'🇨🇼','Ivory Coast':'🇨🇮','Ecuador':'🇪🇨',
+  'Netherlands':'🇳🇱','Japan':'🇯🇵','Sweden':'🇸🇪','Tunisia':'🇹🇳',
+  'Belgium':'🇧🇪','Egypt':'🇪🇬','Iran':'🇮🇷','New Zealand':'🇳🇿',
+  'Spain':'🇪🇸','Cape Verde':'🇨🇻','Saudi Arabia':'🇸🇦','Uruguay':'🇺🇾',
+  'France':'🇫🇷','Senegal':'🇸🇳','Iraq':'🇮🇶','Norway':'🇳🇴',
+  'Argentina':'🇦🇷','Algeria':'🇩🇿','Austria':'🇦🇹','Jordan':'🇯🇴',
+  'Portugal':'🇵🇹','Congo DR':'🇨🇩','Uzbekistan':'🇺🇿','Colombia':'🇨🇴',
+  'England':'🏴󠁧󠁢󠁥󠁮󠁧󠁿','Croatia':'🇭🇷','Ghana':'🇬🇭','Panama':'🇵🇦',
+};
+
+// ═══════════════════════════════════════════════════════════════
+// SIMULATION DATA  —  10,000-run tournament simulation
+// ═══════════════════════════════════════════════════════════════
+const TEAM_GROUP = {"Mexico": "A", "South Africa": "A", "South Korea": "A", "Czech Republic": "A", "Canada": "B", "Bosnia-Herzegovina": "B", "Qatar": "B", "Switzerland": "B", "Brazil": "C", "Morocco": "C", "Haiti": "C", "Scotland": "C", "United States": "D", "Paraguay": "D", "Australia": "D", "Turkey": "D", "Germany": "E", "Curaçao": "E", "Ivory Coast": "E", "Ecuador": "E", "Netherlands": "F", "Japan": "F", "Sweden": "F", "Tunisia": "F", "Belgium": "G", "Egypt": "G", "Iran": "G", "New Zealand": "G", "Spain": "H", "Cape Verde": "H", "Saudi Arabia": "H", "Uruguay": "H", "France": "I", "Senegal": "I", "Norway": "I", "Iraq": "I", "Argentina": "J", "Algeria": "J", "Austria": "J", "Jordan": "J", "Portugal": "K", "Congo DR": "K", "Uzbekistan": "K", "Colombia": "K", "England": "L", "Croatia": "L", "Ghana": "L", "Panama": "L"};
+const KO_DATA = {
+  "Argentina": {r32:100.0,r16:100.0,qf:79.02,sf:59.25,fi:40.83,ch:26.05,group:100.0},
+  "Belgium": {r32:100.0,r16:100.0,qf:68.83,sf:36.48,fi:15.73,ch:7.97,group:100.0},
+  "Brazil": {r32:100.0,r16:100.0,qf:67.32,sf:36.07,fi:18.18,ch:8.1,group:100.0},
+  "Canada": {r32:100.0,r16:100.0,qf:0.0,sf:0.0,fi:0.0,ch:0.0,group:100.0},
+  "Colombia": {r32:100.0,r16:100.0,qf:58.31,sf:20.5,fi:9.03,ch:3.2,group:100.0},
+  "Egypt": {r32:100.0,r16:100.0,qf:20.98,sf:6.73,fi:1.82,ch:0.37,group:100.0},
+  "England": {r32:100.0,r16:100.0,qf:69.09,sf:40.65,fi:22.53,ch:12.35,group:100.0},
+  "France": {r32:100.0,r16:100.0,qf:100.0,sf:75.46,fi:43.74,ch:23.79,group:100.0},
+  "Mexico": {r32:100.0,r16:100.0,qf:30.91,sf:14.19,fi:4.95,ch:1.93,group:100.0},
+  "Morocco": {r32:100.0,r16:100.0,qf:100.0,sf:24.54,fi:7.97,ch:2.86,group:100.0},
+  "Norway": {r32:100.0,r16:100.0,qf:32.68,sf:9.09,fi:2.63,ch:0.84,group:100.0},
+  "Paraguay": {r32:100.0,r16:100.0,qf:0.0,sf:0.0,fi:0.0,ch:0.0,group:100.0},
+  "Portugal": {r32:100.0,r16:100.0,qf:52.31,sf:26.64,fi:12.25,ch:4.65,group:100.0},
+  "Spain": {r32:100.0,r16:100.0,qf:47.69,sf:27.5,fi:13.06,ch:5.74,group:100.0},
+  "Switzerland": {r32:100.0,r16:100.0,qf:41.69,sf:13.52,fi:4.4,ch:1.27,group:100.0},
+  "United States": {r32:100.0,r16:100.0,qf:31.17,sf:9.38,fi:2.88,ch:0.88,group:100.0},
+};
+
+// Champion odds sorted (from simulation)
+const CHAMP_DATA = Object.entries(KO_DATA)
+  .sort((a,b) => b[1].ch - a[1].ch)
+  .map(([team,d]) => ({team, ...d, group: TEAM_GROUP[team] || "—"}));
+
+// ═══════════════════════════════════════════════════════════════
+// GROUP DATA  —  real probabilities from group_predictions.json
+// ═══════════════════════════════════════════════════════════════
+const GROUPS = {
+  "A": {
+    "teams": [
+      "Mexico",
+      "South Africa",
+      "South Korea",
+      "Czech Republic"
+    ],
+    "matches": [
+      {
+        "t1": "Mexico",
+        "t2": "South Africa",
+        "p1": 61.94,
+        "pd": 15.66,
+        "p2": 22.4,
+        "conf": 76.2
+      },
+      {
+        "t1": "Mexico",
+        "t2": "South Korea",
+        "p1": 55.92,
+        "pd": 19.4,
+        "p2": 24.68,
+        "conf": 78.2
+      },
+      {
+        "t1": "Mexico",
+        "t2": "Czech Republic",
+        "p1": 58.62,
+        "pd": 17.73,
+        "p2": 23.65,
+        "conf": 72.3
+      },
+      {
+        "t1": "South Africa",
+        "t2": "South Korea",
+        "p1": 27.79,
+        "pd": 22.55,
+        "p2": 49.66,
+        "conf": 72.3
+      },
+      {
+        "t1": "South Africa",
+        "t2": "Czech Republic",
+        "p1": 35.32,
+        "pd": 25.72,
+        "p2": 38.96,
+        "conf": 72.3
+      },
+      {
+        "t1": "South Korea",
+        "t2": "Czech Republic",
+        "p1": 47.32,
+        "pd": 23.04,
+        "p2": 29.64,
+        "conf": 74.3
+      }
+    ],
+    "insight": "These six pairwise comparisons use the July 5 snapshot. Expected points are calculated as three times win probability plus draw probability for each matchup. They are retrospective comparisons, not recorded pre-tournament forecasts. Model confidence is an internal weighting score; accuracy and calibration have not been measured."
+  },
+  "B": {
+    "teams": [
+      "Canada",
+      "Bosnia-Herzegovina",
+      "Qatar",
+      "Switzerland"
+    ],
+    "matches": [
+      {
+        "t1": "Canada",
+        "t2": "Bosnia-Herzegovina",
+        "p1": 52.65,
+        "pd": 21.9,
+        "p2": 25.45,
+        "conf": 73.3
+      },
+      {
+        "t1": "Canada",
+        "t2": "Qatar",
+        "p1": 52.49,
+        "pd": 20.76,
+        "p2": 26.75,
+        "conf": 72.3
+      },
+      {
+        "t1": "Canada",
+        "t2": "Switzerland",
+        "p1": 39.49,
+        "pd": 23.42,
+        "p2": 37.09,
+        "conf": 72.3
+      },
+      {
+        "t1": "Bosnia-Herzegovina",
+        "t2": "Qatar",
+        "p1": 39.28,
+        "pd": 24.39,
+        "p2": 36.33,
+        "conf": 75.3
+      },
+      {
+        "t1": "Bosnia-Herzegovina",
+        "t2": "Switzerland",
+        "p1": 24.32,
+        "pd": 20.02,
+        "p2": 55.66,
+        "conf": 73.3
+      },
+      {
+        "t1": "Qatar",
+        "t2": "Switzerland",
+        "p1": 23.86,
+        "pd": 16.28,
+        "p2": 59.86,
+        "conf": 72.3
+      }
+    ],
+    "insight": "These six pairwise comparisons use the July 5 snapshot. Expected points are calculated as three times win probability plus draw probability for each matchup. They are retrospective comparisons, not recorded pre-tournament forecasts. Model confidence is an internal weighting score; accuracy and calibration have not been measured."
+  },
+  "C": {
+    "teams": [
+      "Brazil",
+      "Morocco",
+      "Haiti",
+      "Scotland"
+    ],
+    "matches": [
+      {
+        "t1": "Brazil",
+        "t2": "Morocco",
+        "p1": 53.54,
+        "pd": 19.7,
+        "p2": 26.76,
+        "conf": 75.3
+      },
+      {
+        "t1": "Brazil",
+        "t2": "Haiti",
+        "p1": 69.72,
+        "pd": 10.6,
+        "p2": 19.68,
+        "conf": 75.3
+      },
+      {
+        "t1": "Brazil",
+        "t2": "Scotland",
+        "p1": 66.35,
+        "pd": 12.32,
+        "p2": 21.33,
+        "conf": 80.5
+      },
+      {
+        "t1": "Morocco",
+        "t2": "Haiti",
+        "p1": 59.2,
+        "pd": 17.26,
+        "p2": 23.54,
+        "conf": 72.3
+      },
+      {
+        "t1": "Morocco",
+        "t2": "Scotland",
+        "p1": 54.2,
+        "pd": 19.87,
+        "p2": 25.93,
+        "conf": 73.3
+      },
+      {
+        "t1": "Haiti",
+        "t2": "Scotland",
+        "p1": 29.76,
+        "pd": 21.75,
+        "p2": 48.49,
+        "conf": 73.3
+      }
+    ],
+    "insight": "These six pairwise comparisons use the July 5 snapshot. Expected points are calculated as three times win probability plus draw probability for each matchup. They are retrospective comparisons, not recorded pre-tournament forecasts. Model confidence is an internal weighting score; accuracy and calibration have not been measured."
+  },
+  "D": {
+    "teams": [
+      "United States",
+      "Paraguay",
+      "Australia",
+      "Turkey"
+    ],
+    "matches": [
+      {
+        "t1": "United States",
+        "t2": "Paraguay",
+        "p1": 53.87,
+        "pd": 19.99,
+        "p2": 26.14,
+        "conf": 80.5
+      },
+      {
+        "t1": "United States",
+        "t2": "Australia",
+        "p1": 49.54,
+        "pd": 21.49,
+        "p2": 28.97,
+        "conf": 78.5
+      },
+      {
+        "t1": "United States",
+        "t2": "Turkey",
+        "p1": 43.71,
+        "pd": 22.45,
+        "p2": 33.84,
+        "conf": 77.3
+      },
+      {
+        "t1": "Paraguay",
+        "t2": "Australia",
+        "p1": 31.74,
+        "pd": 24.16,
+        "p2": 44.1,
+        "conf": 78.5
+      },
+      {
+        "t1": "Paraguay",
+        "t2": "Turkey",
+        "p1": 30.58,
+        "pd": 21.79,
+        "p2": 47.63,
+        "conf": 73.3
+      },
+      {
+        "t1": "Australia",
+        "t2": "Turkey",
+        "p1": 37.97,
+        "pd": 21.24,
+        "p2": 40.79,
+        "conf": 75.3
+      }
+    ],
+    "insight": "These six pairwise comparisons use the July 5 snapshot. Expected points are calculated as three times win probability plus draw probability for each matchup. They are retrospective comparisons, not recorded pre-tournament forecasts. Model confidence is an internal weighting score; accuracy and calibration have not been measured."
+  },
+  "E": {
+    "teams": [
+      "Germany",
+      "Curaçao",
+      "Ivory Coast",
+      "Ecuador"
+    ],
+    "matches": [
+      {
+        "t1": "Germany",
+        "t2": "Curaçao",
+        "p1": 65.15,
+        "pd": 14.29,
+        "p2": 20.56,
+        "conf": 72.3
+      },
+      {
+        "t1": "Germany",
+        "t2": "Ivory Coast",
+        "p1": 57.15,
+        "pd": 19.03,
+        "p2": 23.82,
+        "conf": 72.3
+      },
+      {
+        "t1": "Germany",
+        "t2": "Ecuador",
+        "p1": 54.15,
+        "pd": 19.76,
+        "p2": 26.09,
+        "conf": 75.3
+      },
+      {
+        "t1": "Curaçao",
+        "t2": "Ivory Coast",
+        "p1": 28.85,
+        "pd": 19.81,
+        "p2": 51.34,
+        "conf": 72.3
+      },
+      {
+        "t1": "Curaçao",
+        "t2": "Ecuador",
+        "p1": 26.3,
+        "pd": 19.08,
+        "p2": 54.62,
+        "conf": 73.3
+      },
+      {
+        "t1": "Ivory Coast",
+        "t2": "Ecuador",
+        "p1": 36.0,
+        "pd": 23.75,
+        "p2": 40.25,
+        "conf": 73.3
+      }
+    ],
+    "insight": "These six pairwise comparisons use the July 5 snapshot. Expected points are calculated as three times win probability plus draw probability for each matchup. They are retrospective comparisons, not recorded pre-tournament forecasts. Model confidence is an internal weighting score; accuracy and calibration have not been measured."
+  },
+  "F": {
+    "teams": [
+      "Netherlands",
+      "Japan",
+      "Sweden",
+      "Tunisia"
+    ],
+    "matches": [
+      {
+        "t1": "Netherlands",
+        "t2": "Japan",
+        "p1": 46.81,
+        "pd": 21.81,
+        "p2": 31.38,
+        "conf": 75.3
+      },
+      {
+        "t1": "Netherlands",
+        "t2": "Sweden",
+        "p1": 58.78,
+        "pd": 17.99,
+        "p2": 23.23,
+        "conf": 79.3
+      },
+      {
+        "t1": "Netherlands",
+        "t2": "Tunisia",
+        "p1": 61.59,
+        "pd": 15.06,
+        "p2": 23.35,
+        "conf": 75.3
+      },
+      {
+        "t1": "Japan",
+        "t2": "Sweden",
+        "p1": 51.81,
+        "pd": 18.69,
+        "p2": 29.5,
+        "conf": 78.5
+      },
+      {
+        "t1": "Japan",
+        "t2": "Tunisia",
+        "p1": 54.78,
+        "pd": 18.25,
+        "p2": 26.97,
+        "conf": 78.5
+      },
+      {
+        "t1": "Sweden",
+        "t2": "Tunisia",
+        "p1": 41.66,
+        "pd": 19.14,
+        "p2": 39.2,
+        "conf": 78.5
+      }
+    ],
+    "insight": "These six pairwise comparisons use the July 5 snapshot. Expected points are calculated as three times win probability plus draw probability for each matchup. They are retrospective comparisons, not recorded pre-tournament forecasts. Model confidence is an internal weighting score; accuracy and calibration have not been measured."
+  },
+  "G": {
+    "teams": [
+      "Belgium",
+      "Egypt",
+      "Iran",
+      "New Zealand"
+    ],
+    "matches": [
+      {
+        "t1": "Belgium",
+        "t2": "Egypt",
+        "p1": 63.09,
+        "pd": 14.59,
+        "p2": 22.32,
+        "conf": 78.5
+      },
+      {
+        "t1": "Belgium",
+        "t2": "Iran",
+        "p1": 61.25,
+        "pd": 17.52,
+        "p2": 21.23,
+        "conf": 73.3
+      },
+      {
+        "t1": "Belgium",
+        "t2": "New Zealand",
+        "p1": 68.9,
+        "pd": 10.7,
+        "p2": 20.4,
+        "conf": 74.5
+      },
+      {
+        "t1": "Egypt",
+        "t2": "Iran",
+        "p1": 31.6,
+        "pd": 23.0,
+        "p2": 45.4,
+        "conf": 73.3
+      },
+      {
+        "t1": "Egypt",
+        "t2": "New Zealand",
+        "p1": 45.57,
+        "pd": 23.03,
+        "p2": 31.4,
+        "conf": 76.5
+      },
+      {
+        "t1": "Iran",
+        "t2": "New Zealand",
+        "p1": 49.43,
+        "pd": 22.99,
+        "p2": 27.58,
+        "conf": 75.3
+      }
+    ],
+    "insight": "These six pairwise comparisons use the July 5 snapshot. Expected points are calculated as three times win probability plus draw probability for each matchup. They are retrospective comparisons, not recorded pre-tournament forecasts. Model confidence is an internal weighting score; accuracy and calibration have not been measured."
+  },
+  "H": {
+    "teams": [
+      "Spain",
+      "Cape Verde",
+      "Saudi Arabia",
+      "Uruguay"
+    ],
+    "matches": [
+      {
+        "t1": "Spain",
+        "t2": "Cape Verde",
+        "p1": 69.93,
+        "pd": 10.55,
+        "p2": 19.52,
+        "conf": 73.3
+      },
+      {
+        "t1": "Spain",
+        "t2": "Saudi Arabia",
+        "p1": 68.51,
+        "pd": 11.29,
+        "p2": 20.2,
+        "conf": 75.3
+      },
+      {
+        "t1": "Spain",
+        "t2": "Uruguay",
+        "p1": 60.47,
+        "pd": 15.66,
+        "p2": 23.87,
+        "conf": 79.3
+      },
+      {
+        "t1": "Cape Verde",
+        "t2": "Saudi Arabia",
+        "p1": 33.23,
+        "pd": 25.2,
+        "p2": 41.57,
+        "conf": 74.5
+      },
+      {
+        "t1": "Cape Verde",
+        "t2": "Uruguay",
+        "p1": 27.08,
+        "pd": 20.47,
+        "p2": 52.45,
+        "conf": 74.5
+      },
+      {
+        "t1": "Saudi Arabia",
+        "t2": "Uruguay",
+        "p1": 27.63,
+        "pd": 19.48,
+        "p2": 52.89,
+        "conf": 76.5
+      }
+    ],
+    "insight": "These six pairwise comparisons use the July 5 snapshot. Expected points are calculated as three times win probability plus draw probability for each matchup. They are retrospective comparisons, not recorded pre-tournament forecasts. Model confidence is an internal weighting score; accuracy and calibration have not been measured."
+  },
+  "I": {
+    "teams": [
+      "France",
+      "Senegal",
+      "Norway",
+      "Iraq"
+    ],
+    "matches": [
+      {
+        "t1": "France",
+        "t2": "Senegal",
+        "p1": 67.4,
+        "pd": 13.04,
+        "p2": 19.56,
+        "conf": 76.5
+      },
+      {
+        "t1": "France",
+        "t2": "Norway",
+        "p1": 67.06,
+        "pd": 13.1,
+        "p2": 19.84,
+        "conf": 80.5
+      },
+      {
+        "t1": "France",
+        "t2": "Iraq",
+        "p1": 74.52,
+        "pd": 7.78,
+        "p2": 17.7,
+        "conf": 74.5
+      },
+      {
+        "t1": "Senegal",
+        "t2": "Norway",
+        "p1": 40.47,
+        "pd": 22.28,
+        "p2": 37.25,
+        "conf": 74.5
+      },
+      {
+        "t1": "Senegal",
+        "t2": "Iraq",
+        "p1": 48.12,
+        "pd": 20.39,
+        "p2": 31.49,
+        "conf": 74.5
+      },
+      {
+        "t1": "Norway",
+        "t2": "Iraq",
+        "p1": 52.68,
+        "pd": 20.19,
+        "p2": 27.13,
+        "conf": 74.5
+      }
+    ],
+    "insight": "These six pairwise comparisons use the July 5 snapshot. Expected points are calculated as three times win probability plus draw probability for each matchup. They are retrospective comparisons, not recorded pre-tournament forecasts. Model confidence is an internal weighting score; accuracy and calibration have not been measured."
+  },
+  "J": {
+    "teams": [
+      "Argentina",
+      "Algeria",
+      "Austria",
+      "Jordan"
+    ],
+    "matches": [
+      {
+        "t1": "Argentina",
+        "t2": "Algeria",
+        "p1": 71.75,
+        "pd": 8.34,
+        "p2": 19.91,
+        "conf": 73.3
+      },
+      {
+        "t1": "Argentina",
+        "t2": "Austria",
+        "p1": 70.06,
+        "pd": 9.85,
+        "p2": 20.09,
+        "conf": 74.3
+      },
+      {
+        "t1": "Argentina",
+        "t2": "Jordan",
+        "p1": 73.14,
+        "pd": 7.59,
+        "p2": 19.27,
+        "conf": 73.3
+      },
+      {
+        "t1": "Algeria",
+        "t2": "Austria",
+        "p1": 30.86,
+        "pd": 24.01,
+        "p2": 45.13,
+        "conf": 73.3
+      },
+      {
+        "t1": "Algeria",
+        "t2": "Jordan",
+        "p1": 43.79,
+        "pd": 23.06,
+        "p2": 33.15,
+        "conf": 76.5
+      },
+      {
+        "t1": "Austria",
+        "t2": "Jordan",
+        "p1": 47.85,
+        "pd": 21.73,
+        "p2": 30.42,
+        "conf": 73.3
+      }
+    ],
+    "insight": "These six pairwise comparisons use the July 5 snapshot. Expected points are calculated as three times win probability plus draw probability for each matchup. They are retrospective comparisons, not recorded pre-tournament forecasts. Model confidence is an internal weighting score; accuracy and calibration have not been measured."
+  },
+  "K": {
+    "teams": [
+      "Portugal",
+      "Congo DR",
+      "Uzbekistan",
+      "Colombia"
+    ],
+    "matches": [
+      {
+        "t1": "Portugal",
+        "t2": "Congo DR",
+        "p1": 67.09,
+        "pd": 13.1,
+        "p2": 19.81,
+        "conf": 74.5
+      },
+      {
+        "t1": "Portugal",
+        "t2": "Uzbekistan",
+        "p1": 68.12,
+        "pd": 12.44,
+        "p2": 19.44,
+        "conf": 74.5
+      },
+      {
+        "t1": "Portugal",
+        "t2": "Colombia",
+        "p1": 50.55,
+        "pd": 20.39,
+        "p2": 29.06,
+        "conf": 74.5
+      },
+      {
+        "t1": "Congo DR",
+        "t2": "Uzbekistan",
+        "p1": 38.39,
+        "pd": 25.57,
+        "p2": 36.04,
+        "conf": 74.5
+      },
+      {
+        "t1": "Congo DR",
+        "t2": "Colombia",
+        "p1": 23.55,
+        "pd": 18.44,
+        "p2": 58.01,
+        "conf": 74.5
+      },
+      {
+        "t1": "Uzbekistan",
+        "t2": "Colombia",
+        "p1": 22.96,
+        "pd": 15.6,
+        "p2": 61.44,
+        "conf": 74.5
+      }
+    ],
+    "insight": "These six pairwise comparisons use the July 5 snapshot. Expected points are calculated as three times win probability plus draw probability for each matchup. They are retrospective comparisons, not recorded pre-tournament forecasts. Model confidence is an internal weighting score; accuracy and calibration have not been measured."
+  },
+  "L": {
+    "teams": [
+      "England",
+      "Croatia",
+      "Ghana",
+      "Panama"
+    ],
+    "matches": [
+      {
+        "t1": "England",
+        "t2": "Croatia",
+        "p1": 64.16,
+        "pd": 15.17,
+        "p2": 20.67,
+        "conf": 80.5
+      },
+      {
+        "t1": "England",
+        "t2": "Ghana",
+        "p1": 71.41,
+        "pd": 10.17,
+        "p2": 18.42,
+        "conf": 74.5
+      },
+      {
+        "t1": "England",
+        "t2": "Panama",
+        "p1": 73.73,
+        "pd": 8.63,
+        "p2": 17.64,
+        "conf": 74.5
+      },
+      {
+        "t1": "Croatia",
+        "t2": "Ghana",
+        "p1": 45.38,
+        "pd": 20.77,
+        "p2": 33.85,
+        "conf": 74.5
+      },
+      {
+        "t1": "Croatia",
+        "t2": "Panama",
+        "p1": 54.7,
+        "pd": 20.37,
+        "p2": 24.93,
+        "conf": 74.5
+      },
+      {
+        "t1": "Ghana",
+        "t2": "Panama",
+        "p1": 39.01,
+        "pd": 24.55,
+        "p2": 36.44,
+        "conf": 74.5
+      }
+    ],
+    "insight": "These six pairwise comparisons use the July 5 snapshot. Expected points are calculated as three times win probability plus draw probability for each matchup. They are retrospective comparisons, not recorded pre-tournament forecasts. Model confidence is an internal weighting score; accuracy and calibration have not been measured."
+  }
+};
+
+// ═══════════════════════════════════════════════════════════════
+// WC 2026 GROUP STAGE SCHEDULE
+// ═══════════════════════════════════════════════════════════════
+const WC2026_SCHEDULE = {
+  "Group A": [
+    {date:"2026-06-12",team1:"Mexico",team2:"South Africa",time:"3:00 PM ET",venue:"AT&T Stadium, Dallas",matchday:1},
+    {date:"2026-06-12",team1:"South Korea",team2:"Czech Republic",time:"6:00 PM ET",venue:"Arrowhead Stadium, Kansas City",matchday:1},
+    {date:"2026-06-18",team1:"Mexico",team2:"South Korea",time:"3:00 PM ET",venue:"Hard Rock Stadium, Miami",matchday:2},
+    {date:"2026-06-18",team1:"South Africa",team2:"Czech Republic",time:"6:00 PM ET",venue:"AT&T Stadium, Dallas",matchday:2},
+    {date:"2026-06-22",team1:"Mexico",team2:"Czech Republic",time:"3:00 PM ET",venue:"Estadio Azteca, Mexico City",matchday:3},
+    {date:"2026-06-22",team1:"South Africa",team2:"South Korea",time:"3:00 PM ET",venue:"Arrowhead Stadium, Kansas City",matchday:3},
+  ],
+  "Group B": [
+    {date:"2026-06-13",team1:"Canada",team2:"Bosnia-Herzegovina",time:"3:00 PM ET",venue:"BMO Field, Toronto",matchday:1},
+    {date:"2026-06-13",team1:"Switzerland",team2:"Qatar",time:"6:00 PM ET",venue:"BC Place, Vancouver",matchday:1},
+    {date:"2026-06-19",team1:"Canada",team2:"Switzerland",time:"3:00 PM ET",venue:"BMO Field, Toronto",matchday:2},
+    {date:"2026-06-19",team1:"Bosnia-Herzegovina",team2:"Qatar",time:"6:00 PM ET",venue:"BC Place, Vancouver",matchday:2},
+    {date:"2026-06-23",team1:"Canada",team2:"Qatar",time:"3:00 PM ET",venue:"SoFi Stadium, Los Angeles",matchday:3},
+    {date:"2026-06-23",team1:"Bosnia-Herzegovina",team2:"Switzerland",time:"3:00 PM ET",venue:"BMO Field, Toronto",matchday:3},
+  ],
+  "Group C": [
+    {date:"2026-06-14",team1:"Brazil",team2:"Morocco",time:"3:00 PM ET",venue:"SoFi Stadium, Los Angeles",matchday:1},
+    {date:"2026-06-14",team1:"Haiti",team2:"Scotland",time:"6:00 PM ET",venue:"Hard Rock Stadium, Miami",matchday:1},
+    {date:"2026-06-20",team1:"Brazil",team2:"Haiti",time:"3:00 PM ET",venue:"Mercedes-Benz Stadium, Atlanta",matchday:2},
+    {date:"2026-06-20",team1:"Morocco",team2:"Scotland",time:"6:00 PM ET",venue:"SoFi Stadium, Los Angeles",matchday:2},
+    {date:"2026-06-24",team1:"Brazil",team2:"Scotland",time:"3:00 PM ET",venue:"Levi's Stadium, San Francisco",matchday:3},
+    {date:"2026-06-24",team1:"Morocco",team2:"Haiti",time:"3:00 PM ET",venue:"Hard Rock Stadium, Miami",matchday:3},
+  ],
+  "Group D": [
+    {date:"2026-06-15",team1:"United States",team2:"Paraguay",time:"3:00 PM ET",venue:"MetLife Stadium, New Jersey",matchday:1},
+    {date:"2026-06-15",team1:"Australia",team2:"Turkey",time:"6:00 PM ET",venue:"AT&T Stadium, Dallas",matchday:1},
+    {date:"2026-06-21",team1:"United States",team2:"Australia",time:"3:00 PM ET",venue:"Levi's Stadium, San Francisco",matchday:2},
+    {date:"2026-06-21",team1:"Paraguay",team2:"Turkey",time:"6:00 PM ET",venue:"Mercedes-Benz Stadium, Atlanta",matchday:2},
+    {date:"2026-06-25",team1:"United States",team2:"Turkey",time:"3:00 PM ET",venue:"MetLife Stadium, New Jersey",matchday:3},
+    {date:"2026-06-25",team1:"Paraguay",team2:"Australia",time:"3:00 PM ET",venue:"Arrowhead Stadium, Kansas City",matchday:3},
+  ],
+  "Group E": [
+    {date:"2026-06-11",team1:"Germany",team2:"Curaçao",time:"3:00 PM ET",venue:"Lincoln Financial Field, Philadelphia",matchday:1},
+    {date:"2026-06-11",team1:"Ivory Coast",team2:"Ecuador",time:"6:00 PM ET",venue:"Levi's Stadium, San Francisco",matchday:1},
+    {date:"2026-06-17",team1:"Germany",team2:"Ivory Coast",time:"3:00 PM ET",venue:"Mercedes-Benz Stadium, Atlanta",matchday:2},
+    {date:"2026-06-17",team1:"Curaçao",team2:"Ecuador",time:"6:00 PM ET",venue:"Lincoln Financial Field, Philadelphia",matchday:2},
+    {date:"2026-06-21",team1:"Germany",team2:"Ecuador",time:"3:00 PM ET",venue:"Lincoln Financial Field, Philadelphia",matchday:3},
+    {date:"2026-06-21",team1:"Curaçao",team2:"Ivory Coast",time:"3:00 PM ET",venue:"Arrowhead Stadium, Kansas City",matchday:3},
+  ],
+  "Group F": [
+    {date:"2026-06-12",team1:"Netherlands",team2:"Japan",time:"3:00 PM ET",venue:"Mercedes-Benz Stadium, Atlanta",matchday:1},
+    {date:"2026-06-12",team1:"Sweden",team2:"Tunisia",time:"6:00 PM ET",venue:"SoFi Stadium, Los Angeles",matchday:1},
+    {date:"2026-06-18",team1:"Netherlands",team2:"Sweden",time:"3:00 PM ET",venue:"Gillette Stadium, Boston",matchday:2},
+    {date:"2026-06-18",team1:"Japan",team2:"Tunisia",time:"6:00 PM ET",venue:"BC Place, Vancouver",matchday:2},
+    {date:"2026-06-22",team1:"Netherlands",team2:"Tunisia",time:"3:00 PM ET",venue:"MetLife Stadium, New Jersey",matchday:3},
+    {date:"2026-06-22",team1:"Japan",team2:"Sweden",time:"3:00 PM ET",venue:"Hard Rock Stadium, Miami",matchday:3},
+  ],
+  "Group G": [
+    {date:"2026-06-13",team1:"Belgium",team2:"Egypt",time:"3:00 PM ET",venue:"Gillette Stadium, Boston",matchday:1},
+    {date:"2026-06-13",team1:"Iran",team2:"New Zealand",time:"6:00 PM ET",venue:"Mercedes-Benz Stadium, Atlanta",matchday:1},
+    {date:"2026-06-19",team1:"Belgium",team2:"Iran",time:"3:00 PM ET",venue:"Lincoln Financial Field, Philadelphia",matchday:2},
+    {date:"2026-06-19",team1:"Egypt",team2:"New Zealand",time:"6:00 PM ET",venue:"Hard Rock Stadium, Miami",matchday:2},
+    {date:"2026-06-23",team1:"Belgium",team2:"New Zealand",time:"3:00 PM ET",venue:"SoFi Stadium, Los Angeles",matchday:3},
+    {date:"2026-06-23",team1:"Egypt",team2:"Iran",time:"3:00 PM ET",venue:"BC Place, Vancouver",matchday:3},
+  ],
+  "Group H": [
+    {date:"2026-06-14",team1:"Spain",team2:"Cape Verde",time:"3:00 PM ET",venue:"AT&T Stadium, Dallas",matchday:1},
+    {date:"2026-06-14",team1:"Saudi Arabia",team2:"Uruguay",time:"6:00 PM ET",venue:"Gillette Stadium, Boston",matchday:1},
+    {date:"2026-06-20",team1:"Spain",team2:"Saudi Arabia",time:"3:00 PM ET",venue:"BC Place, Vancouver",matchday:2},
+    {date:"2026-06-20",team1:"Cape Verde",team2:"Uruguay",time:"6:00 PM ET",venue:"Arrowhead Stadium, Kansas City",matchday:2},
+    {date:"2026-06-24",team1:"Spain",team2:"Uruguay",time:"3:00 PM ET",venue:"AT&T Stadium, Dallas",matchday:3},
+    {date:"2026-06-24",team1:"Cape Verde",team2:"Saudi Arabia",time:"3:00 PM ET",venue:"Levi's Stadium, San Francisco",matchday:3},
+  ],
+  "Group I": [
+    {date:"2026-06-16",team1:"France",team2:"Senegal",time:"3:00 PM ET",venue:"MetLife Stadium, New Jersey",matchday:1},
+    {date:"2026-06-16",team1:"Iraq",team2:"Norway",time:"6:00 PM ET",venue:"Gillette Stadium, Boston",matchday:1},
+    {date:"2026-06-22",team1:"France",team2:"Iraq",time:"5:00 PM ET",venue:"Lincoln Financial Field, Philadelphia",matchday:2},
+    {date:"2026-06-22",team1:"Norway",team2:"Senegal",time:"8:00 PM ET",venue:"MetLife Stadium, New Jersey",matchday:2},
+    {date:"2026-06-26",team1:"Norway",team2:"France",time:"3:00 PM ET",venue:"Gillette Stadium, Boston",matchday:3},
+    {date:"2026-06-26",team1:"Senegal",team2:"Iraq",time:"3:00 PM ET",venue:"BMO Field, Toronto",matchday:3},
+  ],
+  "Group J": [
+    {date:"2026-06-15",team1:"Argentina",team2:"Algeria",time:"3:00 PM ET",venue:"Estadio Azteca, Mexico City",matchday:1},
+    {date:"2026-06-15",team1:"Austria",team2:"Jordan",time:"6:00 PM ET",venue:"SoFi Stadium, Los Angeles",matchday:1},
+    {date:"2026-06-21",team1:"Argentina",team2:"Austria",time:"3:00 PM ET",venue:"Hard Rock Stadium, Miami",matchday:2},
+    {date:"2026-06-21",team1:"Algeria",team2:"Jordan",time:"6:00 PM ET",venue:"AT&T Stadium, Dallas",matchday:2},
+    {date:"2026-06-25",team1:"Argentina",team2:"Jordan",time:"3:00 PM ET",venue:"Mercedes-Benz Stadium, Atlanta",matchday:3},
+    {date:"2026-06-25",team1:"Algeria",team2:"Austria",time:"3:00 PM ET",venue:"Estadio Azteca, Mexico City",matchday:3},
+  ],
+  "Group K": [
+    {date:"2026-06-11",team1:"Portugal",team2:"Congo DR",time:"3:00 PM ET",venue:"SoFi Stadium, Los Angeles",matchday:1},
+    {date:"2026-06-11",team1:"Uzbekistan",team2:"Colombia",time:"6:00 PM ET",venue:"Estadio Azteca, Mexico City",matchday:1},
+    {date:"2026-06-17",team1:"Portugal",team2:"Uzbekistan",time:"3:00 PM ET",venue:"Arrowhead Stadium, Kansas City",matchday:2},
+    {date:"2026-06-17",team1:"Congo DR",team2:"Colombia",time:"6:00 PM ET",venue:"Mercedes-Benz Stadium, Atlanta",matchday:2},
+    {date:"2026-06-21",team1:"Portugal",team2:"Colombia",time:"3:00 PM ET",venue:"SoFi Stadium, Los Angeles",matchday:3},
+    {date:"2026-06-21",team1:"Congo DR",team2:"Uzbekistan",time:"3:00 PM ET",venue:"Levi's Stadium, San Francisco",matchday:3},
+  ],
+  "Group L": [
+    {date:"2026-06-12",team1:"England",team2:"Croatia",time:"3:00 PM ET",venue:"Gillette Stadium, Boston",matchday:1},
+    {date:"2026-06-12",team1:"Ghana",team2:"Panama",time:"6:00 PM ET",venue:"Lincoln Financial Field, Philadelphia",matchday:1},
+    {date:"2026-06-18",team1:"England",team2:"Ghana",time:"3:00 PM ET",venue:"AT&T Stadium, Dallas",matchday:2},
+    {date:"2026-06-18",team1:"Croatia",team2:"Panama",time:"6:00 PM ET",venue:"Estadio Azteca, Mexico City",matchday:2},
+    {date:"2026-06-22",team1:"England",team2:"Panama",time:"3:00 PM ET",venue:"MetLife Stadium, New Jersey",matchday:3},
+    {date:"2026-06-22",team1:"Croatia",team2:"Ghana",time:"3:00 PM ET",venue:"Gillette Stadium, Boston",matchday:3},
+  ],
+  "Round of 32": [
+    {date:"2026-06-28", team1:"South Africa",      team2:"Canada",              time:"3:00 PM ET",  venue:"SoFi Stadium, Los Angeles",             match:"M73"},
+    {date:"2026-06-29", team1:"Brazil",            team2:"Japan",               time:"1:00 PM ET",  venue:"NRG Stadium, Houston",                  match:"M78"},
+    {date:"2026-06-29", team1:"Germany",           team2:"Paraguay",            time:"4:30 PM ET",  venue:"Gillette Stadium, Boston",              match:"M74"},
+    {date:"2026-06-29", team1:"Netherlands",       team2:"Morocco",             time:"9:00 PM ET",  venue:"Estadio BBVA, Monterrey",               match:"M82"},
+    {date:"2026-06-30", team1:"Ivory Coast",       team2:"Norway",              time:"1:00 PM ET",  venue:"AT&T Stadium, Dallas",                  match:"M77"},
+    {date:"2026-06-30", team1:"France",            team2:"Sweden",              time:"5:00 PM ET",  venue:"MetLife Stadium, New Jersey",            match:"M76"},
+    {date:"2026-06-30", team1:"Mexico",            team2:"Ecuador",             time:"9:00 PM ET",  venue:"Estadio Azteca, Mexico City",            match:"M79"},
+    {date:"2026-07-01", team1:"England",           team2:"Congo DR",            time:"12:00 PM ET", venue:"Mercedes-Benz Stadium, Atlanta",         match:"M80"},
+    {date:"2026-07-01", team1:"Belgium",           team2:"Senegal",             time:"4:00 PM ET",  venue:"Lumen Field, Seattle",                  match:"M81"},
+    {date:"2026-07-01", team1:"United States",     team2:"Bosnia-Herzegovina",  time:"8:00 PM ET",  venue:"Levi's Stadium, San Francisco",          match:"M86"},
+    {date:"2026-07-02", team1:"Colombia",          team2:"Croatia",             time:"12:00 PM ET", venue:"Hard Rock Stadium, Miami",               match:"M75"},
+    {date:"2026-07-02", team1:"Spain",             team2:"Austria",             time:"4:00 PM ET",  venue:"Rose Bowl, Los Angeles",                match:"M83"},
+    {date:"2026-07-02", team1:"Switzerland",       team2:"Algeria",             time:"8:00 PM ET",  venue:"BC Place, Vancouver",                   match:"M85"},
+    {date:"2026-07-03", team1:"Argentina",         team2:"Cape Verde",          time:"12:00 PM ET", venue:"AT&T Stadium, Dallas",                  match:"M84"},
+    {date:"2026-07-03", team1:"Australia",         team2:"Egypt",               time:"4:00 PM ET",  venue:"Arrowhead Stadium, Kansas City",         match:"M88"},
+    {date:"2026-07-03", team1:"Portugal",          team2:"Ghana",               time:"8:00 PM ET",  venue:"Lincoln Financial Field, Philadelphia",  match:"M87"},
+  ],
+};
+
+// ═══════════════════════════════════════════════════════════════
+// CONSTANTS
+// ═══════════════════════════════════════════════════════════════
+const MODEL_ORDER = ['value','tactical','form_results','quality_form','momentum','h2h'];
+const MODEL_SHORT = ['VAL','TAC','FRM','QFM','MOM','H2H'];
+const MODEL_FULL  = {value:'Value',tactical:'Tactical',form_results:'Form / Results',quality_form:'Quality Form',momentum:'Momentum',h2h:'Head-to-Head'};
+
+// ═══════════════════════════════════════════════════════════════
+// CHART REGISTRY — destroy before recreating to avoid canvas reuse errors
+// ═══════════════════════════════════════════════════════════════
+const chartRegistry = new Map();
+function mkChart(id, config) {
+  if (chartRegistry.has(id)) { chartRegistry.get(id).destroy(); chartRegistry.delete(id); }
+  const el = document.getElementById(id);
+  if (!el || typeof Chart === 'undefined') return null;
+  const c = new Chart(el, config);
+  chartRegistry.set(id, c);
+  return c;
+}
+// Team colors for radar/chart overlays
+const TEAM_COLORS = [
+  'rgba(88,166,255,.7)',   // blue
+  'rgba(240,136,62,.7)',   // orange
+  'rgba(63,185,80,.7)',    // green
+  'rgba(210,153,34,.7)',   // gold
+];
+const TEAM_BORDERS = ['#58a6ff','#f0883e','#3fb950','#e3b341'];
+
+// ═══════════════════════════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════════════════════════
+const f = t => FLAGS[t] || '';
+
+function consClass(c) {
+  return c === 'strong' ? 'c-strong' : c === 'moderate' ? 'c-moderate' : 'c-split';
+}
+
+function modelDotsHtml(ins) {
+  if (!ins) return '';
+  return '<div class="model-dots">' +
+    MODEL_ORDER.map((m, i) => {
+      const cls = ins.models_for_team1.includes(m) ? 'md-t1'
+                : ins.models_for_team2.includes(m) ? 'md-t2' : 'md-even';
+      return `<span class="mdot ${cls}" title="${MODEL_FULL[m]}">${MODEL_SHORT[i]}</span>`;
+    }).join('') +
+  '</div>';
+}
+
+function heat(v) {
+  const t = Math.pow(Math.min(v,100)/100, 0.55);
+  const bg = `rgba(${Math.round(13+80*t)},${Math.round(17+140*t)},${Math.round(20+235*t)},${(0.18+t*.82).toFixed(2)})`;
+  const fg = v > 55 ? '#fff' : v > 22 ? '#e6edf3' : v > 8 ? '#8b949e' : '#6e7681';
+  return {bg, fg};
+}
+
+// ═══════════════════════════════════════════════════════════════
+// STANDINGS
+// ═══════════════════════════════════════════════════════════════
+function computeExpectedPts(gKey) {
+  const g = GROUPS[gKey];
+  const pts = {};
+  g.teams.forEach(t => pts[t] = 0);
+  g.matches.forEach(m => {
+    pts[m.t1] += (m.p1/100)*3 + (m.pd/100);
+    pts[m.t2] += (m.p2/100)*3 + (m.pd/100);
+  });
+  return g.teams.map(t => ({team:t, pts:pts[t]})).sort((a,b) => b.pts - a.pts);
+}
+
+function renderStandings(gKey) {
+  const rows = computeExpectedPts(gKey);
+  const maxPts = rows[0].pts;
+  const chartId = `standings-chart-${gKey}`;
+  const tierColors = ['rgba(240,192,64,.85)','rgba(160,160,172,.7)','rgba(158,106,3,.6)','rgba(110,118,129,.4)'];
+  const tierBorder = ['#f0c040','#a0a0ac','#9e6a03','#6e7681'];
+  return `
+  <div class="chart-box" style="margin-bottom:16px">
+    <h4>Expected Points — Group ${gKey}</h4>
+    <div class="chart-canvas-wrap" style="height:130px">
+      <canvas id="${chartId}" data-chart="standings" data-gkey="${gKey}"></canvas>
+    </div>
+  </div>
+  <div class="standings-grid">` + rows.map((r,i) => {
+    const tier = i < 2 ? 'adv' : i === 2 ? 'pos' : 'elim';
+    const [bl,bc] = tier==='adv' ? ['Top two by expected points','b-adv'] : tier==='pos' ? ['Third by expected points','b-pos'] : ['Fourth by expected points','b-elim'];
+    const barCol = tier==='adv' ? 'var(--green)' : tier==='pos' ? 'var(--amber)' : 'var(--draw-col)';
+    const ko = KO_DATA[r.team] || {ch:0,r32:0,r16:0,qf:0,sf:0,fi:0,group:'-'};
+    return `<div class="standing-row t-${tier}">
+      <div class="s-rank">${i+1}</div>
+      <div class="s-name">${f(r.team)} ${r.team}</div>
+      <div><div class="s-bar-bg"><div class="s-bar-fill" style="width:${(r.pts/maxPts)*100}%;background:${barCol}"></div></div></div>
+      <div class="s-num"><span style="color:var(--text);font-weight:700">${r.pts.toFixed(1)}</span><span class="s-sub">exp. pts</span></div>
+      <div><span class="badge ${bc}">${bl}</span></div>
+      <div class="s-champ">${ko.ch}%<span class="s-sub" style="color:var(--dim)">champion</span></div>
+    </div>`;
+  }).join('') + '</div>';
+}
+
+function initStandingsChart(gKey, rows) {
+  const chartId = `standings-chart-${gKey}`;
+  const tierColors = ['rgba(240,192,64,.85)','rgba(160,160,172,.7)','rgba(158,106,3,.6)','rgba(110,118,129,.4)'];
+  const tierBorder = ['#f0c040','#c0c0c8','#9e6a03','#6e7681'];
+  mkChart(chartId, {
+    type: 'bar',
+    data: {
+      labels: rows.map(r => r.team),
+      datasets: [{
+        label: 'Exp. Points',
+        data: rows.map(r => +r.pts.toFixed(2)),
+        backgroundColor: rows.map((_,i) => tierColors[i]),
+        borderColor: rows.map((_,i) => tierBorder[i]),
+        borderWidth: 1.5,
+        borderRadius: 4,
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: {display:false}, tooltip: {callbacks:{label: ctx => ` ${ctx.raw} exp. pts`}} },
+      scales: {
+        x: { grid:{color:'rgba(48,54,61,.5)'}, ticks:{color:'#8b949e',font:{size:10}}, border:{color:'#30363d'} },
+        y: { grid:{display:false}, ticks:{color:'#e6edf3',font:{size:11,weight:'600'}}, border:{color:'#30363d'} },
+      }
+    }
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════
+// MATCHES
+// ═══════════════════════════════════════════════════════════════
+function toggleExpand(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.classList.toggle('expanded');
+  if (el.classList.contains('expanded')) {
+    const canvas = el.querySelector('canvas[data-chart="match-breakdown"]');
+    if (canvas) initMatchBreakdownChart(canvas.id, canvas.dataset.key, canvas.dataset.t1, canvas.dataset.t2);
+  }
+}
+
+function renderMatches(gKey) {
+  const g = GROUPS[gKey];
+  return '<div class="matches-grid">' + g.matches.map((m, idx) => {
+    const key = `${m.t1} vs ${m.t2}`;
+    const ins = MATCH_INSIGHTS[key] || null;
+    const id  = `mc-${gKey}-${idx}`;
+
+    const consBadge = ins
+      ? `<span class="cons-badge ${consClass(ins.model_consensus)}">${ins.model_consensus.toUpperCase()}</span>` : '';
+    const dotsHtml  = modelDotsHtml(ins);
+    const uncHtml   = ins && ins.uncertainty_flag
+      ? `<div class="mc-unc"><span class="unc-flag">⚠ HIGH UNCERTAINTY</span></div>` : '';
+    const verdict   = ins ? `<div class="mc-verdict">${ins.verdict}</div>` : '';
+    const uncCls    = ins && ins.uncertainty_flag ? ' uncertain' : '';
+
+    // vote score for toggle label
+    const n1 = ins ? ins.models_for_team1.length : 0;
+    const n2 = ins ? ins.models_for_team2.length : 0;
+    const votePreview = ins ? `<span class="mc-vote-preview"><span class="vp-score vp-t1">${n1}</span><span class="vp-sep">–</span><span class="vp-score vp-t2">${n2}</span></span>` : '';
+
+    let expandHtml = '';
+    if (ins) {
+      const v1 = ins.models_for_team1.map(n => `<span class="vote v-t1">${n.replace('_',' ')}</span>`).join('');
+      const v2 = ins.models_for_team2.map(n => `<span class="vote v-t2">${n.replace('_',' ')}</span>`).join('');
+      const ve = ins.models_even.map(n => `<span class="vote v-even">${n.replace('_',' ')}</span>`).join('');
+
+      const chips = [];
+      if (ins.style_clash) chips.push(`<span class="detail-chip"><span class="dc-lbl">Style</span><span class="dc-val">${ins.style_clash}</span></span>`);
+      if (ins.value_gap_eur_m != null) {
+        const favoured = ins.value_gap_eur_m > 0 ? m.t1 : m.t2;
+        chips.push(`<span class="detail-chip"><span class="dc-lbl">Squad value gap</span><span class="dc-val">€${Math.abs(ins.value_gap_eur_m).toFixed(0)}m → ${favoured}</span></span>`);
+      }
+
+      const matchChartId = `mc-chart-${gKey}-${idx}`;
+      expandHtml = `
+        <div class="mc-toggle" onclick="toggleExpand('${id}')">
+          <span class="etl">▾ Model breakdown ${votePreview}</span>
+          <span class="mc-arr">▼</span>
+        </div>
+        <div class="mc-expand">
+          <div class="mc-expand-inner">
+            <div class="analytical-note">${ins.analytical_note}</div>
+            ${chips.length ? `<div class="detail-row">${chips.join('')}</div>` : ''}
+            <div class="vote-section">
+              <span class="vote-lbl">Model votes</span>
+              <div class="vote-rows">
+                ${v1 ? `<div class="vote-row"><span class="vr-team">${f(m.t1)} ${m.t1}</span><div class="votes">${v1}</div></div>` : ''}
+                ${ve ? `<div class="vote-row"><span class="vr-team">Even</span><div class="votes">${ve}</div></div>` : ''}
+                ${v2 ? `<div class="vote-row"><span class="vr-team">${f(m.t2)} ${m.t2}</span><div class="votes">${v2}</div></div>` : ''}
+              </div>
+            </div>
+            <div style="margin-top:14px">
+              <span class="vote-lbl">Per-model probability breakdown</span>
+              <div style="height:160px;margin-top:8px"><canvas id="${matchChartId}" data-chart="match-breakdown" data-key="${key}" data-t1="${m.t1}" data-t2="${m.t2}"></canvas></div>
+            </div>
+          </div>
+        </div>`;
+    }
+
+    return `<div class="match-card${uncCls}" id="${id}">
+      <div class="mc-head" onclick="toggleExpand('${id}')">
+        <div class="mc-row1">
+          <div class="m-side"><div class="m-name">${f(m.t1)} ${m.t1}</div></div>
+          <div class="m-mid">
+            <div class="m-vs">VS</div>
+            ${consBadge}
+            ${dotsHtml}
+          </div>
+          <div class="m-side right"><div class="m-name">${m.t2} ${f(m.t2)}</div></div>
+        </div>
+      </div>
+      ${verdict}${uncHtml}
+      <div class="mc-probs">
+        <div class="prob-nums">
+          <span class="pn1">${m.p1}%</span>
+          <span class="pnd">${m.pd}% draw</span>
+          <span class="pn2">${m.p2}%</span>
+        </div>
+        <div class="prob-bar">
+          <div class="pb1" style="width:${m.p1}%"></div>
+          <div class="pbd" style="width:${m.pd}%"></div>
+          <div class="pb2" style="width:${m.p2}%"></div>
+        </div>
+        <div class="prob-foot">
+          <span>${m.t1} win</span>
+          <span class="conf-chip">⬤ ${m.conf}% confidence</span>
+          <span>${m.t2} win</span>
+        </div>
+      </div>
+      ${expandHtml}
+    </div>`;
+  }).join('') + '</div>';
+}
+
+function initMatchBreakdownChart(id, key, t1, t2) {
+  const mo = MODEL_OUTPUTS_DATA[key];
+  if (!mo) return;
+  const labels = MODEL_SHORT;
+  const t1Data = MODEL_ORDER.map(m => mo[m] ? +(mo[m][0]*100).toFixed(1) : 0);
+  const drData = MODEL_ORDER.map(m => mo[m] ? +(mo[m][1]*100).toFixed(1) : 0);
+  const t2Data = MODEL_ORDER.map(m => mo[m] ? +(mo[m][2]*100).toFixed(1) : 0);
+  mkChart(id, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        {label: t1, data: t1Data, backgroundColor:'rgba(31,111,235,.75)', borderColor:'#1f6feb', borderWidth:1, borderRadius:3},
+        {label: 'Draw', data: drData, backgroundColor:'rgba(72,79,88,.6)', borderColor:'#484f58', borderWidth:1, borderRadius:3},
+        {label: t2, data: t2Data, backgroundColor:'rgba(218,54,51,.65)', borderColor:'#da3633', borderWidth:1, borderRadius:3},
+      ]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: {position:'bottom', labels:{color:'#8b949e',font:{size:10},boxWidth:10,padding:10}},
+        tooltip: {callbacks:{label: ctx => ` ${ctx.dataset.label}: ${ctx.raw}%`}},
+      },
+      scales: {
+        x: {stacked:true, min:0, max:100, grid:{color:'rgba(48,54,61,.4)'}, ticks:{color:'#8b949e',font:{size:9},callback:v=>v+'%'}, border:{color:'#30363d'}},
+        y: {stacked:true, grid:{display:false}, ticks:{color:'#c9d1d9',font:{size:10,weight:'600'}}, border:{color:'#30363d'}},
+      }
+    }
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════
+// INSIGHTS
+// ═══════════════════════════════════════════════════════════════
+function computeRadarScores(gKey) {
+  const g = GROUPS[gKey];
+  const scores = {};
+  g.teams.forEach(team => {
+    const modelScores = {};
+    MODEL_ORDER.forEach(m => { modelScores[m] = []; });
+    g.matches.forEach(match => {
+      const key = `${match.t1} vs ${match.t2}`;
+      const mo = MODEL_OUTPUTS_DATA[key];
+      if (!mo) return;
+      const isT1 = match.t1 === team;
+      const isT2 = match.t2 === team;
+      if (!isT1 && !isT2) return;
+      MODEL_ORDER.forEach(m => {
+        if (!mo[m]) return;
+        const prob = isT1 ? mo[m][0] : mo[m][2];
+        modelScores[m].push(prob);
+      });
+    });
+    scores[team] = MODEL_ORDER.map(m => {
+      const arr = modelScores[m];
+      if (!arr.length) return 50;
+      return Math.round((arr.reduce((s,v)=>s+v,0)/arr.length)*100);
+    });
+  });
+  return scores;
+}
+
+function initRadarChart(gKey) {
+  const chartId = `radar-chart-${gKey}`;
+  const g = GROUPS[gKey];
+  const scores = computeRadarScores(gKey);
+  mkChart(chartId, {
+    type: 'radar',
+    data: {
+      labels: ['Value','Tactical','Form','Quality','Momentum','H2H'],
+      datasets: g.teams.map((team, i) => ({
+        label: team,
+        data: scores[team],
+        backgroundColor: TEAM_COLORS[i].replace('.7','.35'),
+        borderColor: TEAM_BORDERS[i],
+        borderWidth: 2,
+        pointBackgroundColor: TEAM_BORDERS[i],
+        pointRadius: 3,
+      }))
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: {position:'bottom', labels:{color:'#8b949e',font:{size:11},boxWidth:10,padding:10}},
+        tooltip: {callbacks:{label: ctx => ` ${ctx.dataset.label}: ${ctx.raw}`}},
+      },
+      scales: {
+        r: {
+          min: 0, max: 100,
+          grid:{color:'rgba(48,54,61,.6)'},
+          angleLines:{color:'rgba(48,54,61,.8)'},
+          ticks:{color:'#6e7681',font:{size:9},backdropColor:'transparent',stepSize:25},
+          pointLabels:{color:'#8b949e',font:{size:11}},
+        }
+      }
+    }
+  });
+}
+
+function renderInsights(gKey) {
+  const g = GROUPS[gKey];
+  const rows = computeExpectedPts(gKey);
+  const maxPts = rows[0].pts;
+  const radarId = `radar-chart-${gKey}`;
+  return `<div class="insight-card">
+    <h3>Team Comparison at the Snapshot</h3>
+    <p class="narrative">${g.insight}</p>
+    <table class="stats-tbl" style="margin-top:22px">
+      <thead><tr>
+        <th>Team</th><th>Exp. Pts</th><th>Outlook</th><th>Champion %</th>
+      </tr></thead>
+      <tbody>${rows.map((r,i) => {
+        const tier = i<2 ? 'adv' : i===2 ? 'pos' : 'elim';
+        const [bl,bc] = tier==='adv'?['Top two by expected points','b-adv']:tier==='pos'?['Third by expected points','b-pos']:['Fourth by expected points','b-elim'];
+        const ko = KO_DATA[r.team] || {ch:0};
+        const barW = Math.round((r.pts/maxPts)*100);
+        const barCol = tier==='adv'?'var(--green)':tier==='pos'?'var(--amber)':'var(--draw-col)';
+        return `<tr>
+          <td>${f(r.team)} ${r.team}</td>
+          <td style="font-weight:700;color:var(--text);white-space:nowrap">
+            ${r.pts.toFixed(1)}
+            <div style="display:inline-block;width:60px;height:4px;background:var(--surface2);border-radius:2px;vertical-align:middle;margin-left:8px;overflow:hidden">
+              <div style="width:${barW}%;height:100%;background:${barCol};border-radius:2px"></div>
+            </div>
+          </td>
+          <td><span class="badge ${bc}">${bl}</span></td>
+          <td class="hi-champ">${ko.ch}%</td>
+        </tr>`;
+      }).join('')}</tbody>
+    </table>
+    <p style="font-size:11px;color:var(--dim);margin-top:12px">Expected points computed from match-level probabilities. Champion % is conditional on the supplied R16 bracket; teams outside that field have 0%. These comparisons were generated at the July 5 cutoff, after group-stage results were available.</p>
+    <div class="chart-box" style="margin-top:20px">
+      <h4>Model Dimension Radar — All 4 Teams</h4>
+      <p style="font-size:11px;color:var(--dim);margin-bottom:12px">Axis = average win probability per model dimension across all group matches, scaled 0–100.</p>
+      <div class="chart-canvas-wrap" style="height:320px"><canvas id="${radarId}" data-chart="radar" data-gkey="${gKey}"></canvas></div>
+    </div>
+  </div>`;
+}
+
+function initChampionChart() {
+  const top20 = CHAMP_DATA.slice(0, 20);
+  const tierBg = (i) => i < 3 ? 'rgba(240,192,64,.8)' : i < 8 ? 'rgba(63,185,80,.7)' : i < 15 ? 'rgba(31,111,235,.65)' : 'rgba(110,118,129,.5)';
+  const tierBo = (i) => i < 3 ? '#e3b341' : i < 8 ? '#3fb950' : i < 15 ? '#1f6feb' : '#6e7681';
+  mkChart('champion-chart', {
+    type: 'bar',
+    data: {
+      labels: top20.map(c => c.team),
+      datasets: [
+        {
+          label: 'Champion %',
+          data: top20.map(c => c.ch),
+          backgroundColor: top20.map((_,i) => tierBg(i)),
+          borderColor: top20.map((_,i) => tierBo(i)),
+          borderWidth: 1.5, borderRadius: 4,
+        },
+        {
+          label: 'Quarterfinal %',
+          data: top20.map(c => c.qf),
+          backgroundColor: top20.map((_,i) => tierBg(i).replace(/[\d.]+\)$/,'0.25)')),
+          borderColor: top20.map((_,i) => tierBo(i)),
+          borderWidth: 1, borderRadius: 4, borderDash: [4,2],
+        }
+      ]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: {position:'bottom', labels:{color:'#8b949e',font:{size:11},boxWidth:10,padding:14}},
+        tooltip: {callbacks:{label: ctx => ` ${ctx.dataset.label}: ${ctx.raw}%`}},
+      },
+      scales: {
+        x: {grid:{color:'rgba(48,54,61,.5)'}, ticks:{color:'#8b949e',font:{size:10},callback:v=>v+'%'}, border:{color:'#30363d'}},
+        y: {grid:{display:false}, ticks:{color:'#e6edf3',font:{size:11}}, border:{color:'#30363d'}},
+      }
+    }
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════
+// CHAMPION ODDS
+// ═══════════════════════════════════════════════════════════════
+function renderChampion() {
+  const maxPct = CHAMP_DATA[0].ch;
+  return `<div class="pg-head">
+    <h2>Champion Probabilities</h2>
+    <p>${CHAMP_DATA.length} teams in the supplied R16 bracket · 10,000 simulations · July 5 snapshot</p>
+  </div>
+  <div class="chart-box" style="margin-bottom:20px">
+    <h4>Champion &amp; Quarterfinal Probabilities</h4>
+    <div class="chart-canvas-wrap" style="height:560px"><canvas id="champion-chart" data-chart="champion"></canvas></div>
+  </div>
+  <div class="champ-wrap">
+    <table class="champ-tbl">
+      <thead><tr>
+        <th>#</th>
+        <th>Team</th>
+        <th>Odds bar</th>
+        <th>Champ %</th>
+        <th>In R16 field</th>
+        <th>R16 reached</th>
+        <th class="hide-sm">Quarter-F</th>
+        <th class="hide-sm">Semi-F</th>
+        <th class="hide-sm">Final</th>
+      </tr></thead>
+      <tbody>${CHAMP_DATA.map((c,i) => {
+        const w = ((c.ch/maxPct)*100).toFixed(1);
+        return `<tr>
+          <td>${i+1}</td>
+          <td><div class="ct-name">${f(c.team)} ${c.team}<span class="ct-grp">Grp ${c.group}</span></div></td>
+          <td><div class="ct-bar-bg"><div class="ct-bar-fill" style="width:${w}%"></div></div></td>
+          <td class="ct-pct">${c.ch}%</td>
+          <td class="hi-adv">${c.r32}%</td>
+          <td>${c.r16}%</td>
+          <td class="hide-sm">${c.qf}%</td>
+          <td class="hide-sm">${c.sf}%</td>
+          <td class="hide-sm">${c.fi}%</td>
+        </tr>`;
+      }).join('')}</tbody>
+    </table>
+  </div>`;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// KNOCKOUT HEATMAP
+// ═══════════════════════════════════════════════════════════════
+function renderKnockout() {
+  const cols = ['R16 field','R16 reached','Quarter-F','Semi-F','Final','Champion'];
+  const keys = ['r32','r16','qf','sf','fi','ch'];
+  const rows = [...CHAMP_DATA]; // already sorted by champion odds
+  return `<div class="pg-head">
+    <h2>Knockout Progression Heatmap</h2>
+    <p>${CHAMP_DATA.length} R16 teams sorted by champion probability — darker = higher likelihood</p>
+  </div>
+  <div class="ko-wrap">
+    <table class="ko-tbl">
+      <thead><tr>
+        <th>Team</th>
+        ${cols.map(c=>`<th>${c}</th>`).join('')}
+      </tr></thead>
+      <tbody>${rows.map(r => {
+        const cells = keys.map(k => {
+          const v = r[k];
+          const h = heat(v);
+          return `<td style="background:${h.bg};color:${h.fg}">${v}%</td>`;
+        }).join('');
+        return `<tr>
+          <td>${f(r.team)} ${r.team}<span class="ko-grp">Grp ${r.group}</span></td>
+          ${cells}
+        </tr>`;
+      }).join('')}</tbody>
+    </table>
+  </div>`;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// MATCHUP TOOL
+// ═══════════════════════════════════════════════════════════════
+const ALL_TEAMS = Object.keys(FLAGS).sort();
+const savedComparisons = [];
+
+function renderMatchupTool() {
+  const teamOpts = ALL_TEAMS.map(t => `<option value="${t}">${f(t)} ${t}</option>`).join('');
+  return `
+  <div class="pg-head"><h2>⚡ Hypothetical Matchup</h2><p>Compare any two teams using the frozen July 5 data.</p></div>
+  <div class="tool-section">
+    <div class="tool-row">
+      <div class="tool-field">
+        <label>Team 1</label>
+        <select id="mt-team1" class="tool-select"><option value="">— Select team —</option>${teamOpts}</select>
+      </div>
+      <div class="tool-field">
+        <label>Team 2</label>
+        <select id="mt-team2" class="tool-select"><option value="">— Select team —</option>${teamOpts}</select>
+      </div>
+      <button class="tool-btn" onclick="runMatchupAnalysis()">Analyse Matchup</button>
+    </div>
+
+    <div id="mt-offline" class="api-offline">
+      <strong>Matchup Tool needs the local prediction server.</strong>
+      <p>From the project folder, run <code>python api/predict_api.py</code> and open <code>http://127.0.0.1:5001/</code>, then try again.</p>
+    </div>
+
+    <div id="mt-result" class="matchup-result">
+      <div id="mt-probs" class="mr-probs"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+        <div class="chart-box" style="margin:0"><h4>Model breakdown</h4><div style="height:200px"><canvas id="mt-breakdown-chart"></canvas></div></div>
+        <div class="chart-box" style="margin:0"><h4>Radar comparison</h4><div style="height:200px"><canvas id="mt-radar-chart"></canvas></div></div>
+      </div>
+      <div id="mt-note" class="mr-note"></div>
+      <div style="display:flex;gap:10px;align-items:center;margin-bottom:14px">
+        <button class="tool-btn" onclick="saveComparison()" style="background:var(--green);border-color:var(--green)">💾 Save to comparisons</button>
+        <span id="mt-style" style="font-size:12px;color:var(--muted)"></span>
+      </div>
+      <div class="comparisons-list" id="mt-comparisons"></div>
+    </div>
+  </div>`;
+}
+
+async function runMatchupAnalysis() {
+  const t1 = document.getElementById('mt-team1').value;
+  const t2 = document.getElementById('mt-team2').value;
+  if (!t1 || !t2 || t1 === t2) { alert('Select two different teams.'); return; }
+  document.getElementById('mt-offline').classList.remove('visible');
+  document.getElementById('mt-result').classList.remove('visible');
+  try {
+    const res = await fetch(`${API}/predict?team1=${encodeURIComponent(t1)}&team2=${encodeURIComponent(t2)}`);
+    if (!res.ok) throw new Error('API error');
+    const d = await res.json();
+    renderMatchupResult(d, t1, t2);
+  } catch (e) {
+    document.getElementById('mt-offline').classList.add('visible');
+  }
+}
+
+function renderMatchupResult(d, t1, t2) {
+  const confLabel = d.confidence > 0.75 ? 'High' : d.confidence > 0.6 ? 'Moderate' : 'Low';
+  const probBar = `<div class="prob-bar" style="margin:8px 0">
+    <div class="pb1" style="width:${Math.round(d.team1_win*100)}%"></div>
+    <div class="pbd" style="width:${Math.round(d.draw*100)}%"></div>
+    <div class="pb2" style="width:${Math.round(d.team2_win*100)}%"></div>
+  </div>`;
+  const votes1 = (d.models_for_team1||[]).map(m=>`<span class="vote v-t1">${m.replace('_',' ')}</span>`).join(' ');
+  const votes2 = (d.models_for_team2||[]).map(m=>`<span class="vote v-t2">${m.replace('_',' ')}</span>`).join(' ');
+  const votesE = (d.models_even||[]).map(m=>`<span class="vote v-even">${m.replace('_',' ')}</span>`).join(' ');
+  document.getElementById('mt-probs').innerHTML = `
+    <div class="mr-title">${f(t1)} ${t1} <span style="color:var(--dim)">vs</span> ${t2} ${f(t2)}
+      <span class="mr-conf">Model confidence: ${confLabel} (${(d.confidence*100).toFixed(0)}%)</span></div>
+    <div class="prob-nums" style="display:flex;justify-content:space-between;font-weight:700;font-size:13px;margin-bottom:4px">
+      <span class="pn1">${(d.team1_win*100).toFixed(1)}%</span>
+      <span class="pnd">${(d.draw*100).toFixed(1)}% draw</span>
+      <span class="pn2">${(d.team2_win*100).toFixed(1)}%</span>
+    </div>${probBar}
+    <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--dim);margin-top:4px"><span>${t1} win</span><span>${t2} win</span></div>
+    <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:6px">
+      ${votes1?`<span style="font-size:11px;color:var(--muted)">${t1}:</span>${votes1}`:''}
+      ${votesE?`<span style="font-size:11px;color:var(--muted)">Even:</span>${votesE}`:''}
+      ${votes2?`<span style="font-size:11px;color:var(--muted)">${t2}:</span>${votes2}`:''}
+    </div>`;
+  document.getElementById('mt-note').textContent = d.analytical_note || '';
+  document.getElementById('mt-style').textContent = d.style_clash ? `Style: ${d.style_clash}` : '';
+  document.getElementById('mt-result').classList.add('visible');
+  document.getElementById('mt-result')._lastData = d;
+
+  // Breakdown chart
+  if (d.model_outputs) {
+    const mo = d.model_outputs;
+    mkChart('mt-breakdown-chart', {
+      type:'bar',
+      data:{
+        labels:MODEL_SHORT,
+        datasets:[
+          {label:t1,data:MODEL_ORDER.map(m=>mo[m]?+(mo[m].team1_win*100).toFixed(1):0),backgroundColor:'rgba(31,111,235,.75)',borderColor:'#1f6feb',borderWidth:1,borderRadius:3},
+          {label:'Draw',data:MODEL_ORDER.map(m=>mo[m]?+(mo[m].draw*100).toFixed(1):0),backgroundColor:'rgba(72,79,88,.6)',borderColor:'#484f58',borderWidth:1,borderRadius:3},
+          {label:t2,data:MODEL_ORDER.map(m=>mo[m]?+(mo[m].team2_win*100).toFixed(1):0),backgroundColor:'rgba(218,54,51,.65)',borderColor:'#da3633',borderWidth:1,borderRadius:3},
+        ]
+      },
+      options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{position:'bottom',labels:{color:'#8b949e',font:{size:10},boxWidth:8,padding:8}},tooltip:{callbacks:{label:ctx=>` ${ctx.dataset.label}: ${ctx.raw}%`}}},
+        scales:{x:{stacked:true,min:0,max:100,grid:{color:'rgba(48,54,61,.4)'},ticks:{color:'#8b949e',font:{size:9},callback:v=>v+'%'},border:{color:'#30363d'}},
+                y:{stacked:true,grid:{display:false},ticks:{color:'#c9d1d9',font:{size:10,weight:'600'}},border:{color:'#30363d'}}}
+      }
+    });
+    // Radar chart — compare two teams
+    const t1Scores = MODEL_ORDER.map(m => mo[m] ? +(mo[m].team1_win*100).toFixed(0) : 50);
+    const t2Scores = MODEL_ORDER.map(m => mo[m] ? +(mo[m].team2_win*100).toFixed(0) : 50);
+    mkChart('mt-radar-chart', {
+      type:'radar',
+      data:{
+        labels:['Value','Tactical','Form','Quality','Momentum','H2H'],
+        datasets:[
+          {label:t1,data:t1Scores,backgroundColor:'rgba(31,111,235,.25)',borderColor:'#58a6ff',borderWidth:2,pointBackgroundColor:'#58a6ff',pointRadius:3},
+          {label:t2,data:t2Scores,backgroundColor:'rgba(218,54,51,.2)',borderColor:'#f0883e',borderWidth:2,pointBackgroundColor:'#f0883e',pointRadius:3},
+        ]
+      },
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{position:'bottom',labels:{color:'#8b949e',font:{size:10},boxWidth:8,padding:8}}},
+        scales:{r:{min:0,max:100,grid:{color:'rgba(48,54,61,.6)'},angleLines:{color:'rgba(48,54,61,.8)'},
+          ticks:{color:'#6e7681',font:{size:9},backdropColor:'transparent',stepSize:25},
+          pointLabels:{color:'#8b949e',font:{size:10}}}}
+      }
+    });
+  }
+}
+
+function saveComparison() {
+  const res = document.getElementById('mt-result');
+  const d = res._lastData;
+  if (!d) return;
+  const t1 = document.getElementById('mt-team1').value;
+  const t2 = document.getElementById('mt-team2').value;
+  const entry = {t1, t2, p1:(d.team1_win*100).toFixed(1), pd:(d.draw*100).toFixed(1), p2:(d.team2_win*100).toFixed(1), key:Date.now()};
+  savedComparisons.push(entry);
+  renderSavedComparisons();
+}
+
+function removeComparison(key) {
+  const idx = savedComparisons.findIndex(c=>c.key===key);
+  if (idx>=0) savedComparisons.splice(idx,1);
+  renderSavedComparisons();
+}
+
+function renderSavedComparisons() {
+  const el = document.getElementById('mt-comparisons');
+  if (!el) return;
+  if (!savedComparisons.length) { el.innerHTML = ''; return; }
+  el.innerHTML = '<div class="vote-lbl" style="margin-bottom:8px">Saved comparisons</div>' +
+    savedComparisons.map(c => `<div class="comp-item">
+      <span>${f(c.t1)} <strong>${c.t1}</strong> <span style="color:var(--blue-bright)">${c.p1}%</span> | Draw ${c.pd}% | <span style="color:var(--orange-bright)">${c.p2}%</span> <strong>${c.t2}</strong> ${f(c.t2)}</span>
+      <button class="comp-del" onclick="removeComparison(${c.key})">✕</button>
+    </div>`).join('');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// LIVE UPDATES
+// ═══════════════════════════════════════════════════════════════
+let liveResults = [];
+const API = window.location.protocol === 'file:' ? 'http://127.0.0.1:5001' : window.location.origin;
+
+function renderLiveUpdates() {
+  const teamOpts = ALL_TEAMS.map(t => `<option value="${t}">${f(t)} ${t}</option>`).join('');
+  // Find teams with unrefreshed results
+  const pendingTeams = [...new Set(liveResults.filter(r=>!r.refreshed).flatMap(r=>[r.team1,r.team2]))];
+  return `
+  <div class="pg-head"><h2>⟳ Live Updates</h2><p>Log match results and refresh ensemble predictions for affected teams.</p></div>
+  <div class="live-grid">
+    <div>
+      <div class="live-section-title">📥 Log Match Result</div>
+      <div class="chart-box">
+        <div class="tool-field" style="margin-bottom:10px">
+          <label>Team 1</label>
+          <select id="lu-team1" class="tool-select"><option value="">— Select —</option>${teamOpts}</select>
+        </div>
+        <div class="score-row" style="margin-bottom:10px;justify-content:center">
+          <input id="lu-g1" type="number" class="score-input" min="0" max="20" placeholder="0">
+          <span class="score-sep">–</span>
+          <input id="lu-g2" type="number" class="score-input" min="0" max="20" placeholder="0">
+        </div>
+        <div class="tool-field" style="margin-bottom:10px">
+          <label>Team 2</label>
+          <select id="lu-team2" class="tool-select"><option value="">— Select —</option>${teamOpts}</select>
+        </div>
+        <div class="tool-field" style="margin-bottom:10px">
+          <label>Date</label>
+          <input id="lu-date" type="date" class="tool-select" value="${new Date().toISOString().split('T')[0]}">
+        </div>
+        <div class="tool-field" style="margin-bottom:14px">
+          <label>Stage</label>
+          <input id="lu-stage" type="text" class="tool-select" placeholder="e.g. Group I — Matchday 1" value="">
+        </div>
+        <button class="tool-btn" onclick="logResult()">Log Result</button>
+        <div id="lu-offline" class="api-offline" style="margin-top:10px">API offline — start with: <code>python api/predict_api.py</code></div>
+      </div>
+      <div style="margin-top:16px">
+        <div class="live-section-title">📋 Logged Results</div>
+        <div id="lu-results-table">${renderResultsTable()}</div>
+      </div>
+    </div>
+    <div>
+      <div class="live-section-title">🔄 Refresh Predictions</div>
+      <div class="chart-box">
+        <p style="font-size:12px;color:var(--muted);margin-bottom:12px">Teams affected by unrefreshed logged results:</p>
+        <div id="lu-pending-teams" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px">
+          ${pendingTeams.length ? pendingTeams.map(t=>`<span class="badge b-adv">${f(t)} ${t}</span>`).join('') : '<span style="color:var(--dim);font-size:12px">No pending results</span>'}
+        </div>
+        <button class="tool-btn" onclick="refreshPredictions()" ${pendingTeams.length?'':'disabled'}>Refresh Predictions</button>
+        <div id="lu-refresh-log" class="refresh-log"></div>
+        <div id="lu-last-updated" style="font-size:11px;color:var(--dim);margin-top:8px"></div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderResultsTable() {
+  if (!liveResults.length) return '<p style="font-size:12px;color:var(--dim)">No results logged yet.</p>';
+  return `<table class="results-tbl">
+    <thead><tr><th>Date</th><th>Match</th><th>Score</th><th>Stage</th><th></th></tr></thead>
+    <tbody>${liveResults.map(r=>`<tr>
+      <td style="color:var(--dim)">${r.date}</td>
+      <td style="font-weight:600">${f(r.team1)} ${r.team1} vs ${r.team2} ${f(r.team2)}</td>
+      <td style="font-weight:700;text-align:center">${r.goals_team1}–${r.goals_team2}</td>
+      <td style="color:var(--muted)">${r.stage||'—'}</td>
+      <td>${r.refreshed?'<span class="badge b-adv" style="font-size:9px">✓</span>':'<span class="badge b-pos" style="font-size:9px">Pending</span>'}</td>
+    </tr>`).join('')}</tbody></table>`;
+}
+
+async function logResult() {
+  const t1 = document.getElementById('lu-team1').value;
+  const t2 = document.getElementById('lu-team2').value;
+  const g1 = document.getElementById('lu-g1').value;
+  const g2 = document.getElementById('lu-g2').value;
+  const date = document.getElementById('lu-date').value;
+  const stage = document.getElementById('lu-stage').value;
+  if (!t1||!t2||g1===''||g2==='') { alert('Fill in all fields.'); return; }
+  document.getElementById('lu-offline').classList.remove('visible');
+  try {
+    const res = await fetch(`${API}/log_result`, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({team1:t1,team2:t2,goals_team1:+g1,goals_team2:+g2,date,stage})
+    });
+    if (!res.ok) throw new Error();
+    const d = await res.json();
+    liveResults.push(d.entry);
+    document.getElementById('lu-results-table').innerHTML = renderResultsTable();
+    // update pending teams
+    const pending = [...new Set(liveResults.filter(r=>!r.refreshed).flatMap(r=>[r.team1,r.team2]))];
+    document.getElementById('lu-pending-teams').innerHTML = pending.length
+      ? pending.map(t=>`<span class="badge b-adv">${f(t)} ${t}</span>`).join('')
+      : '<span style="color:var(--dim);font-size:12px">No pending results</span>';
+    document.querySelector('#mainContent .tool-btn[onclick="refreshPredictions()"]') && (
+      document.querySelector('#mainContent .tool-btn[onclick="refreshPredictions()"]').disabled = !pending.length
+    );
+  } catch(e) {
+    document.getElementById('lu-offline').classList.add('visible');
+  }
+}
+
+async function refreshPredictions() {
+  const pending = [...new Set(liveResults.filter(r=>!r.refreshed).flatMap(r=>[r.team1,r.team2]))];
+  if (!pending.length) return;
+  const log = document.getElementById('lu-refresh-log');
+  log.classList.add('visible');
+  log.innerHTML = `<div class="log-line">Refreshing predictions for: ${pending.join(', ')}…</div>`;
+  try {
+    const res = await fetch(`${API}/refresh_predictions`, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({teams:pending})
+    });
+    if (!res.ok) throw new Error();
+    const d = await res.json();
+    d.updated_matchups.forEach(m => { log.innerHTML += `<div class="log-line ok">✓ ${m}</div>`; });
+    d.diffs.forEach(diff => {
+      const sign = diff.delta > 0 ? '+' : '';
+      const cls = diff.delta > 0.01 ? 'diff-pos' : diff.delta < -0.01 ? 'diff-neg' : 'diff-neu';
+      log.innerHTML += `<div class="log-line">${diff.matchup}: ${(diff.old_prob*100).toFixed(1)}% → ${(diff.new_prob*100).toFixed(1)}% <span class="diff-chip ${cls}">${sign}${(diff.delta*100).toFixed(1)}pp</span></div>`;
+    });
+    liveResults.forEach(r=>{ if(pending.includes(r.team1)||pending.includes(r.team2)) r.refreshed=true; });
+    document.getElementById('lu-last-updated').textContent = `Last updated: ${new Date().toLocaleTimeString()}`;
+    document.getElementById('lu-results-table').innerHTML = renderResultsTable();
+    document.getElementById('lu-pending-teams').innerHTML = '<span style="color:var(--dim);font-size:12px">All refreshed</span>';
+  } catch(e) {
+    log.innerHTML += `<div class="log-line err">✗ API unreachable — start with: python api/predict_api.py</div>`;
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// SCHEDULE
+// ═══════════════════════════════════════════════════════════════
+function jumpToMatchup(t1, t2) {
+  activeMain = 'matchup';
+  document.querySelectorAll('.nav-tab').forEach(b => b.classList.toggle('active', b.dataset.id === 'matchup'));
+  renderContent();
+  requestAnimationFrame(function() {
+    const s1 = document.getElementById('mt-team1');
+    const s2 = document.getElementById('mt-team2');
+    if (s1 && s2) {
+      s1.value = t1;
+      s2.value = t2;
+      runMatchupAnalysis();
+    }
+  });
+}
+
+function _r32Badge(m) {
+  const today = new Date().toISOString().split('T')[0];
+  if (m.date < today) return ['sc-past', 'Completed'];
+  if (m.date > today) return ['sc-upcoming', 'Upcoming'];
+  // same day in ET — convert kickoff ET→UTC using arithmetic (avoids hour-overflow in ISO string)
+  const nowUTC = Date.now();
+  const ampm = m.time.includes('PM') ? 'PM' : 'AM';
+  const rawTime = m.time.replace(/ [AP]M ET$/, '');
+  const [hStr, minStr] = rawTime.split(':');
+  let h = parseInt(hStr, 10);
+  const min = parseInt(minStr || '0', 10);
+  if (ampm === 'PM' && h !== 12) h += 12;
+  if (ampm === 'AM' && h === 12) h = 0;
+  // ET is UTC-4 in summer: kickoff UTC = date midnight UTC + ET hours + 4h offset
+  const kickoffUTC = new Date(m.date + 'T00:00:00Z').getTime() + (h * 60 + min + 4 * 60) * 60000;
+  const elapsed = nowUTC - kickoffUTC;
+  if (elapsed < 0) return ['sc-today', 'TODAY'];
+  if (elapsed < 120 * 60 * 1000) return ['sc-live', '🔴 LIVE'];
+  return ['sc-past', 'Completed'];
+}
+
+function renderSchedule() {
+  const today = new Date().toISOString().split('T')[0];
+  const loggedKeys = new Set(liveResults.map(r=>`${r.team1} vs ${r.team2}`));
+
+  // ── Group stage (2-column grid, existing layout) ──────────────────────────
+  const groupEntries = Object.entries(WC2026_SCHEDULE).filter(([k]) => k !== 'Round of 32');
+  const groupHtml = groupEntries.map(([grpName, matches]) => {
+    const matchRows = matches.map(m => {
+      const key = `${m.team1} vs ${m.team2}`;
+      const isLogged = loggedKeys.has(key);
+      let badgeCls, badgeTxt;
+      if (isLogged || m.date < today) { badgeCls='sc-past'; badgeTxt='Completed'; }
+      else if (m.date === today) { badgeCls='sc-today'; badgeTxt='TODAY'; }
+      else { badgeCls='sc-upcoming'; badgeTxt='Upcoming'; }
+      return `<div class="schedule-match">
+        <span class="sc-date">${m.date.slice(5)}</span>
+        <span class="sc-time">${m.time}</span>
+        <span class="sc-teams">${f(m.team1)} ${m.team1} <span style="color:var(--dim)">vs</span> ${m.team2} ${f(m.team2)}</span>
+        <span class="sc-venue">${m.venue}</span>
+        <span class="sc-badge ${badgeCls}">${badgeTxt}</span>
+        ${m.matchday===3?'<span style="font-size:9px;color:var(--dim);margin-left:4px">●</span>':''}
+      </div>`;
+    }).join('');
+    return `<div class="schedule-group">
+      <div class="schedule-group-title">${grpName}</div>
+      ${matchRows}
+    </div>`;
+  }).join('');
+
+  // ── Round of 32 (single column, with Analyse button) ─────────────────────
+  const r32 = WC2026_SCHEDULE['Round of 32'] || [];
+  // Group by date for section headers
+  const byDate = {};
+  r32.forEach(m => { (byDate[m.date] = byDate[m.date] || []).push(m); });
+  const r32Html = Object.entries(byDate).map(([date, matches]) => {
+    const label = new Date(date + 'T12:00:00Z').toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+    const rows = matches.map(m => {
+      const [badgeCls, badgeTxt] = _r32Badge(m);
+      return `<div class="r32-match">
+        <span class="r32-match-id">${m.match}</span>
+        <span class="sc-date">${m.date.slice(5)}</span>
+        <span class="sc-time">${m.time}</span>
+        <span class="sc-teams" style="flex:1">${f(m.team1)} ${m.team1} <span style="color:var(--dim)">vs</span> ${m.team2} ${f(m.team2)}</span>
+        <span class="sc-venue">${m.venue}</span>
+        <span class="sc-badge ${badgeCls}">${badgeTxt}</span>
+        <button class="r32-analyse-btn" onclick="jumpToMatchup('${m.team1}','${m.team2}')">Analyse ⚡</button>
+      </div>`;
+    }).join('');
+    return `<div class="schedule-group">
+      <div class="schedule-group-title">📅 ${label}</div>
+      ${rows}
+    </div>`;
+  }).join('');
+
+  const totalToday = Object.values(WC2026_SCHEDULE).flat().filter(m=>m.date===today).length;
+  const todayBadge = totalToday ? `<span class="badge b-adv">${totalToday} match${totalToday>1?'es':''} today</span>` : '';
+
+  return `<div class="pg-head">
+    <h2>📅 Schedule</h2>
+    <p>FIFA World Cup 2026 · Group Stage Jun 11–29 · Round of 32 Jun 28–Jul 3 ${todayBadge}</p>
+  </div>
+  <h3 style="font-size:13px;font-weight:700;color:var(--blue-bright);text-transform:uppercase;letter-spacing:.5px;margin:0 0 12px">Round of 32</h3>
+  ${r32Html}
+  <h3 style="font-size:13px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.5px;margin:20px 0 12px">Group Stage (Completed)</h3>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
+    ${groupHtml}
+  </div>`;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// SEARCH
+// ═══════════════════════════════════════════════════════════════
+function initSearch() {
+  const allTeams = Object.entries(KO_DATA).map(([team,d]) => ({team, group: d.group}));
+  const input = document.getElementById('searchInput');
+  const drop  = document.getElementById('searchDrop');
+
+  input.addEventListener('input', () => {
+    const q = input.value.trim().toLowerCase();
+    drop.innerHTML = '';
+    if (!q) { drop.classList.remove('open'); return; }
+    const hits = allTeams.filter(({team}) => team.toLowerCase().includes(q)).slice(0, 8);
+    if (!hits.length) { drop.classList.remove('open'); return; }
+    drop.innerHTML = hits.map(({team,group}) =>
+      `<div class="s-item" onclick="gotoGroup('${group}');document.getElementById('searchInput').value='';document.getElementById('searchDrop').classList.remove('open')">
+        <span>${f(team)}</span><span>${team}</span><span class="s-grp">Group ${group}</span>
+      </div>`
+    ).join('');
+    drop.classList.add('open');
+  });
+
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.search-wrap')) drop.classList.remove('open');
+  });
+}
+
+function gotoGroup(gKey) {
+  activeMain = gKey;
+  activeSub  = 'standings';
+  document.querySelectorAll('.nav-tab').forEach(b => b.classList.toggle('active', b.dataset.id === gKey));
+  renderContent();
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+// ═══════════════════════════════════════════════════════════════
+// CONTROLLER
+// ═══════════════════════════════════════════════════════════════
+let activeMain = 'champion';
+let activeSub  = 'standings';
+const groupKeys = Object.keys(GROUPS);
+
+function buildNav() {
+  const tabs = document.getElementById('navTabs');
+  const items = [
+    ...groupKeys.map(k => ({id:k, label:`Group ${k}`, special:false})),
+    {id:'champion', label:'★ Champion Odds', special:true},
+    {id:'heatmap',  label:'⬦ KO Heatmap',   special:true},
+    {id:'matchup',  label:'⚡ Matchup Tool',  special:true},
+  ];
+  tabs.innerHTML = items.map(t =>
+    `<button class="nav-tab${t.special?' special':''}${t.id===activeMain?' active':''}" data-id="${t.id}">${t.label}</button>`
+  ).join('');
+  tabs.addEventListener('click', e => {
+    const btn = e.target.closest('.nav-tab');
+    if (!btn) return;
+    activeMain = btn.dataset.id;
+    tabs.querySelectorAll('.nav-tab').forEach(b => b.classList.toggle('active', b.dataset.id === activeMain));
+    renderContent();
+  });
+}
+
+function getSubContent() {
+  if (activeSub === 'standings') return renderStandings(activeMain);
+  if (activeSub === 'matches')   return renderMatches(activeMain);
+  if (activeSub === 'insights')  return renderInsights(activeMain);
+  return '';
+}
+
+function renderContent() {
+  const el = document.getElementById('mainContent');
+  if (activeMain === 'champion') { el.innerHTML = renderChampion(); requestAnimationFrame(initAllCharts); return; }
+  if (activeMain === 'heatmap')  { el.innerHTML = renderKnockout(); return; }
+  if (activeMain === 'matchup')  { el.innerHTML = renderMatchupTool(); return; }
+  if (activeMain === 'live')     { el.innerHTML = renderLiveUpdates(); return; }
+  if (activeMain === 'schedule') { el.innerHTML = renderSchedule(); return; }
+
+  el.innerHTML = `
+    <div class="sub-tabs" id="subTabs">
+      <button class="sub-tab${activeSub==='standings'?' active':''}" data-sub="standings">Expected Points</button>
+      <button class="sub-tab${activeSub==='matches'?  ' active':''}" data-sub="matches">All Matchups</button>
+      <button class="sub-tab${activeSub==='insights'?' active':''}" data-sub="insights">Key Insights</button>
+    </div>
+    <div id="subContent">${getSubContent()}</div>`;
+
+  requestAnimationFrame(initAllCharts);
+
+  el.querySelector('#subTabs').addEventListener('click', e => {
+    const btn = e.target.closest('.sub-tab');
+    if (!btn) return;
+    activeSub = btn.dataset.sub;
+    el.querySelectorAll('.sub-tab').forEach(b => b.classList.toggle('active', b.dataset.sub === activeSub));
+    el.querySelector('#subContent').innerHTML = getSubContent();
+    requestAnimationFrame(initAllCharts);
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════
+// CHART INIT — scans DOM for data-chart canvases and initializes
+// ═══════════════════════════════════════════════════════════════
+function initAllCharts() {
+  // Vis 1: standings bar chart
+  document.querySelectorAll('canvas[data-chart="standings"]').forEach(canvas => {
+    const gKey = canvas.dataset.gkey;
+    if (gKey && GROUPS[gKey]) {
+      const rows = computeExpectedPts(gKey);
+      initStandingsChart(gKey, rows);
+    }
+  });
+
+  // Vis 2: match model breakdown charts — only init expanded cards
+  document.querySelectorAll('canvas[data-chart="match-breakdown"]').forEach(canvas => {
+    const card = canvas.closest('.match-card');
+    if (card && card.classList.contains('expanded')) {
+      initMatchBreakdownChart(canvas.id, canvas.dataset.key, canvas.dataset.t1, canvas.dataset.t2);
+    }
+  });
+
+  // Vis 3: radar chart
+  document.querySelectorAll('canvas[data-chart="radar"]').forEach(canvas => {
+    const gKey = canvas.dataset.gkey;
+    if (gKey && GROUPS[gKey]) initRadarChart(gKey);
+  });
+
+  // Vis 4: champion chart
+  if (document.getElementById('champion-chart')) initChampionChart();
+}
+
+
+initSearch();
+buildNav();
+renderContent();
+</script>
+</body>
+</html>

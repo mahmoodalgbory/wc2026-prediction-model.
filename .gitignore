@@ -1,0 +1,17 @@
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.log
+*.lock
+.env
+.env.*
+!.env.example
+.DS_Store
+.claude/
+downloaded_files/
+data/fifa_squads_2026.pdf
+data/tm_players.csv.gz
+api_call_log.txt
+report.csv
+report.html

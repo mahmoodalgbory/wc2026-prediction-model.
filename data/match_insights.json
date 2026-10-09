@@ -1,0 +1,1558 @@
+{
+  "Mexico vs South Africa": {
+    "verdict": "Mexico favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Mexico (attack-dominant+midfield_control) vs South Africa (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Mexico favoured across 6 of 6 models. Primary driver [TACTICAL]: Mexico (attack-dominant+midfield_control) vs South Africa (attack-dominant) — neutral stylistic matchup. Clear analytical advantage for Mexico — margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 27.6,
+    "team1": "Mexico",
+    "team2": "South Africa"
+  },
+  "Mexico vs South Korea": {
+    "verdict": "Mexico favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Mexico (attack-dominant+midfield_control) vs South Korea (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Mexico favoured across 6 of 6 models. Primary driver [TACTICAL]: Mexico (attack-dominant+midfield_control) vs South Korea (attack-dominant) — neutral stylistic matchup. Clear analytical advantage for Mexico — margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 73.9,
+    "team1": "Mexico",
+    "team2": "South Korea"
+  },
+  "Mexico vs Czech Republic": {
+    "verdict": "Mexico favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Mexico (attack-dominant+midfield_control) vs Czech Republic (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Mexico favoured across 6 of 6 models. Primary driver [TACTICAL]: Mexico (attack-dominant+midfield_control) vs Czech Republic (attack-dominant) — neutral stylistic matchup. Clear analytical advantage for Mexico — margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 30.1,
+    "team1": "Mexico",
+    "team2": "Czech Republic"
+  },
+  "South Africa vs South Korea": {
+    "verdict": "South Korea favoured across 5 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [],
+    "models_for_team2": [
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_even": [
+      "value"
+    ],
+    "key_driver": "South Africa (attack-dominant) vs South Korea (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": true,
+    "analytical_note": "South Korea favoured across 5 of 6 models. Primary driver [TACTICAL]: South Africa (attack-dominant) vs South Korea (attack-dominant) — neutral stylistic matchup. High draw probability (23%) — evenly matched across most dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 46.3,
+    "team1": "South Africa",
+    "team2": "South Korea"
+  },
+  "South Africa vs Czech Republic": {
+    "verdict": "Czech Republic backed by 2 of 6 models with South Africa competitive",
+    "model_consensus": "split",
+    "models_for_team1": [
+      "quality_form"
+    ],
+    "models_for_team2": [
+      "tactical",
+      "form_results"
+    ],
+    "models_even": [
+      "value",
+      "momentum",
+      "h2h"
+    ],
+    "key_driver": "South Africa (attack-dominant) vs Czech Republic (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": true,
+    "analytical_note": "Czech Republic backed by 2 of 6 models with South Africa competitive. Primary driver [TACTICAL]: South Africa (attack-dominant) vs Czech Republic (attack-dominant) — neutral stylistic matchup. High draw probability (26%) — evenly matched across most dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 2.5,
+    "team1": "South Africa",
+    "team2": "Czech Republic"
+  },
+  "South Korea vs Czech Republic": {
+    "verdict": "South Korea favoured across 5 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [
+      "value"
+    ],
+    "key_driver": "South Korea (attack-dominant) vs Czech Republic (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": true,
+    "analytical_note": "South Korea favoured across 5 of 6 models. Primary driver [TACTICAL]: South Korea (attack-dominant) vs Czech Republic (attack-dominant) — neutral stylistic matchup. High draw probability (23%) — evenly matched across most dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": -43.8,
+    "team1": "South Korea",
+    "team2": "Czech Republic"
+  },
+  "Canada vs Bosnia-Herzegovina": {
+    "verdict": "Canada favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Canada (attack-dominant) vs Bosnia-Herzegovina (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Canada favoured across 6 of 6 models. Primary driver [TACTICAL]: Canada (attack-dominant) vs Bosnia-Herzegovina (attack-dominant) — neutral stylistic matchup. Clear analytical advantage for Canada — margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 79.1,
+    "team1": "Canada",
+    "team2": "Bosnia-Herzegovina"
+  },
+  "Canada vs Qatar": {
+    "verdict": "Canada favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Canada (attack-dominant) vs Qatar (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Canada favoured across 6 of 6 models. Primary driver [TACTICAL]: Canada (attack-dominant) vs Qatar (attack-dominant) — neutral stylistic matchup. Clear analytical advantage for Canada — margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 91.3,
+    "team1": "Canada",
+    "team2": "Qatar"
+  },
+  "Canada vs Switzerland": {
+    "verdict": "Switzerland backed by 2 of 6 models with Canada competitive",
+    "model_consensus": "split",
+    "models_for_team1": [
+      "quality_form"
+    ],
+    "models_for_team2": [
+      "tactical",
+      "momentum"
+    ],
+    "models_even": [
+      "value",
+      "form_results",
+      "h2h"
+    ],
+    "key_driver": "Canada (attack-dominant) vs Switzerland (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": true,
+    "analytical_note": "Switzerland backed by 2 of 6 models with Canada competitive. Primary driver [TACTICAL]: Canada (attack-dominant) vs Switzerland (attack-dominant) — neutral stylistic matchup. High draw probability (23%) — evenly matched across most dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": -124.4,
+    "team1": "Canada",
+    "team2": "Switzerland"
+  },
+  "Bosnia-Herzegovina vs Qatar": {
+    "verdict": "Bosnia-Herzegovina backed by 3 of 6 models with Qatar competitive",
+    "model_consensus": "split",
+    "models_for_team1": [
+      "form_results",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [
+      "quality_form"
+    ],
+    "models_even": [
+      "value",
+      "tactical"
+    ],
+    "key_driver": "Bosnia-Herzegovina (attack-dominant) vs Qatar (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": true,
+    "analytical_note": "Bosnia-Herzegovina backed by 3 of 6 models with Qatar competitive. Primary driver [TACTICAL]: Bosnia-Herzegovina (attack-dominant) vs Qatar (attack-dominant) — neutral stylistic matchup. High draw probability (24%) — evenly matched across most dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 12.2,
+    "team1": "Bosnia-Herzegovina",
+    "team2": "Qatar"
+  },
+  "Bosnia-Herzegovina vs Switzerland": {
+    "verdict": "Switzerland favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [],
+    "models_for_team2": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_even": [],
+    "key_driver": "Bosnia-Herzegovina (attack-dominant) vs Switzerland (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Switzerland favoured across 6 of 6 models. Primary driver [TACTICAL]: Bosnia-Herzegovina (attack-dominant) vs Switzerland (attack-dominant) — neutral stylistic matchup. Clear analytical advantage for Switzerland — margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": -203.5,
+    "team1": "Bosnia-Herzegovina",
+    "team2": "Switzerland"
+  },
+  "Qatar vs Switzerland": {
+    "verdict": "Switzerland favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [],
+    "models_for_team2": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_even": [],
+    "key_driver": "Qatar (attack-dominant) vs Switzerland (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Switzerland favoured across 6 of 6 models. Primary driver [TACTICAL]: Qatar (attack-dominant) vs Switzerland (attack-dominant) — neutral stylistic matchup. Clear analytical advantage for Switzerland — margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": -215.7,
+    "team1": "Qatar",
+    "team2": "Switzerland"
+  },
+  "Brazil vs Morocco": {
+    "verdict": "Brazil favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Brazil (attack-dominant+midfield_control) vs Morocco (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Brazil favoured across 6 of 6 models. Primary driver [TACTICAL]: Brazil (attack-dominant+midfield_control) vs Morocco (attack-dominant) — neutral stylistic matchup. Clear analytical advantage for Brazil — margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 301.4,
+    "team1": "Brazil",
+    "team2": "Morocco"
+  },
+  "Brazil vs Haiti": {
+    "verdict": "Brazil favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Brazil (attack-dominant+midfield_control) vs Haiti (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Brazil favoured across 6 of 6 models. Primary driver [TACTICAL]: Brazil (attack-dominant+midfield_control) vs Haiti (attack-dominant) — neutral stylistic matchup. Clear analytical advantage for Brazil — margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 599.5,
+    "team1": "Brazil",
+    "team2": "Haiti"
+  },
+  "Brazil vs Scotland": {
+    "verdict": "Brazil favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Brazil (attack-dominant+midfield_control) vs Scotland (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Brazil favoured across 6 of 6 models. Primary driver [TACTICAL]: Brazil (attack-dominant+midfield_control) vs Scotland (attack-dominant) — neutral stylistic matchup. Clear analytical advantage for Brazil — margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 497.5,
+    "team1": "Brazil",
+    "team2": "Scotland"
+  },
+  "Morocco vs Haiti": {
+    "verdict": "Morocco favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Morocco (attack-dominant) vs Haiti (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Morocco favoured across 6 of 6 models. Primary driver [TACTICAL]: Morocco (attack-dominant) vs Haiti (attack-dominant) — neutral stylistic matchup. Clear analytical advantage for Morocco — margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 298.1,
+    "team1": "Morocco",
+    "team2": "Haiti"
+  },
+  "Morocco vs Scotland": {
+    "verdict": "Morocco favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Morocco (attack-dominant) vs Scotland (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Morocco favoured across 6 of 6 models. Primary driver [TACTICAL]: Morocco (attack-dominant) vs Scotland (attack-dominant) — neutral stylistic matchup. Clear analytical advantage for Morocco — margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 196.1,
+    "team1": "Morocco",
+    "team2": "Scotland"
+  },
+  "Haiti vs Scotland": {
+    "verdict": "Scotland backed by 4 of 6 models with Haiti competitive",
+    "model_consensus": "split",
+    "models_for_team1": [],
+    "models_for_team2": [
+      "value",
+      "tactical",
+      "quality_form",
+      "momentum"
+    ],
+    "models_even": [
+      "form_results",
+      "h2h"
+    ],
+    "key_driver": "Haiti (attack-dominant) vs Scotland (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Scotland backed by 4 of 6 models with Haiti competitive. Primary driver [TACTICAL]: Haiti (attack-dominant) vs Scotland (attack-dominant) — neutral stylistic matchup. Moderate confidence — data supports the favourite but upset window remains meaningful.",
+    "style_clash": null,
+    "value_gap_eur_m": -102.0,
+    "team1": "Haiti",
+    "team2": "Scotland"
+  },
+  "United States vs Paraguay": {
+    "verdict": "United States favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "United States (attack-dominant) vs Paraguay (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "United States favoured across 6 of 6 models. Primary driver [TACTICAL]: United States (attack-dominant) vs Paraguay (attack-dominant) — neutral stylistic matchup. Clear analytical advantage for United States — margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 208.4,
+    "team1": "United States",
+    "team2": "Paraguay"
+  },
+  "United States vs Australia": {
+    "verdict": "United States favoured across 5 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [
+      "form_results"
+    ],
+    "key_driver": "United States (attack-dominant) vs Australia (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "United States favoured across 5 of 6 models. Primary driver [TACTICAL]: United States (attack-dominant) vs Australia (attack-dominant) — neutral stylistic matchup. Clear analytical advantage for United States — margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 270.1,
+    "team1": "United States",
+    "team2": "Australia"
+  },
+  "United States vs Turkey": {
+    "verdict": "United States backed by 3 of 6 models with Turkey competitive",
+    "model_consensus": "split",
+    "models_for_team1": [
+      "tactical",
+      "quality_form",
+      "momentum"
+    ],
+    "models_for_team2": [
+      "form_results",
+      "h2h"
+    ],
+    "models_even": [
+      "value"
+    ],
+    "key_driver": "United States (attack-dominant) vs Turkey (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": true,
+    "analytical_note": "United States backed by 3 of 6 models with Turkey competitive. Primary driver [TACTICAL]: United States (attack-dominant) vs Turkey (attack-dominant) — neutral stylistic matchup. High draw probability (22%) — evenly matched across most dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": -5.6,
+    "team1": "United States",
+    "team2": "Turkey"
+  },
+  "Paraguay vs Australia": {
+    "verdict": "Australia backed by 3 of 6 models with Paraguay competitive",
+    "model_consensus": "split",
+    "models_for_team1": [],
+    "models_for_team2": [
+      "tactical",
+      "quality_form",
+      "momentum"
+    ],
+    "models_even": [
+      "value",
+      "form_results",
+      "h2h"
+    ],
+    "key_driver": "Paraguay (attack-dominant) vs Australia (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": true,
+    "analytical_note": "Australia backed by 3 of 6 models with Paraguay competitive. Primary driver [TACTICAL]: Paraguay (attack-dominant) vs Australia (attack-dominant) — neutral stylistic matchup. High draw probability (24%) — evenly matched across most dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 61.7,
+    "team1": "Paraguay",
+    "team2": "Australia"
+  },
+  "Paraguay vs Turkey": {
+    "verdict": "Turkey favoured across 5 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "quality_form"
+    ],
+    "models_for_team2": [
+      "value",
+      "tactical",
+      "form_results",
+      "momentum",
+      "h2h"
+    ],
+    "models_even": [],
+    "key_driver": "Paraguay (attack-dominant) vs Turkey (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Turkey favoured across 5 of 6 models. Primary driver [TACTICAL]: Paraguay (attack-dominant) vs Turkey (attack-dominant) — neutral stylistic matchup. Moderate confidence — data supports the favourite but upset window remains meaningful.",
+    "style_clash": null,
+    "value_gap_eur_m": -214.0,
+    "team1": "Paraguay",
+    "team2": "Turkey"
+  },
+  "Australia vs Turkey": {
+    "verdict": "Turkey backed by 3 of 6 models with Australia competitive",
+    "model_consensus": "split",
+    "models_for_team1": [
+      "quality_form",
+      "h2h"
+    ],
+    "models_for_team2": [
+      "value",
+      "form_results",
+      "momentum"
+    ],
+    "models_even": [
+      "tactical"
+    ],
+    "key_driver": "Australia (attack-dominant) vs Turkey (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": true,
+    "analytical_note": "Turkey backed by 3 of 6 models with Australia competitive. Primary driver [TACTICAL]: Australia (attack-dominant) vs Turkey (attack-dominant) — neutral stylistic matchup. Narrow margin (3pp) — outcome sensitive to match-day variables.",
+    "style_clash": null,
+    "value_gap_eur_m": -275.7,
+    "team1": "Australia",
+    "team2": "Turkey"
+  },
+  "Germany vs Curaçao": {
+    "verdict": "Germany favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Germany (attack-dominant) vs Curaçao (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Germany favoured across 6 of 6 models. Primary driver [TACTICAL]: Germany (attack-dominant) vs Curaçao (attack-dominant) — neutral stylistic matchup. Clear analytical advantage for Germany — margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 871.5,
+    "team1": "Germany",
+    "team2": "Curaçao"
+  },
+  "Germany vs Ivory Coast": {
+    "verdict": "Germany favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Germany (attack-dominant) vs Ivory Coast (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Germany favoured across 6 of 6 models. Primary driver [TACTICAL]: Germany (attack-dominant) vs Ivory Coast (attack-dominant) — neutral stylistic matchup. Clear analytical advantage for Germany — margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 495.4,
+    "team1": "Germany",
+    "team2": "Ivory Coast"
+  },
+  "Germany vs Ecuador": {
+    "verdict": "Germany favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Germany (attack-dominant) vs Ecuador (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Germany favoured across 6 of 6 models. Primary driver [TACTICAL]: Germany (attack-dominant) vs Ecuador (attack-dominant) — neutral stylistic matchup. Clear analytical advantage for Germany — margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 597.3,
+    "team1": "Germany",
+    "team2": "Ecuador"
+  },
+  "Curaçao vs Ivory Coast": {
+    "verdict": "Ivory Coast backed by 4 of 6 models with Curaçao competitive",
+    "model_consensus": "split",
+    "models_for_team1": [],
+    "models_for_team2": [
+      "value",
+      "form_results",
+      "quality_form",
+      "momentum"
+    ],
+    "models_even": [
+      "tactical",
+      "h2h"
+    ],
+    "key_driver": "Curaçao (attack-dominant) vs Ivory Coast (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Ivory Coast backed by 4 of 6 models with Curaçao competitive. Primary driver [TACTICAL]: Curaçao (attack-dominant) vs Ivory Coast (attack-dominant) — neutral stylistic matchup. Clear analytical advantage for Ivory Coast — margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": -376.1,
+    "team1": "Curaçao",
+    "team2": "Ivory Coast"
+  },
+  "Curaçao vs Ecuador": {
+    "verdict": "Ecuador favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [],
+    "models_for_team2": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_even": [],
+    "key_driver": "Curaçao (attack-dominant) vs Ecuador (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Ecuador favoured across 6 of 6 models. Primary driver [TACTICAL]: Curaçao (attack-dominant) vs Ecuador (attack-dominant) — neutral stylistic matchup. Clear analytical advantage for Ecuador — margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": -274.2,
+    "team1": "Curaçao",
+    "team2": "Ecuador"
+  },
+  "Ivory Coast vs Ecuador": {
+    "verdict": "Ecuador backed by 3 of 6 models with Ivory Coast competitive",
+    "model_consensus": "split",
+    "models_for_team1": [
+      "value",
+      "quality_form"
+    ],
+    "models_for_team2": [
+      "tactical",
+      "momentum",
+      "h2h"
+    ],
+    "models_even": [
+      "form_results"
+    ],
+    "key_driver": "Ivory Coast (attack-dominant) vs Ecuador (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": true,
+    "analytical_note": "Ecuador backed by 3 of 6 models with Ivory Coast competitive. Primary driver [TACTICAL]: Ivory Coast (attack-dominant) vs Ecuador (attack-dominant) — neutral stylistic matchup. High draw probability (24%) — evenly matched across most dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 101.9,
+    "team1": "Ivory Coast",
+    "team2": "Ecuador"
+  },
+  "Netherlands vs Japan": {
+    "verdict": "Netherlands favoured across 5 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [
+      "form_results"
+    ],
+    "models_even": [],
+    "key_driver": "Netherlands (attack-dominant) vs Japan (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Netherlands favoured across 5 of 6 models. Primary driver [TACTICAL]: Netherlands (attack-dominant) vs Japan (attack-dominant) — neutral stylistic matchup. Moderate confidence — data supports the favourite but upset window remains meaningful.",
+    "style_clash": null,
+    "value_gap_eur_m": 368.5,
+    "team1": "Netherlands",
+    "team2": "Japan"
+  },
+  "Netherlands vs Sweden": {
+    "verdict": "Netherlands favoured across 5 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [
+      "value"
+    ],
+    "key_driver": "Netherlands (attack-dominant) vs Sweden (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Netherlands favoured across 5 of 6 models. Primary driver [TACTICAL]: Netherlands (attack-dominant) vs Sweden (attack-dominant) — neutral stylistic matchup. Clear analytical advantage for Netherlands — margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 158.5,
+    "team1": "Netherlands",
+    "team2": "Sweden"
+  },
+  "Netherlands vs Tunisia": {
+    "verdict": "Netherlands favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Netherlands (attack-dominant) vs Tunisia (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Netherlands favoured across 6 of 6 models. Primary driver [TACTICAL]: Netherlands (attack-dominant) vs Tunisia (attack-dominant) — neutral stylistic matchup. Clear analytical advantage for Netherlands — margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 510.9,
+    "team1": "Netherlands",
+    "team2": "Tunisia"
+  },
+  "Japan vs Sweden": {
+    "verdict": "Japan backed by 4 of 6 models with Sweden competitive",
+    "model_consensus": "moderate",
+    "models_for_team1": [
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum"
+    ],
+    "models_for_team2": [
+      "value"
+    ],
+    "models_even": [
+      "h2h"
+    ],
+    "key_driver": "Japan (attack-dominant) vs Sweden (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Japan backed by 4 of 6 models with Sweden competitive. Primary driver [TACTICAL]: Japan (attack-dominant) vs Sweden (attack-dominant) — neutral stylistic matchup. Clear analytical advantage for Japan — margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": -210.0,
+    "team1": "Japan",
+    "team2": "Sweden"
+  },
+  "Japan vs Tunisia": {
+    "verdict": "Japan favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Japan (attack-dominant) vs Tunisia (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Japan favoured across 6 of 6 models. Primary driver [TACTICAL]: Japan (attack-dominant) vs Tunisia (attack-dominant) — neutral stylistic matchup. Clear analytical advantage for Japan — margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 142.4,
+    "team1": "Japan",
+    "team2": "Tunisia"
+  },
+  "Sweden vs Tunisia": {
+    "verdict": "Sweden backed by 4 of 6 models with Tunisia competitive",
+    "model_consensus": "moderate",
+    "models_for_team1": [
+      "value",
+      "form_results",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [
+      "quality_form"
+    ],
+    "models_even": [
+      "tactical"
+    ],
+    "key_driver": "Sweden (attack-dominant) vs Tunisia (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": true,
+    "analytical_note": "Sweden backed by 4 of 6 models with Tunisia competitive. Primary driver [TACTICAL]: Sweden (attack-dominant) vs Tunisia (attack-dominant) — neutral stylistic matchup. Narrow margin (2pp) — outcome sensitive to match-day variables.",
+    "style_clash": null,
+    "value_gap_eur_m": 352.4,
+    "team1": "Sweden",
+    "team2": "Tunisia"
+  },
+  "Belgium vs Egypt": {
+    "verdict": "Belgium favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Belgium (attack-dominant) vs Egypt (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Belgium favoured across 6 of 6 models. Primary driver [TACTICAL]: Belgium (attack-dominant) vs Egypt (attack-dominant) — neutral stylistic matchup. Clear analytical advantage for Belgium — margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 187.0,
+    "team1": "Belgium",
+    "team2": "Egypt"
+  },
+  "Belgium vs Iran": {
+    "verdict": "Belgium favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Belgium (attack-dominant) vs Iran (balanced) — stylistic edge in matchup (style clash: +0.05)",
+    "uncertainty_flag": false,
+    "analytical_note": "Belgium favoured across 6 of 6 models. Primary driver [TACTICAL]: Belgium (attack-dominant) vs Iran (balanced) — stylistic edge in matchup (style clash: +0.05). Clear analytical advantage for Belgium — margin consistent across model dimensions.",
+    "style_clash": "attack-dominant vs balanced",
+    "value_gap_eur_m": 335.5,
+    "team1": "Belgium",
+    "team2": "Iran"
+  },
+  "Belgium vs New Zealand": {
+    "verdict": "Belgium favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Belgium (attack-dominant) vs New Zealand (balanced) — stylistic edge in matchup (style clash: +0.05)",
+    "uncertainty_flag": false,
+    "analytical_note": "Belgium favoured across 6 of 6 models. Primary driver [TACTICAL]: Belgium (attack-dominant) vs New Zealand (balanced) — stylistic edge in matchup (style clash: +0.05). Clear analytical advantage for Belgium — margin consistent across model dimensions.",
+    "style_clash": "attack-dominant vs balanced",
+    "value_gap_eur_m": 332.7,
+    "team1": "Belgium",
+    "team2": "New Zealand"
+  },
+  "Egypt vs Iran": {
+    "verdict": "Iran backed by 4 of 6 models with Egypt competitive",
+    "model_consensus": "moderate",
+    "models_for_team1": [
+      "value"
+    ],
+    "models_for_team2": [
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_even": [
+      "tactical"
+    ],
+    "key_driver": "Egypt (attack-dominant) vs Iran (balanced) — stylistic edge in matchup (style clash: +0.05)",
+    "uncertainty_flag": true,
+    "analytical_note": "Iran backed by 4 of 6 models with Egypt competitive. Primary driver [TACTICAL]: Egypt (attack-dominant) vs Iran (balanced) — stylistic edge in matchup (style clash: +0.05). High draw probability (23%) — evenly matched across most dimensions.",
+    "style_clash": "attack-dominant vs balanced",
+    "value_gap_eur_m": 148.5,
+    "team1": "Egypt",
+    "team2": "Iran"
+  },
+  "Egypt vs New Zealand": {
+    "verdict": "Egypt favoured across 5 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [
+      "quality_form"
+    ],
+    "key_driver": "Egypt (attack-dominant) vs New Zealand (balanced) — stylistic edge in matchup (style clash: +0.05)",
+    "uncertainty_flag": true,
+    "analytical_note": "Egypt favoured across 5 of 6 models. Primary driver [TACTICAL]: Egypt (attack-dominant) vs New Zealand (balanced) — stylistic edge in matchup (style clash: +0.05). High draw probability (23%) — evenly matched across most dimensions.",
+    "style_clash": "attack-dominant vs balanced",
+    "value_gap_eur_m": 145.7,
+    "team1": "Egypt",
+    "team2": "New Zealand"
+  },
+  "Iran vs New Zealand": {
+    "verdict": "Iran favoured across 5 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [
+      "value"
+    ],
+    "key_driver": "Iran (balanced) vs New Zealand (balanced) — neutral stylistic matchup",
+    "uncertainty_flag": true,
+    "analytical_note": "Iran favoured across 5 of 6 models. Primary driver [TACTICAL]: Iran (balanced) vs New Zealand (balanced) — neutral stylistic matchup. High draw probability (23%) — evenly matched across most dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": -2.8,
+    "team1": "Iran",
+    "team2": "New Zealand"
+  },
+  "Spain vs Cape Verde": {
+    "verdict": "Spain favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Spain (attack-dominant) vs Cape Verde (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Spain favoured across 6 of 6 models. Primary driver [TACTICAL]: Spain (attack-dominant) vs Cape Verde (attack-dominant) — neutral stylistic matchup. Clear analytical advantage for Spain — margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 1027.8,
+    "team1": "Spain",
+    "team2": "Cape Verde"
+  },
+  "Spain vs Saudi Arabia": {
+    "verdict": "Spain favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Spain (attack-dominant) vs Saudi Arabia (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Spain favoured across 6 of 6 models. Primary driver [TACTICAL]: Spain (attack-dominant) vs Saudi Arabia (attack-dominant) — neutral stylistic matchup. Clear analytical advantage for Spain — margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 995.0,
+    "team1": "Spain",
+    "team2": "Saudi Arabia"
+  },
+  "Spain vs Uruguay": {
+    "verdict": "Spain favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Spain (attack-dominant) vs Uruguay (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Spain favoured across 6 of 6 models. Primary driver [TACTICAL]: Spain (attack-dominant) vs Uruguay (attack-dominant) — neutral stylistic matchup. Clear analytical advantage for Spain — margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 612.2,
+    "team1": "Spain",
+    "team2": "Uruguay"
+  },
+  "Cape Verde vs Saudi Arabia": {
+    "verdict": "Saudi Arabia backed by 4 of 6 models with Cape Verde competitive",
+    "model_consensus": "split",
+    "models_for_team1": [],
+    "models_for_team2": [
+      "tactical",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_even": [
+      "value",
+      "form_results"
+    ],
+    "key_driver": "Cape Verde (attack-dominant) vs Saudi Arabia (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": true,
+    "analytical_note": "Saudi Arabia backed by 4 of 6 models with Cape Verde competitive. Primary driver [TACTICAL]: Cape Verde (attack-dominant) vs Saudi Arabia (attack-dominant) — neutral stylistic matchup. High draw probability (25%) — evenly matched across most dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": -32.8,
+    "team1": "Cape Verde",
+    "team2": "Saudi Arabia"
+  },
+  "Cape Verde vs Uruguay": {
+    "verdict": "Uruguay favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [],
+    "models_for_team2": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_even": [],
+    "key_driver": "Cape Verde (attack-dominant) vs Uruguay (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Uruguay favoured across 6 of 6 models. Primary driver [TACTICAL]: Cape Verde (attack-dominant) vs Uruguay (attack-dominant) — neutral stylistic matchup. Clear analytical advantage for Uruguay — margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": -415.6,
+    "team1": "Cape Verde",
+    "team2": "Uruguay"
+  },
+  "Saudi Arabia vs Uruguay": {
+    "verdict": "Uruguay favoured across 5 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [],
+    "models_for_team2": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum"
+    ],
+    "models_even": [
+      "h2h"
+    ],
+    "key_driver": "Saudi Arabia (attack-dominant) vs Uruguay (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Uruguay favoured across 5 of 6 models. Primary driver [TACTICAL]: Saudi Arabia (attack-dominant) vs Uruguay (attack-dominant) — neutral stylistic matchup. Clear analytical advantage for Uruguay — margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": -382.8,
+    "team1": "Saudi Arabia",
+    "team2": "Uruguay"
+  },
+  "France vs Senegal": {
+    "verdict": "France favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "France (attack-dominant+midfield_control) vs Senegal (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "France favoured across 6 of 6 models. Primary driver [TACTICAL]: France (attack-dominant+midfield_control) vs Senegal (attack-dominant) — neutral stylistic matchup. Clear analytical advantage for France — margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 967.2,
+    "team1": "France",
+    "team2": "Senegal"
+  },
+  "France vs Norway": {
+    "verdict": "France favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "France (attack-dominant+midfield_control) vs Norway (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "France favoured across 6 of 6 models. Primary driver [TACTICAL]: France (attack-dominant+midfield_control) vs Norway (attack-dominant) — neutral stylistic matchup. Clear analytical advantage for France — margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 804.5,
+    "team1": "France",
+    "team2": "Norway"
+  },
+  "France vs Iraq": {
+    "verdict": "France favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "France (attack-dominant+midfield_control) vs Iraq (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "France favoured across 6 of 6 models. Primary driver [TACTICAL]: France (attack-dominant+midfield_control) vs Iraq (attack-dominant) — neutral stylistic matchup. Clear analytical advantage for France — margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 1225.0,
+    "team1": "France",
+    "team2": "Iraq"
+  },
+  "Senegal vs Norway": {
+    "verdict": "Model split — 2 models back Senegal, 2 back Norway",
+    "model_consensus": "split",
+    "models_for_team1": [
+      "form_results",
+      "quality_form"
+    ],
+    "models_for_team2": [
+      "value",
+      "momentum"
+    ],
+    "models_even": [
+      "tactical",
+      "h2h"
+    ],
+    "key_driver": "Senegal (attack-dominant) vs Norway (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": true,
+    "analytical_note": "Model split — 2 models back Senegal, 2 back Norway. Primary driver [TACTICAL]: Senegal (attack-dominant) vs Norway (attack-dominant) — neutral stylistic matchup. High draw probability (22%) — evenly matched across most dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": -162.7,
+    "team1": "Senegal",
+    "team2": "Norway"
+  },
+  "Senegal vs Iraq": {
+    "verdict": "Senegal favoured across 5 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [
+      "quality_form"
+    ],
+    "models_even": [],
+    "key_driver": "Senegal (attack-dominant) vs Iraq (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Senegal favoured across 5 of 6 models. Primary driver [TACTICAL]: Senegal (attack-dominant) vs Iraq (attack-dominant) — neutral stylistic matchup. Moderate confidence — data supports the favourite but upset window remains meaningful.",
+    "style_clash": null,
+    "value_gap_eur_m": 257.8,
+    "team1": "Senegal",
+    "team2": "Iraq"
+  },
+  "Norway vs Iraq": {
+    "verdict": "Norway favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Norway (attack-dominant) vs Iraq (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Norway favoured across 6 of 6 models. Primary driver [TACTICAL]: Norway (attack-dominant) vs Iraq (attack-dominant) — neutral stylistic matchup. Clear analytical advantage for Norway — margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 420.5,
+    "team1": "Norway",
+    "team2": "Iraq"
+  },
+  "Argentina vs Algeria": {
+    "verdict": "Argentina favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Argentina (attack-dominant+midfield_control) vs Algeria (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Argentina favoured across 6 of 6 models. Primary driver [TACTICAL]: Argentina (attack-dominant+midfield_control) vs Algeria (attack-dominant) — neutral stylistic matchup. Clear analytical advantage for Argentina — margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 492.6,
+    "team1": "Argentina",
+    "team2": "Algeria"
+  },
+  "Argentina vs Austria": {
+    "verdict": "Argentina favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Argentina (attack-dominant+midfield_control) vs Austria (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Argentina favoured across 6 of 6 models. Primary driver [TACTICAL]: Argentina (attack-dominant+midfield_control) vs Austria (attack-dominant) — neutral stylistic matchup. Clear analytical advantage for Argentina — margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 441.9,
+    "team1": "Argentina",
+    "team2": "Austria"
+  },
+  "Argentina vs Jordan": {
+    "verdict": "Argentina favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Argentina (attack-dominant+midfield_control) vs Jordan (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Argentina favoured across 6 of 6 models. Primary driver [TACTICAL]: Argentina (attack-dominant+midfield_control) vs Jordan (attack-dominant) — neutral stylistic matchup. Clear analytical advantage for Argentina — margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 597.9,
+    "team1": "Argentina",
+    "team2": "Jordan"
+  },
+  "Algeria vs Austria": {
+    "verdict": "Austria favoured across 5 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [],
+    "models_for_team2": [
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_even": [
+      "value"
+    ],
+    "key_driver": "Algeria (attack-dominant) vs Austria (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": true,
+    "analytical_note": "Austria favoured across 5 of 6 models. Primary driver [TACTICAL]: Algeria (attack-dominant) vs Austria (attack-dominant) — neutral stylistic matchup. High draw probability (24%) — evenly matched across most dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": -50.7,
+    "team1": "Algeria",
+    "team2": "Austria"
+  },
+  "Algeria vs Jordan": {
+    "verdict": "Algeria favoured across 5 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [
+      "quality_form"
+    ],
+    "models_even": [],
+    "key_driver": "Algeria (attack-dominant) vs Jordan (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": true,
+    "analytical_note": "Algeria favoured across 5 of 6 models. Primary driver [TACTICAL]: Algeria (attack-dominant) vs Jordan (attack-dominant) — neutral stylistic matchup. High draw probability (23%) — evenly matched across most dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 105.3,
+    "team1": "Algeria",
+    "team2": "Jordan"
+  },
+  "Austria vs Jordan": {
+    "verdict": "Austria favoured across 5 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [
+      "quality_form"
+    ],
+    "models_even": [],
+    "key_driver": "Austria (attack-dominant) vs Jordan (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Austria favoured across 5 of 6 models. Primary driver [TACTICAL]: Austria (attack-dominant) vs Jordan (attack-dominant) — neutral stylistic matchup. Moderate confidence — data supports the favourite but upset window remains meaningful.",
+    "style_clash": null,
+    "value_gap_eur_m": 156.0,
+    "team1": "Austria",
+    "team2": "Jordan"
+  },
+  "Portugal vs Congo DR": {
+    "verdict": "Portugal favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Portugal (attack-dominant) vs Congo DR (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Portugal favoured across 6 of 6 models. Primary driver [TACTICAL]: Portugal (attack-dominant) vs Congo DR (attack-dominant) — neutral stylistic matchup. Clear analytical advantage for Portugal — margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 793.0,
+    "team1": "Portugal",
+    "team2": "Congo DR"
+  },
+  "Portugal vs Uzbekistan": {
+    "verdict": "Portugal favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Portugal (attack-dominant) vs Uzbekistan (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Portugal favoured across 6 of 6 models. Primary driver [TACTICAL]: Portugal (attack-dominant) vs Uzbekistan (attack-dominant) — neutral stylistic matchup. Clear analytical advantage for Portugal — margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 825.9,
+    "team1": "Portugal",
+    "team2": "Uzbekistan"
+  },
+  "Portugal vs Colombia": {
+    "verdict": "Portugal favoured across 5 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum"
+    ],
+    "models_for_team2": [],
+    "models_even": [
+      "h2h"
+    ],
+    "key_driver": "Portugal (attack-dominant) vs Colombia (attack-dominant+midfield_control) — neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Portugal favoured across 5 of 6 models. Primary driver [TACTICAL]: Portugal (attack-dominant) vs Colombia (attack-dominant+midfield_control) — neutral stylistic matchup. Clear analytical advantage for Portugal — margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 715.0,
+    "team1": "Portugal",
+    "team2": "Colombia"
+  },
+  "Congo DR vs Uzbekistan": {
+    "verdict": "Congo DR backed by 2 of 6 models with Uzbekistan competitive",
+    "model_consensus": "split",
+    "models_for_team1": [
+      "form_results",
+      "momentum"
+    ],
+    "models_for_team2": [
+      "quality_form"
+    ],
+    "models_even": [
+      "value",
+      "tactical",
+      "h2h"
+    ],
+    "key_driver": "Congo DR (attack-dominant) vs Uzbekistan (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": true,
+    "analytical_note": "Congo DR backed by 2 of 6 models with Uzbekistan competitive. Primary driver [TACTICAL]: Congo DR (attack-dominant) vs Uzbekistan (attack-dominant) — neutral stylistic matchup. High draw probability (26%) — evenly matched across most dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 32.9,
+    "team1": "Congo DR",
+    "team2": "Uzbekistan"
+  },
+  "Congo DR vs Colombia": {
+    "verdict": "Colombia favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [],
+    "models_for_team2": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_even": [],
+    "key_driver": "Congo DR (attack-dominant) vs Colombia (attack-dominant+midfield_control) — neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Colombia favoured across 6 of 6 models. Primary driver [TACTICAL]: Congo DR (attack-dominant) vs Colombia (attack-dominant+midfield_control) — neutral stylistic matchup. Clear analytical advantage for Colombia — margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": -78.0,
+    "team1": "Congo DR",
+    "team2": "Colombia"
+  },
+  "Uzbekistan vs Colombia": {
+    "verdict": "Colombia favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [],
+    "models_for_team2": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_even": [],
+    "key_driver": "Uzbekistan (attack-dominant) vs Colombia (attack-dominant+midfield_control) — neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Colombia favoured across 6 of 6 models. Primary driver [TACTICAL]: Uzbekistan (attack-dominant) vs Colombia (attack-dominant+midfield_control) — neutral stylistic matchup. Clear analytical advantage for Colombia — margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": -110.9,
+    "team1": "Uzbekistan",
+    "team2": "Colombia"
+  },
+  "England vs Croatia": {
+    "verdict": "England favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "England (attack-dominant+midfield_control) vs Croatia (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "England favoured across 6 of 6 models. Primary driver [TACTICAL]: England (attack-dominant+midfield_control) vs Croatia (attack-dominant) — neutral stylistic matchup. Clear analytical advantage for England — margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 933.8,
+    "team1": "England",
+    "team2": "Croatia"
+  },
+  "England vs Ghana": {
+    "verdict": "England favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "England (attack-dominant+midfield_control) vs Ghana (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "England favoured across 6 of 6 models. Primary driver [TACTICAL]: England (attack-dominant+midfield_control) vs Ghana (attack-dominant) — neutral stylistic matchup. Clear analytical advantage for England — margin consistent across model dimensions.",
+    "style_clash": null,
+    "value_gap_eur_m": 1029.3,
+    "team1": "England",
+    "team2": "Ghana"
+  },
+  "England vs Panama": {
+    "verdict": "England favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "England (attack-dominant+midfield_control) vs Panama (balanced) — stylistic edge in matchup (style clash: +0.05)",
+    "uncertainty_flag": false,
+    "analytical_note": "England favoured across 6 of 6 models. Primary driver [TACTICAL]: England (attack-dominant+midfield_control) vs Panama (balanced) — stylistic edge in matchup (style clash: +0.05). Clear analytical advantage for England — margin consistent across model dimensions.",
+    "style_clash": "attack-dominant+midfield_control vs balanced",
+    "value_gap_eur_m": 1131.2,
+    "team1": "England",
+    "team2": "Panama"
+  },
+  "Croatia vs Ghana": {
+    "verdict": "Croatia backed by 4 of 6 models with Ghana competitive",
+    "model_consensus": "moderate",
+    "models_for_team1": [
+      "tactical",
+      "form_results",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [
+      "quality_form"
+    ],
+    "models_even": [
+      "value"
+    ],
+    "key_driver": "Croatia (attack-dominant) vs Ghana (attack-dominant) — neutral stylistic matchup",
+    "uncertainty_flag": false,
+    "analytical_note": "Croatia backed by 4 of 6 models with Ghana competitive. Primary driver [TACTICAL]: Croatia (attack-dominant) vs Ghana (attack-dominant) — neutral stylistic matchup. Moderate confidence — data supports the favourite but upset window remains meaningful.",
+    "style_clash": null,
+    "value_gap_eur_m": 95.5,
+    "team1": "Croatia",
+    "team2": "Ghana"
+  },
+  "Croatia vs Panama": {
+    "verdict": "Croatia favoured across 6 of 6 models",
+    "model_consensus": "strong",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "form_results",
+      "quality_form",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [],
+    "models_even": [],
+    "key_driver": "Croatia (attack-dominant) vs Panama (balanced) — stylistic edge in matchup (style clash: +0.05)",
+    "uncertainty_flag": false,
+    "analytical_note": "Croatia favoured across 6 of 6 models. Primary driver [TACTICAL]: Croatia (attack-dominant) vs Panama (balanced) — stylistic edge in matchup (style clash: +0.05). Clear analytical advantage for Croatia — margin consistent across model dimensions.",
+    "style_clash": "attack-dominant vs balanced",
+    "value_gap_eur_m": 197.4,
+    "team1": "Croatia",
+    "team2": "Panama"
+  },
+  "Ghana vs Panama": {
+    "verdict": "Ghana backed by 4 of 6 models with Panama competitive",
+    "model_consensus": "moderate",
+    "models_for_team1": [
+      "value",
+      "tactical",
+      "momentum",
+      "h2h"
+    ],
+    "models_for_team2": [
+      "quality_form"
+    ],
+    "models_even": [
+      "form_results"
+    ],
+    "key_driver": "Ghana (attack-dominant) vs Panama (balanced) — stylistic edge in matchup (style clash: +0.05)",
+    "uncertainty_flag": true,
+    "analytical_note": "Ghana backed by 4 of 6 models with Panama competitive. Primary driver [TACTICAL]: Ghana (attack-dominant) vs Panama (balanced) — stylistic edge in matchup (style clash: +0.05). High draw probability (25%) — evenly matched across most dimensions.",
+    "style_clash": "attack-dominant vs balanced",
+    "value_gap_eur_m": 101.9,
+    "team1": "Ghana",
+    "team2": "Panama"
+  }
+}
